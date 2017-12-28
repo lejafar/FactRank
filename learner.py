@@ -18,8 +18,10 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.svm import SVC
 from sklearn import metrics
-from sklearn.model_selection import cross_val_predict
+from sklearn.metrics import classification_report
+from sklearn.model_selection import cross_val_predict, train_test_split
 from sklearn.externals import joblib
+from sklearn.calibration import CalibratedClassifierCV
 from stop_words import get_stop_words
 
 # Local modules
@@ -44,22 +46,29 @@ def downsample(majority, minority):
                                     random_state=33)
     return pd.concat([majority_downsampled,minority])
 
-sentence_data = pd.read_csv("data/sentences_dump_20.12.csv")
+sentence_data = pd.read_csv("data/sentences_dump_28.12.csv")
 sentence_data = shuffle(sentence_data)
 # Remove Useless Statements from training data
 sentence_data = sentence_data[sentence_data.category != "US"]
 sentence_data.category.replace({"CFS": 1, "NFS": 0, "UFS": 0}, inplace=True)
 category_names = ['NFS+UFS','CFS']
+
 sentence_data = downsample(sentence_data[sentence_data.category == 0],
                            sentence_data[sentence_data.category == 1])
 
 sentence_data.category.value_counts()
 
-sentence_target = sentence_data.pop("category")
+sentence_data, sentence_data_calibration = train_test_split(sentence_data, test_size=0.1)
 
-##################################################################
-# CREATING MODEL AS A PIPELINE OF FEATURE UNION AND A LINEAR SVM #
-##################################################################
+sentence_data.category.value_counts()
+sentence_data_calibration.category.value_counts()
+
+sentence_target = sentence_data.pop("category")
+sentence_target_calibration = sentence_data_calibration.pop("category")
+
+################################################################################
+#        CREATING MODEL AS A PIPELINE OF FEATURE UNION AND A LINEAR SVM        #
+################################################################################
 
 # UNION OF ALL FEATURES EXTRACTED FROM SENTENCE
 features = FeatureUnion([
@@ -70,7 +79,7 @@ features = FeatureUnion([
                                                  stop_words=get_stop_words('nl'))),
                         ('tfidf', TfidfTransformer(use_idf=True,
                                                    sublinear_tf=False))])),
-    ("lempos", Pipeline([("cont", FeatureSelector(key='content',  e_key='LEMMA_POS')),
+    ("lempos", Pipeline([("cont", FeatureSelector(key='content', e_key='LEMMA_POS')),
                          ('vect', CountVectorizer(ngram_range=(1,2),
                                                   max_df=0.2,
                                                   lowercase=False,
@@ -93,6 +102,7 @@ features = FeatureUnion([
   ])
 
 feature_pipe_SVM = Pipeline([("features", features),
+                             # ('smt', SMOTETomek(random_state=33)),
                              ('clf', SVC(kernel='linear',
                                          class_weight='balanced',
                                          random_state=33,
@@ -102,17 +112,20 @@ feature_pipe_SVM = Pipeline([("features", features),
                             ])
 
 # TRAIN MODEL AND APPLY 10 FOLD CROSSVALIDATION FOR EVALUATION
-feature_pipe_SVM.fit(sentence_data, sentence_target)
 predicted = cross_val_predict(feature_pipe_SVM,
                               sentence_data,
                               sentence_target,
                               cv=10)
 
-##################################################################
-#                          VIZUALIZATION                         #
-##################################################################
+# CalibratedClassifierCV currently doens't work well with pipeline ...
+#feature_pipe_SVM = CalibratedClassifierCV(feature_pipe_SVM, cv="prefit")
+#feature_pipe_SVM.fit(sentence_data_calibration,sentence_target_calibration)
 
-# http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
+################################################################################
+#                                VIZUALIZATION                                 #
+################################################################################
+
+# scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
 def plot_confusion_matrix(cm, classes,
                           normalize=False,
                           title='Confusion matrix',
@@ -146,29 +159,29 @@ def plot_confusion_matrix(cm, classes,
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
 
-##################################################################
-#                       EXPORT TRAINED MODEL                     #
-##################################################################
+################################################################################
+#                             EXPORT TRAINED MODEL                             #
+################################################################################
 
 joblib.dump(feature_pipe_SVM, 'trained_model.pkl')
 
-##################################################################
-#                         OUTPUT FEEDBACK                        #
-##################################################################
+################################################################################
+#                               OUTPUT FEEDBACK                                #
+################################################################################
 
 if __name__ == "__main__":
-    print(metrics.classification_report(sentence_target,
-                                        predicted,
-                                        target_names=category_names))
+    print(classification_report(sentence_target,
+                                predicted,
+                                target_names=category_names))
 
     # Compute confusion matrix
     cnf_matrix = metrics.confusion_matrix(sentence_target, predicted)
 
     # Plot normalized confusion matrix
-    plt.figure()
+    fig = plt.figure()
     plot_confusion_matrix(cnf_matrix,
                           classes=category_names,
                           normalize=True,
                           title='Normalized confusion matrix')
     plt.tight_layout()
-    plt.savefig('cnf_matrix.pdf')
+    plt.savefig('cnf_matrix.svg')
