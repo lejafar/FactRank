@@ -1,11 +1,12 @@
 <template>
-  <main v-if="result">
+  <main>
     <results-table v-bind:result="result"/>
   </main>
 </template>
 
 <script>
 import ResultsTable from '@/components/ResultsTable'
+import VueMarkdown from 'vue-markdown'
 
 export default {
   name: 'FactRanker',

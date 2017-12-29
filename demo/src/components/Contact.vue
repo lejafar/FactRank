@@ -2,7 +2,7 @@
   <div class="hello">
     <vue-markdown>
 
-    FactRank is written and maintained by:
+    FactRank was created as a project for the course *Knowledge and the Web* by prof. Bettina Berendt at KU Leuven and is written and maintained by:
 
     - Brecht Laperre (brecht.laperre@student.kuleuven.be)
     - Ivo merchiers (ivo.merchiers@student.kuleuven.be)
@@ -11,10 +11,9 @@
     You can always contact us for questions or suggestions.
     If you find any bugs, please file a bug report on [github](https://github.com/lejafar/KaW-project/issues).
 
-    We have an open api at https://api.factrank.org/sentence
-  </vue-markdown>
-  <pre>
+    Our API is openly available on https://api.factrank.org/, a minimal example:
 
+    ```javascript
     makePrediction (input) {
       fetch("https://api.factrank.org/sentence", {
         body: JSON.stringify(input),
@@ -28,19 +27,14 @@
           console.log(data.predictions);
         })
     }
-
-    </pre>
+    ```
+  </vue-markdown>
   </div>
 </template>
 
 <script>
-import VueMarkdown from 'vue-markdown'
-
 export default {
   name: 'Contact',
-  components: {
-    'vue-markdown': VueMarkdown
-  },
   props: [
     'name'
   ],
@@ -52,8 +46,10 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 pre{
   background-color: #f6f8fa;
+  padding: 20px;
+  border-radius: 5px;
 }
 </style>
