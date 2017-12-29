@@ -1,5 +1,5 @@
 <template>
-    <b-table show-empty
+    <b-table v-if="result.predictions"
             :fields="fields"
             :items="result.predictions"
             :sort-compare="customSortCompare"
@@ -8,7 +8,7 @@
       <!-- Information about Source of Statements IF meta is set -->
       <template v-if="result.meta" slot="table-caption">
         <p v-if="result.meta.date" >
-          Top Check-Whorty Factual statements from
+          Top 50 Check-Whorty Factual statements from
           <span v-if="this.last"> last Plenary Meeting ({{result.meta.date}}, <strong>{{result.meta.amount}}</strong> statements)</span>
           <span v-else> Plenary Meeting on {{result.meta.date}} ({{result.meta.amount}} statements)</span></p>
         <a v-if="result.meta.url.length" :href="result.meta.url"><icon name="link" /> {{result.meta.url}} </a>
@@ -26,16 +26,21 @@
         </b-card>
       </template>
     </b-table>
+    <div v-else class="loader-container">
+      <rotate-loader :color="'#ffc107'"></rotate-loader>
+    </div>
 </template>
 
 <script>
 import SentenceExtended from '@/components/SentenceExtended'
+import RotateLoader from 'vue-spinner/src/RotateLoader'
 
 export default {
   name: 'ResultsTable',
   props: ['result'],
   components: {
-    'sentence-extended': SentenceExtended
+    'sentence-extended': SentenceExtended,
+    'rotate-loader': RotateLoader
   },
   data () {
     return {
@@ -84,5 +89,11 @@ blockquote{
 }
 abbr{
   margin-right: 35px;
+}
+
+.loader-container{
+  text-align: center;
+  vertical-align: middle;
+  line-height: 300px;
 }
 </style>

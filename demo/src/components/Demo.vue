@@ -22,7 +22,7 @@
           <b-btn variant="outline-primary" class="submit_button"  v-on:click="makePrediction(sentence_input)">submit</b-btn>
         </b-col>
       </b-row>
-      <results-table v-bind:result="sentence_result"/>
+      <results-table v-if="show_result" v-bind:result="sentence_result"/>
   </div>
 </template>
 
@@ -34,7 +34,8 @@ export default {
   data () {
     return {
       sentence_input: '',
-      sentence_result: {}
+      sentence_result: {},
+      show_result: false
     }
   },
   components: {
@@ -59,6 +60,8 @@ export default {
  },
   methods: {
     makePrediction (sentences) {
+      this.sentence_result= {}
+      this.show_result = true
       fetch("https://api.factrank.org/sentence", {
         body: JSON.stringify(sentences),
         method: "POST",

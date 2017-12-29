@@ -17,7 +17,8 @@
     "vue-awesome": "^2.3.4",
     "vue-markdown": "^2.2.4",
     "vue-octicon": "^2.1.1",
-    "vue-router": "^2.7.0"
+    "vue-router": "^2.7.0",
+    "vue-spinner": "^1.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
