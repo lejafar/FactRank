@@ -2,7 +2,7 @@
   <b-navbar toggleable="md" type="light" variant="light">
     <b-container>
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-    <b-navbar-brand href="#">FactRank</b-navbar-brand><b-badge pill variant="warning">beta</b-badge>
+    <b-navbar-brand href="#">FactRank</b-navbar-brand><b-badge pill variant="warning">v0.1.1-beta</b-badge>
     <b-collapse is-nav id="nav_collapse">
 
       <!-- Right aligned nav items -->

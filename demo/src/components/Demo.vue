@@ -22,6 +22,15 @@
           <b-btn variant="outline-primary" class="submit_button"  v-on:click="makePrediction(sentence_input)">submit</b-btn>
         </b-col>
       </b-row>
+      <b-form-group v-if="sentence_result" >
+        <b-alert show variant="light" class="text-right">
+         <b-form-radio-group @input="makePrediction(sentence_input)" id="radios" v-model="detection" name="radioSubComponent">
+          <label class="mr-sm-2" for="inlineFormCustomSelectPref">Detect: </label>
+          <b-form-radio value="cfs">check-worthiness</b-form-radio>
+          <b-form-radio value="nfsufs"><strong>non</strong>-check-worthiness</b-form-radio>
+         </b-form-radio-group>
+        </b-alert>
+     </b-form-group>
       <results-table v-if="show_result" v-bind:result="sentence_result"/>
   </div>
 </template>
@@ -35,7 +44,8 @@ export default {
     return {
       sentence_input: '',
       sentence_result: {},
-      show_result: false
+      show_result: false,
+      detection: 'cfs'
     }
   },
   components: {
@@ -62,8 +72,12 @@ export default {
     makePrediction (sentences) {
       this.sentence_result= {}
       this.show_result = true
+      var req = {
+        'detect': this.detection,
+        'sentences': sentences
+      }
       fetch("https://api.factrank.org/sentence", {
-        body: JSON.stringify(sentences),
+        body: JSON.stringify(req),
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,12 +100,20 @@ export default {
   text-align: right;
 }
 .submit_button{
-    margin-top: -100px;
+    margin-top: -70px;
 }
+.form-group{
+  margin-bottom: 0rem;
+}
+
 /*  Change submit button margin in sync with bootstrap breakpoints */
 @media (max-width: 768px) {
   .submit_button{
       margin-top: 0px;
   }
+  .form-group{
+    margin-bottom: 1rem;
+  }
+
 }
 </style>

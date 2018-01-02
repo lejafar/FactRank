@@ -2,7 +2,6 @@
     <b-table v-if="result.predictions"
             :fields="fields"
             :items="result.predictions"
-            :sort-compare="customSortCompare"
             caption-top>
 
       <!-- Information about Source of Statements IF meta is set -->
@@ -24,6 +23,9 @@
         <b-card>
           {{data.item.feedback}}
         </b-card>
+      </template>
+      <template slot="probability" slot-scope="data">
+          {{data.item.probability | truncate}}
       </template>
     </b-table>
     <div v-else class="loader-container">
@@ -48,26 +50,10 @@ export default {
         // A column that needs custom formatting
         { key: 'speaker_info_sentence', label: 'Sentence' },
         // A regular column
-        { key: 'probability', sortable: true , label: '<abbr title="Check-Worthyness">CW </abbr>',
-          formatter: (value, key, item) => {
-            return Number((item.probability[1]*100).toFixed(0)) + ' %'
-          } , 'class': 'text-center'}
+        { key: 'probability', sortable: true, label: '<abbr title="Probability">PR</abbr>'}
       ],
       tag: 'last',
-      last: true,
-    }
-  },
-  methods: {
-    customSortCompare(a, b, key){
-      if (typeof a[key][1] === 'number' && typeof b[key][1] === 'number') {
-        // If both compared fields are native numbers
-        return a[key][1] < b[key][1] ? -1 : (a[key][1] > b[key][1] ? 1 : 0)
-      } else {
-        // Stringify the field data and use String.localeCompare
-        return toString(a[key]).localeCompare(toString(b[key]), undefined, {
-          numeric: true
-        })
-      }
+      last: true
     }
   },
   filters: {
@@ -95,5 +81,9 @@ abbr{
   text-align: center;
   vertical-align: middle;
   line-height: 300px;
+}
+
+label{
+  margin-bottom: 0rem;
 }
 </style>
