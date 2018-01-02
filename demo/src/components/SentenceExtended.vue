@@ -104,9 +104,7 @@ export default {
   font-weight: bold;
 }
 .lempos_combo, .lempos{
-  /* padding: .2em 0rem;
-  background-color: #FFF59D; */
-  background-color: #FFF59D;
+  background-color: #ffc107;
 }
 .pos_combo, .pos{
   font-style: italic;
