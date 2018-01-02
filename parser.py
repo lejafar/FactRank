@@ -116,7 +116,7 @@ def get_features(model, sentence):
             'other': feature_others}
 
 
-def get_top_n_featues(model, n):
+def get_top_n_featues(model, n, nfsufs):
     """
     Retrieve `n` features with the highest coefficient value in `model`
 
@@ -125,7 +125,10 @@ def get_top_n_featues(model, n):
     clf = model.named_steps['clf']
     class_labels = clf.classes_
     feature_names = get_all_feature(model)
-    return [feature_names[j] for j in np.argsort(clf.coef_.toarray())[:, -n:][0]]
+    if nfsufs:
+        return [feature_names[j] for j in np.argsort(clf.coef_.toarray())[:,:n][0]]
+    else:
+        return [feature_names[j] for j in np.argsort(clf.coef_.toarray())[:, -n:][0]]
 
 
 def indicesOfSublist(sublist, list, start=0):
@@ -158,7 +161,7 @@ def indicesOfitem(item, list):
     return [i for i, value in enumerate(list) if value == item]
 
 
-def get_feedback(model, sentence):
+def get_feedback(model, sentence, nfsufs):
     """
     Generate structured feedback based on the non-zero features found by
     `model` in `sentence`. This will be served and parsed by our front-end
@@ -178,7 +181,7 @@ def get_feedback(model, sentence):
 
     :returns: dictionary of feedback
     """
-    cfs_list = get_top_n_featues(model, 500)
+    cfs_list = get_top_n_featues(model, 500, nfsufs)
     features = get_features(model, sentence)
     extractor = Extractor(sentence)
     word_sentence = [word.lower() for word in extractor.parsedSentence()]
@@ -268,7 +271,7 @@ def last_transcript(production= False):
         'p[class="NormalNL"] > span[class="oraspr"] > span[style="mso-ansi-language:NL"] > span')
     return speakers, last_session_url, date
 
-def bulk_predict(model, c_names, text, speaker = {}):
+def bulk_predict(model, c_names, text, speaker = {}, ufsnfs=False):
     sentences = s_regex.findall(text)
     if not speaker and "." not in text and "?" not in text:
         sentences = soft_s_regex.findall(text)
@@ -278,19 +281,23 @@ def bulk_predict(model, c_names, text, speaker = {}):
         sentences[0] = sentences[0][1:]
     if sentences and sentences[-1] and sentences[-1][-1:] == "\"":
         sentences[-1] = sentences[-1][:-1]
+
     bulk_predictions = []
     for s, sentence in enumerate(sentences):
         sentence = unicodedata.normalize("NFKD", sentence)
         prediction = {}
         if len(sentence.split()) >= 5:
             prepped = prepForPred([sentence])
-            feedback = get_feedback(model, sentence)
+            feedback = get_feedback(model, sentence, ufsnfs)
             if speaker:
                 prediction = speaker.copy()
             prediction['sentence'] = sentence
             prediction['sentence_id'] = s
             prediction['category'] = c_names[model.predict(prepped)[0]]
-            prediction['probability'] = list(model.predict_proba(prepped)[0])
+            if ufsnfs:
+                prediction['probability'] = model.predict_proba(prepped)[0][0]
+            else:
+                prediction['probability'] = model.predict_proba(prepped)[0][1]
             prediction['feedback'] = feedback
             bulk_predictions += [prediction]
     return bulk_predictions

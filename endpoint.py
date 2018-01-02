@@ -53,18 +53,22 @@ def load_parsed_plenair():
         parse_dict = pickle.load(f)
     n, desc = 100, True  # sort desc and take top n predictions
     parse_dict['predictions'] = sorted(
-        parse_dict['predictions'], key=lambda k: k['probability'][1], reverse=desc)[:n]
+        parse_dict['predictions'], key=lambda k: k['probability'], reverse=desc)[:n]
     return jsonify(parse_dict)
 
 
 @app.route('/sentence', methods=['GET', 'POST', 'OPTIONS'])
 @cross_origin()
 def parse_sentences():
-    r = '{"Sentence": "nothing found ..."}'
+    r = {'Sentence': 'nothing found ...'}
     if request.method == 'POST':
-        text = request.get_data().decode('utf-8').replace('\\r', '\r').replace('\\n', '\n')
-        bulk = sorted(bulk_predict(model, cat_names, text), key=lambda k: k['probability'][1], reverse=True)
-        resp = {'predictions': bulk}
+        req = request.get_json(force=True)
+        text = req['sentences'].replace('\\r', '\r').replace('\\n', '\n')
+        resp = {'predictions': []}
+        if req['detect'] == 'cfs':
+            resp['predictions'] = bulk_predict(model, cat_names, text)
+        elif req['detect'] == 'nfsufs':
+            resp['predictions'] = bulk_predict(model, cat_names, text, ufsnfs=True)
         return jsonify(resp)
     return jsonify(r)
 
