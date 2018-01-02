@@ -43,7 +43,7 @@ class Extractor:
         elif k == "POS_SENT":
             return self.posTagSentence()
         elif k == "LENGTH":
-            return len(self.sentence)
+            return self.length()
         elif k == "POL":
             return self.polarity()
         elif k == "SUBJ":
@@ -53,6 +53,9 @@ class Extractor:
         self.sentence = sentence
         tree = parsetree(sentence, lemmata=True)
         self.tree = tree[0]
+
+    def length(self):
+        return self.tree.stop
 
     def sent(self):
         """

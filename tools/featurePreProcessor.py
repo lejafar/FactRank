@@ -21,10 +21,10 @@ import MySQLdb
 import sys
 from tqdm import *
 from importlib import reload
-sys.path.insert(0, 'ANALYSES/')  # Add dir to import featureExtractor
+sys.path.insert(0, '..')  # Add dir to import featureExtractor
 
 # IMPORT IVO'S EXTRACTOR
-from featureExtractorClass import featureExtractor
+from extractor import Extractor
 
 # IMPORT DB CREDENTIALS AND CONNECT
 from credentials import *
@@ -63,7 +63,7 @@ for sentence_row in tqdm(sentence_rows, ncols=100):
     try:
         sentence_id = sentence_row[0]
         sentence = sentence_row[1]
-        extractorObject = featureExtractor(sentence)
+        extractorObject = Extractor(sentence)
         sentence_features = (sentence_id,
                              extractorObject.length(),
                              extractorObject.polarity(),
