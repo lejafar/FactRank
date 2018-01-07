@@ -314,6 +314,9 @@ def parse(model, c_names, speakers):
         name = speaker.next_sibling.replace('\r', '').replace('\n', ' ')
         text_node = speaker.parent.parent.next_sibling
         text = text_node.contents[0]
+        # check if text is indeed string, else just parse error
+        if not isinstance(text, str):
+             continue
         party = "Unknown"
         parent = text_node.parent
         # While next is not another speaker, add to current
