@@ -355,7 +355,7 @@ if __name__ == '__main__':
     if not speakers:
         sys.exit("Latest transcript from " + date + "(" + last_session_url +
                  ") was already parsed, I'll try again tommorow! ")
-    print("Started parsing model ... (this might take a while)")
+    print("Started parsing transcipt ... (this might take a while)")
     parse_dict = {}
     parse_dict['meta'] = {}
     parse_dict['meta']['date'] = date
