@@ -57,7 +57,7 @@ s_regex = re.compile(SENTENCE_REGEX)
 # Regex below accepts sentences without a punctuation mark
 SENTENCE_REGEX_SOFT = r' ?((?:[^?!\.\n]|\.[^ A-Z])+(?:!|\.{0,3})) ?'
 soft_s_regex = re.compile(SENTENCE_REGEX_SOFT)
-FILE_NAME_REGEX = r'ip\d+.*(?=\.)'
+FILE_NAME_REGEX = r'i.\d+.*(?=\.)'
 fn_regex = re.compile(FILE_NAME_REGEX)
 ########################################################
 
@@ -259,7 +259,8 @@ def last_transcript(production= False):
 
     if production:
         # In production, so check if last transcript has already been parsed
-        if os.path.isfile("archive/PM " + date + ".pkl"):
+        file_name = fn_regex.findall(last_session_url)[0] or "unknown"
+        if os.path.isfile("archive/" + file_name + ".pkl"):
             return False, last_session_url, date
 
     # Parse last plenary meeting
@@ -320,7 +321,7 @@ def parse(model, c_names, speakers):
         party = "Unknown"
         parent = text_node.parent
         # While next is not another speaker, add to current
-        while not parent.next_sibling.next_sibling.select('span[class="oraspr"]'):
+        while parent.next_sibling.next_sibling and not parent.next_sibling.next_sibling.select('span[class="oraspr"]'):
             parent = parent.next_sibling.next_sibling
             # Skip if non-dutch is found
             if 'class' in parent.attrs and parent.attrs['class'][0] != "NormalNL":
