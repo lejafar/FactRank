@@ -268,10 +268,7 @@ def last_transcript(production= False):
     #       the approach below is highly prone to parsing errors
     pm_html = urllib.request.urlopen(KAMER_BASE_URL + last_session_url).read()
     parsed_pm_html = BeautifulSoup(pm_html, "lxml").body
-    speakers = parsed_pm_html.select(
-        'p[class="NormalNL"] > span[class="oraspr"] > span[style="mso-ansi-language:NL"] > span')
-    speakers += parsed_pm_html.select(
-        'p[class="NormalNL"] > span[class="oraspr"] > span[style="color:windowtext;mso-ansi-language:NL"] > span')
+    speakers = parsed_pm_html.select('p[class="NormalNL"] > span[class="oraspr"] > span > span')
     return speakers, last_session_url, date
 
 def bulk_predict(model, c_names, text, speaker = {}, ufsnfs=False):
@@ -325,13 +322,13 @@ def parse(model, c_names, speakers):
         # While next is not another speaker, add to current
         while parent.next_sibling.next_sibling and not parent.next_sibling.next_sibling.select('span[class="oraspr"]'):
             parent = parent.next_sibling.next_sibling
-            # Skip if non-dutch is found
+            # Quit if non-dutch is found
             if 'class' in parent.attrs and parent.attrs['class'][0] != "NormalNL":
-                continue
+                break
             text_next = parent.find(text=True, recursive=True)
             # Skip empty parts of text
             if text_next.strip() != "":
-                text += ' ' + text_next
+                text += '\n' + text_next
 
         if pn_regex.findall(text):
             party = pn_regex.findall(text)[0]
