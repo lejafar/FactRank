@@ -270,6 +270,8 @@ def last_transcript(production= False):
     parsed_pm_html = BeautifulSoup(pm_html, "lxml").body
     speakers = parsed_pm_html.select(
         'p[class="NormalNL"] > span[class="oraspr"] > span[style="mso-ansi-language:NL"] > span')
+    speakers += parsed_pm_html.select(
+        'p[class="NormalNL"] > span[class="oraspr"] > span[style="color:windowtext;mso-ansi-language:NL"] > span')
     return speakers, last_session_url, date
 
 def bulk_predict(model, c_names, text, speaker = {}, ufsnfs=False):
