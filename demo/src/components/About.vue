@@ -35,7 +35,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped>
 section.footnotes{
     font-size: .9rem;
 }
@@ -47,8 +47,5 @@ section.footnotes p {
 }
 img {
     max-width: 60%;
-}
-.table{
-  max-width: 700px;
 }
 </style>
