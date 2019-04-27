@@ -22,6 +22,7 @@ Vue.component('icon', Icon)
 import VueMarkdown from 'vue-markdown'
 Vue.component('vue-markdown', VueMarkdown)
 Vue.prototype.$api_version = process.env.VUE_APP_API_VERSION || 'v0.1.1'
+Vue.prototype.$branch_version = process.env.VUE_APP_BRANCH_VERSION
 
 import pdf from 'pdfvuer'
 // Add the pdf component to Vue
