@@ -1,7 +1,5 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import App from './App'
+import App from './App.vue'
 import router from './router'
 
 // Bootstrap 4
@@ -15,20 +13,21 @@ import 'vue-awesome/icons'
 // OR import individual icons
 import 'vue-awesome/icons/home'
 import 'vue-awesome/icons/star'
+import 'vue-awesome/icons/brands/github'
 // Import the Icon component
 import Icon from 'vue-awesome/components/Icon.vue'
 // Add the icon component to Vue
 Vue.component('icon', Icon)
 
-Vue.config.productionTip = false
-
 import VueMarkdown from 'vue-markdown'
 Vue.component('vue-markdown', VueMarkdown)
+Vue.prototype.$api_version = 'v0.1.1'
 
-/* eslint-disable no-new */
+import pdf from 'pdfvuer'
+// Add the pdf component to Vue
+Vue.component('pdf', pdf)
+
 new Vue({
-  el: '#app',
   router,
-  template: '<App/>',
-  components: { App }
-})
+  render: h => h(App),
+}).$mount('#app')

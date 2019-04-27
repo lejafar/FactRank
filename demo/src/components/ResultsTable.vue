@@ -1,5 +1,6 @@
 <template>
-    <b-table v-if="result.predictions"
+    <b-table
+            v-if="result.predictions"
             :fields="fields"
             :items="result.predictions"
             caption-top>
@@ -7,10 +8,15 @@
       <!-- Information about Source of Statements IF meta is set -->
       <template v-if="result.meta" slot="table-caption">
         <p v-if="result.meta.date" >
-          Top 50 Check-Whorty Factual statements from
+          Top 100 Check-Whorty Factual statements from
           <span v-if="this.last"> last Plenary Meeting ({{result.meta.date}}, <strong>{{result.meta.amount}}</strong> statements)</span>
           <span v-else> Plenary Meeting on {{result.meta.date}} ({{result.meta.amount}} statements)</span></p>
         <a v-if="result.meta.url.length" :href="result.meta.url"><icon name="link" /> {{result.meta.url}} </a>
+      </template>
+
+      <!-- A virtual column -->
+      <template slot="index" slot-scope="data">
+        {{ data.index + 1 }}
       </template>
 
       <!-- speaker_info_sentence virtual column -->
@@ -34,7 +40,7 @@
 </template>
 
 <script>
-import SentenceExtended from '@/components/SentenceExtended'
+import SentenceExtended from './SentenceExtended'
 import RotateLoader from 'vue-spinner/src/RotateLoader'
 
 export default {
@@ -47,10 +53,11 @@ export default {
   data () {
     return {
       fields: [
+          { key: 'index', label: '#'},
         // A column that needs custom formatting
-        { key: 'speaker_info_sentence', label: 'Sentence' },
+        { key: 'speaker_info_sentence', label: 'Statement'},
         // A regular column
-        { key: 'probability', sortable: true, label: '<abbr title="Probability">PR</abbr>'}
+        { key: 'probability', sortable: true, label: 'Check-Worthiness', tdClass: 'no-wrap', thClass: 'no-wrap'}
       ],
       tag: 'last',
       last: true
@@ -85,5 +92,9 @@ abbr{
 
 label{
   margin-bottom: 0rem;
+}
+
+td.no-wrap, th.no-wrap{
+    white-space: nowrap;
 }
 </style>
