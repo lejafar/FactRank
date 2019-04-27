@@ -57,7 +57,7 @@ export default {
         // A column that needs custom formatting
         { key: 'speaker_info_sentence', label: 'Statement'},
         // A regular column
-        { key: 'probability', sortable: true, label: 'Check-Worthiness', tdClass: 'no-wrap', thClass: 'no-wrap'}
+        { key: 'probability', sortable: true, label: 'Check-Worthiness', tdClass: ['no-wrap', 'center'], thClass: ['no-wrap', 'center']}
       ],
       tag: 'last',
       last: true
@@ -96,5 +96,8 @@ label{
 
 td.no-wrap, th.no-wrap{
     white-space: nowrap;
+}
+td.center {
+    text-align: center;
 }
 </style>
