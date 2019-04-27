@@ -1,12 +1,9 @@
 <template>
-  <main>
     <results-table v-bind:result="result"/>
-  </main>
 </template>
 
 <script>
-import ResultsTable from '@/components/ResultsTable'
-import VueMarkdown from 'vue-markdown'
+import ResultsTable from './ResultsTable'
 
 export default {
   name: 'FactRanker',
@@ -16,8 +13,8 @@ export default {
       }
   },
   methods: {
-    fetchPrediction (tag) {
-      fetch("https://api.factrank.org/plenair")
+    fetchPrediction () {
+        fetch("https://api.factrank.org/" + this.$api_version + "/plenair")
         .then(response => response.json())
         .then((data) => {
           this.result = data
