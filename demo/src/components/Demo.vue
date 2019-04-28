@@ -76,7 +76,7 @@ export default {
         'detect': this.detection,
         'sentences': sentences
       }
-      fetch("https://api.factrank.org/" + $api_version + "/sentence", {
+      fetch("https://api.factrank.org/" + this.$api_version + "/sentence", {
         body: JSON.stringify(req),
         method: "POST",
         headers: {
