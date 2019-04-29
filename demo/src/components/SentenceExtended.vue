@@ -4,12 +4,12 @@
       <cite title="Speaker">({{sentence.party}})</cite>
     </footer>
     <p class="mb-0">
-      <template v-for="(word, index) in sentence.feedback.words" >
-        <span :id="'id'+sentence.sentence_id+'key'+word+index" :class="getClass(sentence.feedback.inline, index)">{{word}}</span>
-        <span :class="innerClass(sentence.feedback.inline, index)" v-if="hasInnerClass(sentence.feedback.inline, index)">&nbsp;</span>
-        <span v-else-if="nextPunct(sentence.feedback.words, index)"></span>
-        <span v-else>&nbsp;</span>
-        <b-tooltip v-if="getInfo(sentence.feedback.inline,sentence.feedback.legend, index).length" :target="'id'+sentence.sentence_id+'key'+word+index">
+      <template v-for="(word, index) in sentence.feedback.words">
+        <span :id="'id'+sentence.sentence_id+'key'+word+index" :class="getClass(sentence.feedback.inline, index)" :key="sentence.sentence+index+1">{{word}}</span>
+        <span :class="innerClass(sentence.feedback.inline, index)" v-if="hasInnerClass(sentence.feedback.inline, index)" :key="sentence.sentence+index+2">{{' '}}</span>
+        <span v-else-if="nextPunct(sentence.feedback.words, index)" :key="sentence.sentence+index+3"></span>
+        <span v-else :key="sentence.sentence+index+4" class="space">{{' '}}</span>
+        <b-tooltip v-if="getInfo(sentence.feedback.inline,sentence.feedback.legend, index).length" :target="'id'+sentence.sentence_id+'key'+word+index" :key="sentence.sentence+index+5">
           {{ getInfo(sentence.feedback.inline,sentence.feedback.legend, index) }}
         </b-tooltip>
       </template>
@@ -64,10 +64,10 @@ export default {
       }
 
       var info = ""
-      for (var i=0; i<fb.length; i++) {
-        info += fb[i]
-        if(i+1 == fb.length-1) info += ", and "
-        else if(i+1 < fb.length-1) info += ", "
+      for (var j=0; j<fb.length; j++) {
+        info += fb[j]
+        if(j+1 == fb.length-1) info += ", and "
+        else if(j+1 < fb.length-1) info += ", "
       }
       // Capitalize first letter
       info = info.charAt(0).toUpperCase() + info.slice(1);
@@ -75,6 +75,9 @@ export default {
     },
     nextPunct(words, i){
       return i + 1 < words.length && (words[i+1] == ',' || words[i+1] == '.')
+    },
+    hashCode(s){
+          return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
     },
     innerClass(inline, i){
       var inner_fb_class = ''
