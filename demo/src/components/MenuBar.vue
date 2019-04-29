@@ -2,7 +2,9 @@
   <b-navbar toggleable="md" type="light" variant="light">
     <b-container>
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-    <b-navbar-brand href="#">FactRank</b-navbar-brand><b-badge pill variant="warning">v0.1.1-beta</b-badge>
+    <b-navbar-brand href="#">FactRank</b-navbar-brand>
+    <b-badge v-if="$branch_version" pill variant="warning">{{$api_version}} : {{$branch_version}}</b-badge>
+    <b-badge v-else pill variant="warning">{{$api_version}}</b-badge>
     <b-collapse is-nav id="nav_collapse">
 
       <!-- Right aligned nav items -->
@@ -11,8 +13,8 @@
         <b-navbar-nav>
           <b-nav-item to="/" exact>Rank</b-nav-item>
           <b-nav-item to="/about">About</b-nav-item>
-          <b-nav-item to="/contact">Contact</b-nav-item>
-          <b-nav-item href="https://github.com/lejafar/factrank"><icon name="github" /></b-nav-item>
+          <b-nav-item to="/press">Press</b-nav-item>
+          <b-nav-item href="https://github.com/lejafar/factrank"><icon name="brands/github" /></b-nav-item>
         </b-navbar-nav>
         <b-button variant="outline-primary" to="/demo" id="try_it">Try it!</b-button>
 
