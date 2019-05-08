@@ -1,35 +1,59 @@
 <template>
-    <results-table v-bind:result="result"/>
+    <div>
+        <b-form-group label-cols="8" label-cols-lg="4" label-size="sm" label="Top Check-Worthy Factual Statement of" label-for="input-sm">
+                <b-form-select @change="fetchTopCheckWorthy" v-model="top_last" :options="options"></b-form-select>
+        </b-form-group>
+        <results-table v-bind:results="top_results"/>
+    </div>
 </template>
 
 <script>
 import ResultsTable from './ResultsTable'
 
 export default {
-  name: 'FactRanker',
-  data () {
-      return {
-        result: {}
-      }
-  },
-  methods: {
-    fetchPrediction () {
-        fetch("https://api.factrank.org/" + this.$api_version + "/plenair")
-        .then(response => response.json())
-        .then((data) => {
-          this.result = data
-      })
+    name: 'Search',
+    data () {
+        return {
+            top_results: [],
+            top_last: 'month',
+            options: [
+                { value: 'day', text: 'last day' },
+                { value: 'week', text: 'last week' },
+                { value: 'month', text: 'last month' },
+                { value: 'year', text: 'last year' },
+                { value: 'all_time', text: 'all time' },
+            ]
+        }
+    },
+    methods: {
+        fetchTopCheckWorthy () {
+            this.top_results = []
+            fetch("https://api-v2.factrank.org/search", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({'top_last': this.top_last, 'limit': 100}),
+            }).then(response => response.json()).then((data) => {
+                this.top_results = data
+            });
+        },
+    },
+    components: {
+        'results-table': ResultsTable
+    },
+    mounted() {
+        this.fetchTopCheckWorthy ()
     }
-  },
-  components: {
-    'results-table': ResultsTable
-  },
-  mounted() {
-    this.fetchPrediction ('last')
-  }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+form {
+    margin-bottom: 1rem;
+}
+input.search {
+    margin-left: auto;
+}
 </style>

@@ -6,12 +6,12 @@
 			<b-button variant="outline-success" class="my-2 my-sm-0" type="submit">Search</b-button>
 		</b-nav-form>
 		</b-form>
-		<search-results-table v-bind:search_results="search_results"/>
+		<results-table v-bind:results="search_results"/>
 	</div>
 </template>
 
 <script>
-import SearchResultsTable from './SearchResultsTable'
+import ResultsTable from './ResultsTable'
 
 export default {
   name: 'Search',
@@ -41,7 +41,7 @@ export default {
 	},
   },
   components: {
-    'search-results-table': SearchResultsTable
+    'results-table': ResultsTable
   },
   mounted() {
     this.fetchSearchResults ()
