@@ -22,6 +22,7 @@
                         {{ data.item.source.published_at | formatDate }}
                         <a class="source_type text-secondary" :href="data.item.source.url" target="_blank">
                             <icon :class="data.item.source.type.toLowerCase()" :name="data.item.source.type | pick_icon" size="xs"/>
+                            <icon class="url text-context" name="link" size="xs"/>
                         </a>
                     </p>
                 </footer>
@@ -129,5 +130,15 @@ p.confidence {
   text-align: center;
   vertical-align: middle;
   line-height: 300px;
+}
+tr svg.url {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 0.5s, opacity 0.5s linear;
+}
+tr:hover svg.url {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.5s linear;
 }
 </style>
