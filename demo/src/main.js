@@ -28,6 +28,12 @@ import pdf from 'pdfvuer'
 // Add the pdf component to Vue
 Vue.component('pdf', pdf)
 
+import VueMoment from 'vue-moment'
+import moment from 'moment-timezone'
+Vue.use(VueMoment, {
+        moment,
+})
+
 new Vue({
   router,
   render: h => h(App),

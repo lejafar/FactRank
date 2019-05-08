@@ -19,10 +19,15 @@
                         <cite v-if="data.item.speaker && data.item.speaker.association" title="Speaker">({{data.item.speaker.association.name}})</cite>
                     </span>
                     <p v-if="data.item.source" class="info">
-                    {{data.item.source.published_at | format_date}}
-                    <a class="source_type text-secondary" :href="data.item.source.url" target="_blank">
-                        <icon :class="data.item.source.type.toLowerCase()" :name="data.item.source.type | pick_icon" size="xs"/>
-                    </a>
+                        <span v-if="pureDate(data.item.source.published_at)">
+                            {{ data.item.source.published_at + '+00' | moment('timezone', 'Europe/Brussels') | moment("MMM Do YYYY")}}
+                        </span>
+                        <span v-else>
+                            {{ data.item.source.published_at + '+00' | moment('timezone', 'Europe/Brussels') | moment("MMM Do YYYY H:mm")}}
+                        </span>
+                        <a class="source_type text-secondary" :href="data.item.source.url" target="_blank">
+                            <icon :class="data.item.source.type.toLowerCase()" :name="data.item.source.type | pick_icon" size="xs"/>
+                        </a>
                     </p>
                 </footer>
                 <p class="mb-0 statement">
@@ -65,17 +70,22 @@ export default {
             ],
         }
     },
+    methods: {
+        pureDate(time_stamp) {
+            let [date, time] = time_stamp.split(' ');
+            let [hour, minute, second] = time.split(':');
+            return (hour === '00' && minute === '00')
+        }
+    },
     filters: {
-        format_date(time_stamp) {
-            var publish_date =  new Date(Date.parse(time_stamp.replace(" ", "T")));
-            // todo: make permanent fix to timezone issue
-            var options = {day: 'numeric', month: 'long', year: 'numeric'};
-            if (publish_date.getHours() || publish_date.getMinutes()){
-                options.hour = 'numeric';
-                options.minute = 'numeric';
+        pre_date(time_stamp) {
+            let [date, time] = time_stamp.split(' ');
+            let [hour, minute, second] = time.split(':');
+            if (hour != '00' || minute != '00'){
+                // make sure this is recognized as UTC timestamp
+                return time_stamp + '+00';
             }
-            publish_date.setHours(publish_date.getHours() + 2);
-            return publish_date.toLocaleDateString('en-GB', options);
+            return date;
         },
         pick_icon(source_type) {
             if(source_type == 'TWITTER'){
