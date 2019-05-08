@@ -19,12 +19,7 @@
                         <cite v-if="data.item.speaker && data.item.speaker.association" title="Speaker">({{data.item.speaker.association.name}})</cite>
                     </span>
                     <p v-if="data.item.source" class="info">
-                        <span v-if="pureDate(data.item.source.published_at)">
-                            {{ data.item.source.published_at + '+00' | moment('timezone', 'Europe/Brussels') | moment("MMM Do YYYY")}}
-                        </span>
-                        <span v-else>
-                            {{ data.item.source.published_at + '+00' | moment('timezone', 'Europe/Brussels') | moment("MMM Do YYYY H:mm")}}
-                        </span>
+                        {{ data.item.source.published_at | formatDate }}
                         <a class="source_type text-secondary" :href="data.item.source.url" target="_blank">
                             <icon :class="data.item.source.type.toLowerCase()" :name="data.item.source.type | pick_icon" size="xs"/>
                         </a>
@@ -54,6 +49,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import RotateLoader from 'vue-spinner/src/RotateLoader'
 
 export default {
@@ -70,22 +66,24 @@ export default {
             ],
         }
     },
-    methods: {
-        pureDate(time_stamp) {
-            let [date, time] = time_stamp.split(' ');
-            let [hour, minute, second] = time.split(':');
-            return (hour === '00' && minute === '00')
-        }
-    },
     filters: {
-        pre_date(time_stamp) {
+        formatDate(time_stamp) {
+            // make sure this is recognized as UTC timestamp
+            time_stamp += '+00'
+            var published_at = moment(time_stamp);
+            // determine format string
+            var time_format_str = ""
             let [date, time] = time_stamp.split(' ');
             let [hour, minute, second] = time.split(':');
             if (hour != '00' || minute != '00'){
-                // make sure this is recognized as UTC timestamp
-                return time_stamp + '+00';
+                time_format_str = " H:mm"
             }
-            return date;
+            return published_at.calendar(null, {
+                sameDay: `[Today]${time_format_str}`,
+                lastDay: `[Yesterday]${time_format_str}`,
+                lastWeek: `MMM Do YYYY${time_format_str}`,
+                sameElse: `MMM Do YYYY${time_format_str}`
+            });
         },
         pick_icon(source_type) {
             if(source_type == 'TWITTER'){
