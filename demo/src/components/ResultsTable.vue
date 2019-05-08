@@ -70,7 +70,7 @@ export default {
             var publish_date =  new Date(Date.parse(time_stamp));
             // todo: make permanent fix to timezone issue
             var options = {day: 'numeric', month: 'long', year: 'numeric'};
-            if (publish_date.getHours() && publish_date.getMinutes()){
+            if (publish_date.getHours() || publish_date.getMinutes()){
                 options.hour = 'numeric';
                 options.minute = 'numeric';
             }
