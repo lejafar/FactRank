@@ -67,7 +67,6 @@ export default {
     },
     filters: {
         format_date(time_stamp) {
-            console.log(time_stamp);
             var publish_date =  new Date(Date.parse(time_stamp.replace(" ", "T")));
             // todo: make permanent fix to timezone issue
             var options = {day: 'numeric', month: 'long', year: 'numeric'};
