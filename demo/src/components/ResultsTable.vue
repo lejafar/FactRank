@@ -125,6 +125,7 @@ p.confidence {
     margin-bottom: 0rem;
     font-size: 50%;
     font-style: italic;
+    margin-top: .5rem;
     margin-right: .5rem;
 }
 .loader-container{
@@ -142,5 +143,8 @@ tr:hover svg.url {
     visibility: visible;
     opacity: 1;
     transition: opacity 0.5s linear;
+}
+.table td{
+    padding-bottom: .5rem !important;
 }
 </style>
