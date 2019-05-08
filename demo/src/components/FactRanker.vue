@@ -14,9 +14,10 @@ export default {
     name: 'Search',
     data () {
         return {
-            top_results: [],
+            top_results: null,
             top_last: 'month',
             options: [
+                { value: 'hour', text: 'last hour' },
                 { value: 'day', text: 'last 24h' },
                 { value: 'week', text: 'last week' },
                 { value: 'month', text: 'last month' },
@@ -27,7 +28,7 @@ export default {
     },
     methods: {
         fetchTopCheckWorthy () {
-            this.top_results = []
+            this.top_results = null
             fetch("https://api-v2.factrank.org/search", {
                 method: 'POST',
                 headers: {
