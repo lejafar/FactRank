@@ -1,6 +1,6 @@
 <template>
     <b-table
-        v-if="results.length"
+        v-if="results"
         :fields="fields"
         :items="results"
         caption-top>
@@ -67,16 +67,15 @@ export default {
     },
     filters: {
         format_date(time_stamp) {
-            let [date, time] = time_stamp.split(' ');
-            let [year, month, day] = date.split('-');
-            let month_full = ['januari', 'februari', 'maart', 'april',
-                              'mei', 'juni', 'juli', 'augustus', 'september',
-                              'oktober', 'november', 'december'][month - 1]
-            let [hours, minutes, seconds] = time.split(':');
-            if(hours != '00'){
-                return `${day} ${month_full} ${year} ${hours}:${minutes}`;
+            var publish_date =  new Date(Date.parse(time_stamp));
+            // todo: make permanent fix to timezone issue
+            var options = {day: 'numeric', month: 'long', year: 'numeric'};
+            if (publish_date.getHours() && publish_date.getMinutes()){
+                options.hour = 'numeric';
+                options.minute = 'numeric';
             }
-            return `${day} ${month_full} ${year}`;
+            publish_date.setHours(publish_date.getHours() + 2);
+            return publish_date.toLocaleDateString('en-GB', options);
         },
         pick_icon(source_type) {
             if(source_type == 'TWITTER'){
