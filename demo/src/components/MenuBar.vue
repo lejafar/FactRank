@@ -12,7 +12,6 @@
 
                     <b-navbar-nav>
                         <b-nav-item to="/" exact>Rank</b-nav-item>
-                        <b-nav-item to="/search">Search</b-nav-item>
                         <b-nav-item to="/about">About</b-nav-item>
                         <b-nav-item to="/press">Press</b-nav-item>
                         <b-nav-item href="https://github.com/lejafar/factrank"><icon name="brands/github" /></b-nav-item>
