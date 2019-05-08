@@ -46,7 +46,7 @@ export default {
         'results-table': ResultsTable
     },
     mounted() {
-        this.top_last = this.$route.query.limit;
+        this.top_last = this.$route.query.limit || 'month'
         this.fetchTopCheckWorthy ()
     }
 }
