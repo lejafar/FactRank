@@ -125,6 +125,7 @@ p.confidence {
     margin-bottom: 0rem;
     font-size: 50%;
     font-style: italic;
+    margin-right: .5rem;
 }
 .loader-container{
   text-align: center;
@@ -135,6 +136,7 @@ tr svg.url {
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s 0.5s, opacity 0.5s linear;
+    margin-right: -.5rem;
 }
 tr:hover svg.url {
     visibility: visible;
