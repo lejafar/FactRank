@@ -16,14 +16,13 @@
                 <footer class="blockquote-footer">
                     <span class="speaker">
                         {{data.item.speaker.name}}
-                        <cite title="Speaker">({{data.item.speaker.association.name}})</cite>
+                        <cite v-if="data.item.speaker && data.item.speaker.association" title="Speaker">({{data.item.speaker.association.name}})</cite>
                     </span>
-                    <p class="info">
+                    <p v-if="data.item.source" class="info">
                     {{data.item.source.published_at | format_date}}
-                    <icon class="source_type" :class="data.item.source.type.toLowerCase()" :name="data.item.source.type | pick_icon" size="xs"/>
-                        <!--<a :href="data.item.source.url">-->
-                            <!--<icon name="link" size="xs"/>-->
-                        <!--</a>-->
+                    <a class="source_type text-secondary" :href="data.item.source.url" target="_blank">
+                        <icon :class="data.item.source.type.toLowerCase()" :name="data.item.source.type | pick_icon" size="xs"/>
+                    </a>
                     </p>
                 </footer>
                 <p class="mb-0 statement">
@@ -104,7 +103,7 @@ blockquote > footer.blockquote-footer {
 footer > p.info {
     float: right;
 }
-svg.source_type {
+.source_type > svg {
     margin-left: .5rem;
 }
 .text-context {
