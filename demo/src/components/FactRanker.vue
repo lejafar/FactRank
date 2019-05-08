@@ -28,7 +28,8 @@ export default {
     },
     methods: {
         fetchTopCheckWorthy () {
-            this.top_results = null
+            this.top_results = null;
+            this.$router.push({query: {limit: this.top_last}})
             fetch("https://api-v2.factrank.org/search", {
                 method: 'POST',
                 headers: {
@@ -45,6 +46,7 @@ export default {
         'results-table': ResultsTable
     },
     mounted() {
+        this.top_last = this.$route.query.limit;
         this.fetchTopCheckWorthy ()
     }
 }
