@@ -1,103 +1,127 @@
 <template>
     <b-table
-            v-if="result.predictions"
-            :fields="fields"
-            :items="result.predictions"
-            caption-top>
+        v-if="results.length"
+        :fields="fields"
+        :items="results"
+        caption-top>
 
-      <!-- Information about Source of Statements IF meta is set -->
-      <template v-if="result.meta" slot="table-caption">
-        <p v-if="result.meta.date" >
-          Top 100 Check-Whorty Factual statements from
-          <span v-if="this.last"> last Plenary Meeting ({{result.meta.date}}, <strong>{{result.meta.amount}}</strong> statements)</span>
-          <span v-else> Plenary Meeting on {{result.meta.date}} ({{result.meta.amount}} statements)</span></p>
-        <a v-if="result.meta.url.length" :href="result.meta.url"><icon name="link" /> {{result.meta.url}} </a>
-      </template>
+        <!-- A virtual column -->
+        <template slot="index" slot-scope="data">
+            {{ data.index + 1 }}
+        </template>
 
-      <!-- A virtual column -->
-      <template slot="index" slot-scope="data">
-        {{ data.index + 1 }}
-      </template>
+        <!-- extended statement virtual column -->
+        <template slot="extended_statement" slot-scope="data">
+            <blockquote class="blockquote">
+                <footer class="blockquote-footer">
+                    <span class="speaker">
+                        {{data.item.speaker.name}}
+                        <cite title="Speaker">({{data.item.speaker.association.name}})</cite>
+                    </span>
+                    <p class="info">
+                    {{data.item.source.published_at | format_date}}
+                    <icon class="source_type" :class="data.item.source.type.toLowerCase()" :name="data.item.source.type | pick_icon" size="xs"/>
+                        <!--<a :href="data.item.source.url">-->
+                            <!--<icon name="link" size="xs"/>-->
+                        <!--</a>-->
+                    </p>
+                </footer>
+                <p class="mb-0 statement">
+                    <span v-if="data.item.context && data.item.context.pre_statement" class="text-context">
+                        {{data.item.context.pre_statement.content}}
+                    </span>
+                    <span>
+                        {{data.item.content}}
+                    </span>
+                    <span v-if="data.item.context && data.item.context.post_statement" class="text-context">
+                        {{data.item.context.post_statement.content}}
+                    </span>
+                    <p class="text-secondary confidence">
+                        check-worthiness: {{data.item.predictions[0].confidence | truncate}}
+                    </p>
+                </p>
+            </blockquote>
+        </template>
 
-      <!-- speaker_info_sentence virtual column -->
-      <template slot="speaker_info_sentence" slot-scope="data">
-        <sentence-extended  v-bind:sentence="data.item"/>
-        <!-- <a @click.stop="data.toggleDetails" class="info"><icon name="info-circle" /></a> -->
-      </template>
-
-      <template slot="row-details" slot-scope="data">
-        <b-card>
-          {{data.item.feedback}}
-        </b-card>
-      </template>
-      <template slot="probability" slot-scope="data">
-          {{data.item.probability | truncate}}
-      </template>
     </b-table>
     <div v-else class="loader-container">
-      <rotate-loader :color="'#ffc107'"></rotate-loader>
+        <rotate-loader :color="'#ffc107'"></rotate-loader>
     </div>
 </template>
 
 <script>
-import SentenceExtended from './SentenceExtended'
 import RotateLoader from 'vue-spinner/src/RotateLoader'
 
 export default {
-  name: 'ResultsTable',
-  props: ['result'],
-  components: {
-    'sentence-extended': SentenceExtended,
-    'rotate-loader': RotateLoader
-  },
-  data () {
-    return {
-      fields: [
-          { key: 'index', label: '#'},
-        // A column that needs custom formatting
-        { key: 'speaker_info_sentence', label: 'Statement'},
-        // A regular column
-        { key: 'probability', sortable: true, label: 'Check-Worthiness', tdClass: ['no-wrap', 'center'], thClass: ['no-wrap', 'center']}
-      ],
-      tag: 'last',
-      last: true
+    name: 'ResultsTable',
+    props: ['results'],
+    components: {
+        'rotate-loader': RotateLoader
+    },
+    data () {
+        return {
+            fields: [
+                { key: 'index', label: '#'},
+                { key: 'extended_statement', label: 'Statement'},
+            ],
+        }
+    },
+    filters: {
+        format_date(time_stamp) {
+            let [date, time] = time_stamp.split(' ');
+            let [year, month, day] = date.split('-');
+            let month_full = ['januari', 'februari', 'maart', 'april',
+                              'mei', 'juni', 'juli', 'augustus', 'september',
+                              'oktober', 'november', 'december'][month - 1]
+            let [hours, minutes, seconds] = time.split(':');
+            if(hours != '00'){
+                return `${day} ${month_full} ${year} ${hours}:${minutes}`;
+            }
+            return `${day} ${month_full} ${year}`;
+        },
+        pick_icon(source_type) {
+            if(source_type == 'TWITTER'){
+                return 'brands/twitter';
+            }
+            return 'university';
+        },
+        truncate(number){
+            return Number((number*100).toFixed(0)) + ' %';
+        }
     }
-  },
-  filters: {
-    truncate(number){
-      return Number((number*100).toFixed(0)) + ' %';
-    }
-  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-a.info{
-  cursor: pointer;
+p.statement {
+    font-size: 1rem;
 }
-blockquote{
-  font-size: 1rem;
-  margin: 0 0 0rem;
+blockquote > footer.blockquote-footer {
+    font-size: 70%;
+    margin-bottom: .3rem;
 }
-abbr{
-  margin-right: 35px;
+footer > p.info {
+    float: right;
 }
-
+svg.source_type {
+    margin-left: .5rem;
+}
+.text-context {
+    color: #b4bbc1;
+}
+svg.twitter {
+    color: #1da1f2;
+}
+p.confidence {
+    float: right;
+    margin-bottom: 0rem;
+    font-size: 50%;
+    font-style: italic;
+}
 .loader-container{
   text-align: center;
   vertical-align: middle;
   line-height: 300px;
-}
-
-label{
-  margin-bottom: 0rem;
-}
-
-td.no-wrap, th.no-wrap{
-    white-space: nowrap;
-}
-td.center {
-    text-align: center;
 }
 </style>
