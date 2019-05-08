@@ -17,7 +17,7 @@ export default {
             top_results: [],
             top_last: 'month',
             options: [
-                { value: 'day', text: 'last day' },
+                { value: 'day', text: 'last 24h' },
                 { value: 'week', text: 'last week' },
                 { value: 'month', text: 'last month' },
                 { value: 'year', text: 'last year' },
