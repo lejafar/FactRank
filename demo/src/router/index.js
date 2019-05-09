@@ -9,6 +9,7 @@ import Demo from '../components/Demo'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
