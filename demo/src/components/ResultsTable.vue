@@ -15,6 +15,7 @@
             <blockquote class="blockquote">
                 <footer class="blockquote-footer">
                     <span class="speaker">
+                        {{data.item.speaker.country | flag }}
                         {{data.item.speaker.name}}
                         <cite v-if="data.item.speaker && data.item.speaker.association" title="Speaker">({{data.item.speaker.association.name}})</cite>
                     </span>
@@ -91,6 +92,12 @@ export default {
                 return 'brands/twitter';
             }
             return 'university';
+        },
+        flag(country) {
+            if(country == 'BE'){
+                return '🇧🇪 ';
+            }
+            return '🇳🇱 ';
         },
         truncate(number){
             return Number((number*100).toFixed(0)) + ' %';
