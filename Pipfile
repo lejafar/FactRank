@@ -1,17 +1,19 @@
 [[source]]
-url = "https://pypi.python.org/simple"
-verify_ssl = true
 name = "pypi"
-
-[packages]
-torch = '*'
-torchtext = "*"
-spacy = "*"
-pandas = "*"
-sklearn = "*"
+url = "https://pypi.org/simple"
+verify_ssl = true
 
 [dev-packages]
-pytest = "*"
+pyyaml = "*"
+sklearn = "*"
+pandas = "*"
+spacy = "*"
+dickens = "*"
+torch = "==1.1.0"
+factrank = {editable = true, path = "."}
 
 [requires]
-python_version = '3.7'
+python_version = "3.7.3"
+
+[packages]
+torchtext = "*"
