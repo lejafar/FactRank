@@ -3,7 +3,7 @@ from factrank.options import Options
 from factrank.factnet import FactNet
 
 def main():
-    options = Options()
+    options = Options().parse()
     init_package_logger(options)
     factnet = FactNet(options)
     factnet.fit()

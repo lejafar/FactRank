@@ -13,7 +13,6 @@ class Tokenize:
         # normalize unicode equivalence
         text = unicodedata.normalize('NFC', text)
         text = re.sub(r"\r", "", text)
-        text = re.sub(r"\n", " ", text)
         # normalize single quotes
         text = re.sub(r"’","'", text)
         text = re.sub(r"‘","'", text)
@@ -21,6 +20,8 @@ class Tokenize:
         text = re.sub(r"”","\"", text)
         text = re.sub(r"„","\"", text)
         text = re.sub(r"“","\"", text)
+        # replace linebreak by punctuation when followed by linebreak
+        text = re.sub(r"(\"|\')\n", "\g<1>.", text)
         # normalize dash
         text = re.sub(r"—","-", text)
         text = re.sub(r"–","-", text)
@@ -33,6 +34,7 @@ class Tokenize:
         text = re.sub(r"­"," ", text)
         # remove unwanted stuff
         text = re.sub(r"^ +","", text)
+        text = re.sub(r"\n", " ", text)
         text = re.sub(r"\n$","", text)
         text = re.sub(r"§","", text)
         # clean dirt
@@ -52,6 +54,9 @@ class Tokenize:
         sentence = re.sub(r"[A-Z ]+: <<","", sentence)
         # remove point at the end of sentence
         sentence = re.sub(r"\.$","", sentence)
+        # remove quotes when apparent at both ends
+        sentence = re.sub(r"^\'(.*)\'$","\g<1>", sentence) # single quotes
+        sentence = re.sub(r"^\"(.*)\"$","\g<1>", sentence) # double quotes
         # clean twitter dirt
         sentence = re.sub(r"@#", "", sentence)
         return sentence
@@ -61,7 +66,7 @@ class Tokenize:
 
     def sentencize(self, text):
         for sentence in self.sentence_regex.findall(self.clean_text(text)):
-            if len(sentence.split()) < self.min_sentence_len or len(sentence.split()) > self.max_sentence_len:
+            if len(sentence.split()) < 3 or len(sentence.split()) > 50:
                 continue # too long / too short
             if sentence.count("\"") % 2 or sentence.count("\'") % 2:
                 continue # unclosed quotes

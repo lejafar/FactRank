@@ -4,16 +4,16 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pyyaml = "*"
+pyyaml = "==5.1.1"
 sklearn = "*"
 pandas = "*"
 spacy = "*"
 dickens = "*"
 torch = "==1.1.0"
+dataclasses = "*"
+torchtext = {git = "ssh://git@github.com/pytorch/text.git"}
 factrank = {editable = true, path = "."}
+gensim = "*"
 
 [requires]
-python_version = "3.7.3"
-
-[packages]
-torchtext = "*"
+python_version = "3.6"
