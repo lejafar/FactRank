@@ -43,9 +43,9 @@ class StatementProcessor(FieldProcessor):
     def __call__(self, text):
         """ transforms text into something that is meaningfull to the network """
 
-        sentences = self.tokenizer.sentencize(text)
-        tokenized = self.tokenizer.tokenize(sentences)
-        return self.field.process(tokenized)
+        sentences = list(self.tokenizer.sentencize(text))
+        tokenized = [self.tokenizer.tokenize(sentence) for sentence in sentences]
+        return self.field.process(tokenized), sentences
 
 
 

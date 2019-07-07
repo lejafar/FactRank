@@ -42,6 +42,9 @@ class FactNet:
             cnn.eval() # switch model to 'eval' mode, turning off dropout and batch_norm
             return cnn
 
+        if self.pre_trained_word_embeddings is not None:
+            cnn.set_pre_trained_word_embeddings(self.pre_trained_word_embeddings)
+
         return cnn
 
     def save(self):
@@ -83,7 +86,7 @@ class FactNet:
 
     @cachedproperty
     def datasets(self):
-        statements_path = pathlib.Path(__file__).parent / self.options.statements.path
+        statements_path = pathlib.Path(__file__).parent / self.options.statements_path
 
         # load statements purely for logging label counts
         l.info("loading statements from %s", statements_path)
@@ -98,8 +101,9 @@ class FactNet:
 
     @cachedproperty
     def dataloaders(self):
-        train, test = data.Iterator.splits(*self.datasets,
-                                           batch_sizes=self.options.batch_size,
+        train_set, test_set = self.datasets
+        train, test = data.Iterator.splits((train_set, test_set),
+                                           batch_sizes=(self.options.batch_size, len(test_set)),
                                            device=self.options.gpu_id,
                                            repeat=False,
                                            sort_key=lambda x: (len(x.statement)),
@@ -116,18 +120,19 @@ class FactNet:
             l.info("loading pre-trained word embeddings from %s", embeddings_path)
             import gensim.models # don't want to make this a dependency
             embeddings = gensim.models.KeyedVectors.load_word2vec_format(embeddings_path, binary=False)
-            import pdb; pdb.set_trace()
 
             in_voc = 0
-            def retrieve(vocabulary, embeddings):
-                for word in vocabulary:
-                    if word in embeddings:
-                        in_voc += 1
-                        yield embeddings[word]
-                    else:
-                        yield (2 * np.random.rand(320) - 1).astype(np.float32)
+            pre_trained_word_embeddings = []
+            #with open(embeddings_path.parent / 'cow-big-slim.txt', 'w') as f:
+            for word in self.statement_field.vocab.stoi:
+                if word in embeddings:
+                    in_voc += 1
+                    #f.write(word + " " + " ".join([str(el) for el in embeddings[word]]) + "\n")
+                    pre_trained_word_embeddings.append(embeddings[word])
+                else:
+                    pre_trained_word_embeddings.append((2 * np.random.rand(embeddings.vector_size) - 1).astype(np.float32))
 
-            pre_trained_word_embeddings = np.stack(list(retrieve(self.statement_field.vocab, embeddings)))
+            pre_trained_word_embeddings = np.stack(pre_trained_word_embeddings)
             l.info(f"{in_voc / len(pre_trained_word_embeddings) * 100:.4f} % in vocabulary of length {len(pre_trained_word_embeddings)}")
             return torch.from_numpy(pre_trained_word_embeddings.astype(np.float32))
 
@@ -136,7 +141,7 @@ class FactNet:
         """ train network """
 
         train_loader, _ = self.dataloaders
-        steps = best_acc = 0
+        steps = best_accuracy = 0
         for epoch in range(self.options.max_epochs):
 
             self.model.train()
@@ -154,7 +159,7 @@ class FactNet:
                 loss.backward()
                 self.model.optimizer.step()
 
-                if step % self.options.log_metric_step == 0:
+                if step % self.options.log_metrics_step == 0:
                     correct = (torch.max(logit, 1)[1].view(target.size()).data == target.data).sum()
                     accuracy = 100.0 * correct / train_batch.batch_size
                     learning_rate = [param_group['lr'] for param_group in self.model.optimizer.param_groups][0]
@@ -162,13 +167,13 @@ class FactNet:
 
             self.model.schedule.step()
 
-        if epoch % 20 == 0:
-            test_accuracy = self.evaluate()
-            if test_accuracy > best_accuracy:
-                best_accuracy = test_accuracy
-                self.save()
+            if epoch % self.options.log_metrics_step == 0:
+                test_accuracy = self.evaluate()
+                if test_accuracy > best_accuracy:
+                    best_accuracy = test_accuracy
+                    self.save()
 
-            l.info(f"Epoch[{epoch}] - best model so far {best_acc:.4f}")
+                l.info(f"Epoch[{epoch}] - best model so far {best_accuracy:.4f}")
 
     def evaluate(self):
         _, test_loader = self.dataloaders
@@ -200,11 +205,28 @@ class FactNet:
         """ infer label for all sentences in text """
 
         # translate text to tensor of indices meaningfull to the model
-        feature = self.statement_processor(text)
+        feature, sentences = self.statement_processor(text)
         # compute logits
-        logit = self.model(feature)
+        self.model.eval() # make sure it's set to evaluate
+        logit = self.model(feature.transpose(0, 1))
         # translate logits in labels & probabilities
-        pass
+        probs = F.softmax(logit, dim=1)
+        max_args = torch.argmax(probs, dim=-1)
+        max_probs, _ = torch.max(probs, dim=-1)
+
+        for sentence, max_arg, max_prob, prob in zip(sentences, max_args, max_probs, probs):
+            all_probs = {self.label_processor[dim]: p.item() for dim, p in enumerate(prob)}
+            yield self.label_processor[max_arg], max_prob.item(), all_probs, sentence
+
+    def checkworthyness(self, text):
+        return sorted([(all_probs['FR'], sentence) for *_, all_probs, sentence in self(text)], reverse=True)
+
+    def factualness(self, text):
+        return sorted([(all_probs['FR'] + all_probs['FNR'], sentence) for *_, all_probs, sentence in self(text)], reverse=True)
+
+    def nonfactualness(self, text):
+        return sorted([(all_probs['NF'], sentence) for *_, all_probs, sentence in self(text)], reverse=True)
+
 
 
 

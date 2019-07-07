@@ -14,10 +14,10 @@ class Options:
     """ hyperparameters """
     # learning settings
     batch_size: int = 32
-    max_epoch: int = 500
+    max_epochs: int = 500
     # network configuration
     dropout: float = 0.9
-    static: bool = True
+    static: bool = False
     embed_dim: int = 320
     kernel_num: int = 100
     # optimization
@@ -30,11 +30,12 @@ class Options:
     gpu_id: int = 'cpu'
     run: str = "factnet"
     prefix: str = "factnet"
-    statements_data_path: str = "data/training/statements.csv"
-    word_embeddings_data_path: str = "data/word_embeddings/cow-big-100000.txt"
+    statements_path: str = "data/training/statements.csv"
+    min_freq: int = 1
+    word_embeddings_path: str = "data/word_embeddings/cow-big-slim.txt"
     split_ratio: float = 0.8
-    statified: bool = True
-    log_metrics_step: int = 20
+    stratified: bool = True
+    log_metrics_step: int = 10
     log_level: str = 'INFO'
 
     LOG_BASE = 'log'
@@ -50,7 +51,9 @@ class Options:
     @classmethod
     def load(cls, options_path):
         with open(options_path, 'r') as f:
-            return cls(**yaml.load(f, Loader=yaml.FullLoader))
+            options = cls(**yaml.load(f, Loader=yaml.FullLoader))
+            options = replace(options, run=options_path.parent.name)
+            return options
 
     def dump(self, options_path):
         with open(options_path, 'w') as f:
@@ -70,7 +73,7 @@ class Options:
             # this run already exist let's warn the user and reuse the options from that run
             logger.warning("Re-using the options from \033[1m%s\033[0m, " \
                     "other arguments will be ignored! 🔥", args.rerun)
-            return cls.fix_gpu_id(cls.load(cls.get_run_path(args.rerun) / 'options.yml'))
+            return cls.load(cls.get_run_path(args.rerun) / 'options.yml')
 
         # overwrite default options using all not None parser argument
         options = cls(**{k:v for k, v in args.__dict__.items() if v is not None})
@@ -85,5 +88,5 @@ class Options:
         options.run_path.mkdir(parents=True, exist_ok=True)
         options.dump(options.run_path / f"{options.prefix}.options.yml")
 
-        return cls.fix_gpu_id(options)
+        return options
 
