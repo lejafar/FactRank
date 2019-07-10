@@ -30,6 +30,7 @@ class Options:
     """ data settings """
     gpu_id: int = 'cpu'
     run: str = "factnet"
+    _run_path: str = None
     prefix: str = "factnet"
     statements_path: str = "data/training/statements.csv"
     min_freq: int = 1
@@ -43,7 +44,7 @@ class Options:
 
     @property
     def run_path(self):
-        return self.get_run_path(self.run)
+        return self._run_path or self.get_run_path(self.run)
 
     @classmethod
     def get_run_path(cls, run):
@@ -53,7 +54,7 @@ class Options:
     def load(cls, options_path):
         with open(options_path, 'r') as f:
             options = cls(**yaml.load(f, Loader=yaml.FullLoader))
-            options = replace(options, run=options_path.parent.name)
+            options = replace(options, _run_path=options_path.parent)
             return options
 
     def dump(self, options_path):

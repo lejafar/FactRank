@@ -39,9 +39,11 @@ class StatementProcessor(FieldProcessor):
         self.field.build_vocab(*datasets, min_freq=self.options.min_freq)
         return self
 
-    def __call__(self, text):
-        """ transforms text into something that is meaningfull to the network """
-
-        sentences = list(self.tokenizer.sentencize(text))
+    def __call__(self, sentences):
+        """ transforms sentences into something that is meaningfull to the network """
         tokenized = [self.tokenizer.tokenize(sentence) for sentence in sentences]
-        return self.field.process(tokenized), sentences
+        return self.field.process(tokenized)
+
+    def sentencize(self, text):
+        """ splits text into sentences """
+        return list(self.tokenizer.sentencize(text))

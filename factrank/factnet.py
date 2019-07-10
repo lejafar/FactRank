@@ -201,11 +201,17 @@ class FactNet:
 
         return accuracy
 
-    def __call__(self, text):
-        """ infer label for all sentences in text """
+    def infer(self, text_or_sentences):
+        if isinstance(text_or_sentences, str):
+            # it's not yet list of sentences so we'll split the text
+            text_or_sentences = self.statement_processor.sentencize(text_or_sentences)
+        return self(text_or_sentences)
 
-        # translate text to tensor of indices meaningfull to the model
-        feature, sentences = self.statement_processor(text)
+    def __call__(self, sentences):
+        """ infer label for all sentences """
+
+        # translate sentences to tensor of indices meaningfull to the model
+        feature = self.statement_processor(sentences)
         # compute logits
         self.model.eval() # make sure it's set to evaluate
         logit = self.model(feature.transpose(0, 1))
@@ -218,11 +224,5 @@ class FactNet:
             all_probs = {self.label_processor[dim]: p.item() for dim, p in enumerate(prob)}
             yield self.label_processor[max_arg], max_prob.item(), all_probs, sentence
 
-    def checkworthyness(self, text):
-        return sorted([(all_probs['FR'], sentence) for *_, all_probs, sentence in self(text)], reverse=True)
-
-    def factualness(self, text):
-        return sorted([(all_probs['FR'] + all_probs['FNR'], sentence) for *_, all_probs, sentence in self(text)], reverse=True)
-
-    def nonfactualness(self, text):
-        return sorted([(all_probs['NF'], sentence) for *_, all_probs, sentence in self(text)], reverse=True)
+    def checkworthyness(self, text_or_sentences):
+        return sorted([(all_probs['FR'], sentence) for *_, all_probs, sentence in self.infer(text_or_sentences)], reverse=True)

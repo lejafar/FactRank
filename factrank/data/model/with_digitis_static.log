@@ -1,0 +1,3 @@
+[with_digitis_static][2019-07-10 11:38:02,998-INFO factrank.factnet] loading statement-processor from /Users/lejafar/Documents/FactRank/FactRank/factrank/data/model/factnet.statement-processor.pth
+[with_digitis_static][2019-07-10 11:38:06,272-INFO factrank.factnet] loading label-processor from /Users/lejafar/Documents/FactRank/FactRank/factrank/data/model/factnet.label-processor.pth
+[with_digitis_static][2019-07-10 11:38:06,348-INFO factrank.factnet] loading pre-trained model from /Users/lejafar/Documents/FactRank/FactRank/factrank/data/model/factnet.cnn.pth
