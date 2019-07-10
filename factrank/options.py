@@ -17,9 +17,10 @@ class Options:
     max_epochs: int = 500
     # network configuration
     dropout: float = 0.9
-    static: bool = False
+    static: bool = True
     embed_dim: int = 320
     kernel_num: int = 100
+    n_layers: int = 1
     # optimization
     weight_decay: float = 0.00001
     lr: float = 0.001

@@ -226,19 +226,3 @@ class FactNet:
 
     def nonfactualness(self, text):
         return sorted([(all_probs['NF'], sentence) for *_, all_probs, sentence in self(text)], reverse=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
