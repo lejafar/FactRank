@@ -14,6 +14,7 @@ dataclasses = "*"
 torchtext = {git = "ssh://git@github.com/pytorch/text.git"}
 factrank = {editable = true, path = "."}
 gensim = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3.6"

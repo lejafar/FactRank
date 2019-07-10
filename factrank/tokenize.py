@@ -42,8 +42,7 @@ class Tokenize:
         text = re.sub(r"[\*\n\\…\=•\[\]\|]", "", text)
         return text
 
-    @staticmethod
-    def clean_sentence_for_inference(sentence):
+    def clean_sentence_for_inference(self, sentence):
         sentence = Tokenize.clean_text(sentence)
         # remove unclosed brackets/quotes
         sentence = re.sub(r"^ *\( ?(?!.*\))","", sentence) # remove unclosed brackets
@@ -59,6 +58,13 @@ class Tokenize:
         sentence = re.sub(r"^\"(.*)\"$","\g<1>", sentence) # double quotes
         # clean twitter dirt
         sentence = re.sub(r"@#", "", sentence)
+        # tag digits with NUM
+        sentence = self.tag_numeral(sentence)
+        return sentence
+
+    def tag_numeral(self, sentence):
+        replace_values = {token.text: f"{token.text} {token.pos_}" for token in self.nlp(sentence) if token.pos_ in {'NUM'}}
+        sentence = " ".join([replace_values.get(word, word) for word in sentence.split()])
         return sentence
 
     def tokenize(self, sentence):

@@ -34,13 +34,13 @@ __maintainer__ = "Rafael Hautekiet"
 __email__ = "rafaelhautekiet@student.kuleuven.be"
 __status__ = "Development"
 
-sentence_data = pd.read_csv("data/sentences_dump_28.12.csv")
+sentence_data = pd.read_csv("../data/training/statements.csv")
 # Remove Useless Statements from training data
-sentence_data = sentence_data[sentence_data.category != "US"]
-sentence_data.category.replace({"CFS": 1, "NFS": 0, "UFS": 0}, inplace=True)
-category_names = ['NFS+UFS','CFS']
+sentence_data = sentence_data[sentence_data.label != "ERR"]
+sentence_data.label.replace({"FR": 0, "FNR": 1, "NF": 2}, inplace=True)
+category_names = ['FR', 'FNR', 'NF']
 
-sentence_target = sentence_data.pop("category")
+sentence_target = sentence_data.pop("label")
 
 ################################################################################
 #        CREATING MODEL AS A PIPELINE OF FEATURE UNION AND A LINEAR SVM        #
@@ -48,7 +48,7 @@ sentence_target = sentence_data.pop("category")
 
 # UNION OF ALL FEATURES EXTRACTED FROM SENTENCE
 features = FeatureUnion([
-    ("words", Pipeline([("cont", FeatureSelector(key='content')),
+    ("words", Pipeline([("cont", FeatureSelector(key='statement')),
                         ('vect', CountVectorizer(ngram_range=(1,1),
                                                  max_df=0.5,
                                                  min_df=1,

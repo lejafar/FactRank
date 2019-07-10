@@ -1,4 +1,3 @@
-from torchtext import data
 import torch
 
 from .tokenize import Tokenize
@@ -46,7 +45,3 @@ class StatementProcessor(FieldProcessor):
         sentences = list(self.tokenizer.sentencize(text))
         tokenized = [self.tokenizer.tokenize(sentence) for sentence in sentences]
         return self.field.process(tokenized), sentences
-
-
-
-
