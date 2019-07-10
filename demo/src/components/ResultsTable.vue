@@ -13,8 +13,8 @@
         <!-- extended statement virtual column -->
         <template slot="extended_statement" slot-scope="data">
             <blockquote class="blockquote">
-                <footer class="blockquote-footer">
-                    <span class="speaker">
+                <footer v-if="data.item.speaker || data.item.source "class="blockquote-footer">
+                    <span v-if="data.item.speaker" class="speaker">
                         {{data.item.speaker.country | flag }}
                         {{data.item.speaker.name}}
                         <cite v-if="data.item.speaker && data.item.speaker.association" title="Speaker">({{data.item.speaker.association.name}})</cite>
@@ -38,7 +38,7 @@
                         {{data.item.context.post_statement.content}}
                     </span>
                     <p class="text-secondary confidence">
-                        check-worthiness: {{data.item.predictions[0].confidence | truncate}}
+                        check-worthiness: {{data.item.confidence | truncate}}
                     </p>
                 </p>
             </blockquote>
@@ -56,7 +56,7 @@ import RotateLoader from 'vue-spinner/src/RotateLoader'
 
 export default {
     name: 'ResultsTable',
-    props: ['results'],
+    props: ['results', 'model_version'],
     components: {
         'rotate-loader': RotateLoader
     },
@@ -101,7 +101,7 @@ export default {
         },
         truncate(number){
             return Number((number*100).toFixed(0)) + ' %';
-        }
+        },
     }
 }
 </script>

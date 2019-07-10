@@ -24,14 +24,9 @@
       </b-row>
       <b-form-group v-if="sentence_result" >
         <b-alert show variant="light" class="text-right">
-         <b-form-radio-group @input="makePrediction(sentence_input)" id="radios" v-model="detection" name="radioSubComponent">
-          <label class="mr-sm-2" for="inlineFormCustomSelectPref">Detect: </label>
-          <b-form-radio value="cfs">check-worthiness</b-form-radio>
-          <b-form-radio value="nfsufs"><strong>non</strong>-check-worthiness</b-form-radio>
-         </b-form-radio-group>
         </b-alert>
      </b-form-group>
-      <results-table v-if="show_result" v-bind:result="sentence_result"/>
+      <results-table v-if="show_result" v-bind:results="sentence_result"/>
   </div>
 </template>
 
@@ -43,7 +38,7 @@ export default {
   data () {
     return {
       sentence_input: '',
-      sentence_result: {},
+      sentence_result: [],
       show_result: false,
       detection: 'cfs'
     }
@@ -53,13 +48,13 @@ export default {
   },
   computed: {
    state () {
-     return this.sentence_input.trim().split(' ').length >= 5 ? true : false
+     return this.sentence_input.trim().split(' ').length >= 6 ? true : false
    },
    invalidFeedback () {
-     if (this.sentence_input.trim().split(' ').length > 5) {
+     if (this.sentence_input.trim().split(' ').length >= 6) {
        return ''
      } else if (this.sentence_input.trim().split(' ').length > 0) {
-       return 'Enter at least 5 words'
+       return 'Enter at least 6 words'
      } else {
        return 'Please enter something'
      }
@@ -70,13 +65,13 @@ export default {
  },
   methods: {
     makePrediction (sentences) {
-      this.sentence_result= {}
+      this.sentence_result= false
       this.show_result = true
       var req = {
         'detect': this.detection,
-        'sentences': sentences
+        'text': sentences
       }
-      fetch("https://api.factrank.org/" + this.$api_version + "/sentence", {
+      fetch("https://api-v2.factrank.org/infer", {
         body: JSON.stringify(req),
         method: "POST",
         headers: {
@@ -85,6 +80,7 @@ export default {
       }).then(response => response.json())
         .then((data) => {
           this.sentence_result = data;
+          console.log(data);
         })
     }
   }
