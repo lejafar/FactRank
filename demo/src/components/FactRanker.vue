@@ -66,7 +66,7 @@ export default {
     },
     mounted() {
         this.top_last = this.$route.query.limit || 'month'
-        this.model_version = this.$route.query.version || 'v1.0.0-rc.0'
+        this.model_version = this.$route.query.version || 'v0.4.0'
         this.fetchTopCheckWorthy ()
     }
 }
