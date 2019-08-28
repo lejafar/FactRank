@@ -214,14 +214,20 @@ class FactNet:
             text_or_sentences = self.statement_processor.sentencize(text_or_sentences)
         return self(text_or_sentences)
 
-    def __call__(self, sentences):
+    def __call__(self, sentences, batch_size=1):
         """ infer label for all sentences """
-
         # translate sentences to tensor of indices meaningfull to the model
         feature = self.statement_processor(sentences)
+        feature = feature.transpose(0, 1)
+
         # compute logits
         self.model.eval() # make sure it's set to evaluate
-        logit = self.model(feature.transpose(0, 1))
+        logits = []
+        for i in range(max(1, len(feature) // batch_size)):
+            logits.append(self.model(feature[i * batch_size:(i+1) * batch_size]))
+        logit = torch.stack(logits, dim=1).squeeze(0)
+        #logit = self.model(feature)
+
         # translate logits in labels & probabilities
         probs = F.softmax(logit, dim=1)
         max_args = torch.argmax(probs, dim=-1)

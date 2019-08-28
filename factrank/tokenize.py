@@ -72,7 +72,7 @@ class Tokenize:
 
     def sentencize(self, text):
         for sentence in self.sentence_regex.findall(self.clean_text(text)):
-            if len(sentence.split()) < 3 or len(sentence.split()) > 50:
+            if len(sentence.split()) < 6 or len(sentence.split()) > 50:
                 continue # too long / too short
             if sentence.count("\"") % 2 or sentence.count("\'") % 2:
                 continue # unclosed quotes
