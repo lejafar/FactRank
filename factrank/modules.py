@@ -49,6 +49,9 @@ class CNNText(nn.Module):
     def forward(self, x):
         x = self.embed(x)  # (N, W, D)
 
+        # add noise to embedding
+        x += torch.randn(x.shape) * self.options.word_embeddings_noise
+
         if self.options.static:
             x = Variable(x)
 

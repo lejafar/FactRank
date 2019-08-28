@@ -78,24 +78,30 @@ class FactNet:
             l.info("loading %s-processor from %s", name, processor_path)
             return cls(self.options).load(processor_path)
         else:
-            # we create a new processor and build it's vocabulary based on the complete dataset
-            processor = cls(self.options, field).build_vocab(*self.datasets)
+            # we create a new processor and build it's vocabulary based on the training set
+            train, test = self.datasets
+            processor = cls(self.options, field).build_vocab(train)
             l.info("saving %s-processor to %s", name, processor_path)
             processor.save(processor_path)
             return processor
 
     @cachedproperty
     def datasets(self):
-        statements_path = pathlib.Path(__file__).parent / self.options.statements_path
+        data_fields = [('id', None), ('statement', self._statement_field), ('label', self._label_field)]
 
+        statements_train_path = pathlib.Path(__file__).parent / self.options.statements_train_path
         # load statements purely for logging label counts
-        l.info("loading statements from %s", statements_path)
-        statements = pd.read_csv(statements_path)
-        l.info(statements.groupby('label').count())
+        l.info("loading training statements from %s", statements_train_path)
+        statements_train = pd.read_csv(statements_train_path)
+        l.info(statements_train.groupby('label').count())
+        train = data.TabularDataset(statements_train_path, format='csv', fields=data_fields, skip_header=True)
 
-        data_fields = [('statement', self._statement_field), ('label', self._label_field)]
-        dataset = data.TabularDataset(statements_path, format='csv', fields=data_fields, skip_header=True)
-        train, test = dataset.split(split_ratio=self.options.split_ratio, stratified=self.options.stratified, strata_field="label")
+        statements_test_path = pathlib.Path(__file__).parent / self.options.statements_test_path
+        # load statements purely for logging label counts
+        l.info("loading test statements from %s", statements_test_path)
+        statements_test = pd.read_csv(statements_test_path)
+        l.info(statements_test.groupby('label').count())
+        test = data.TabularDataset(statements_test_path, format='csv', fields=data_fields, skip_header=True)
 
         return train, test
 
@@ -130,7 +136,8 @@ class FactNet:
                     #f.write(word + " " + " ".join([str(el) for el in embeddings[word]]) + "\n")
                     pre_trained_word_embeddings.append(embeddings[word])
                 else:
-                    pre_trained_word_embeddings.append((2 * np.random.rand(embeddings.vector_size) - 1).astype(np.float32))
+                    # initial out-of-vocabulary vectors with zero vector
+                    pre_trained_word_embeddings.append(np.zeros(embeddings.vector_size).astype(np.float32))
 
             pre_trained_word_embeddings = np.stack(pre_trained_word_embeddings)
             l.info(f"{in_voc / len(pre_trained_word_embeddings) * 100:.4f} % in vocabulary of length {len(pre_trained_word_embeddings)}")
