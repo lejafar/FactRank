@@ -198,7 +198,7 @@ class FactNet:
             avg_loss += loss.item()
 
             correct += (torch.max(logit, 1)[1].view(target.size()).data == target.data).sum()
-            l.info(confusion_matrix(target.data.numpy(), torch.max(logit, 1)[1].numpy()))
+            l.info(confusion_matrix(target.data.cpu().numpy(), torch.max(logit, 1)[1].cpu().numpy()))
 
         size = len(test_loader.dataset)
         avg_loss /= size
