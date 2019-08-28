@@ -12,9 +12,10 @@ dickens = "*"
 torch = "==1.1.0"
 dataclasses = "*"
 torchtext = {git = "ssh://git@github.com/pytorch/text.git"}
-factrank = {editable = true, path = "."}
+factrank = {editable = true,path = "."}
 gensim = "*"
 matplotlib = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.6"
