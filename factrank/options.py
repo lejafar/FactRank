@@ -32,9 +32,11 @@ class Options:
     run: str = "factnet"
     _run_path: str = None
     prefix: str = "factnet"
-    statements_path: str = "data/training/statements.csv"
+    statements_train_path: str = "data/training/statements_train.csv"
+    statements_test_path: str = "data/training/statements_test.csv"
     min_freq: int = 1
     word_embeddings_path: str = "data/word_embeddings/cow-big-slim.txt"
+    word_embeddings_noise: float = 1e-6
     split_ratio: float = 0.8
     stratified: bool = True
     log_metrics_step: int = 10
