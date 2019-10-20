@@ -6,7 +6,7 @@ class Tokenize:
 
     def __init__(self):
         self.nlp = spacy.load('nl_core_news_sm')
-        self.sentence_regex = re.compile(r' ?((?:[A-Z@#]|[\"\'][^\n]+?[\"\'] ?)(?:[\"\'][^\n]+?[\"\']|\.{3}|[^?!\.\n]|\.[^ \nA-Z\"\'])*(?:!|\?|\n|\.{1})) ?')
+        self.sentence_regex = re.compile(r' ?((?:[A-Z@#]|[\"][^\n]+?[\"] ?)(?:[\"][^\n]+?[\"]|\.{3}|[^?!\.\n]|\.[^ \nA-Z\"])*(?:!|\?|\n|\.{1})) ?')
 
     @staticmethod
     def clean_text(text):
@@ -72,7 +72,7 @@ class Tokenize:
 
     def sentencize(self, text):
         for sentence in self.sentence_regex.findall(self.clean_text(text)):
-            if len(sentence.split()) < 5 or len(sentence.split()) > 50:
+            if len(sentence.split()) < 3 or len(sentence.split()) > 50:
                 continue # too long / too short
             if sentence.count("\"") % 2:
                 continue # unclosed quotes
