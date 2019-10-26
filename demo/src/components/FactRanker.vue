@@ -21,7 +21,6 @@ export default {
             top_results: null,
             top_last: 'month',
             options: [
-                { value: 'hour', text: 'last hour' },
                 { value: 'day', text: 'last 24h' },
                 { value: 'week', text: 'last week' },
                 { value: 'month', text: 'last month' },
@@ -55,7 +54,7 @@ export default {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({'top_last': this.top_last, 'version': this.model_version, 'limit': 100}),
+                body: JSON.stringify({'top_last': this.top_last, 'version': this.model_version, 'limit': 50}),
             }).then(response => response.json()).then((data) => {
                 this.top_results = data
             });
@@ -65,8 +64,8 @@ export default {
         'results-table': ResultsTable
     },
     mounted() {
-        this.top_last = this.$route.query.limit || 'month'
-        this.model_version = this.$route.query.version || 'v0.4.0'
+        this.top_last = this.$route.query.limit || 'week'
+        this.model_version = this.$route.query.version || 'v0.5.0'
         this.fetchTopCheckWorthy ()
     }
 }
