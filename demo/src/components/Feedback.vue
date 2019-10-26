@@ -45,24 +45,28 @@ export default {
 		login() {
 			this.$auth.loginWithPopup();
 		},
-        postFeedback (user, expected_label='') {
+        postFeedback (user, expected_label=null) {
+			var body = {'user': user, 'prediction_id': this.result['predictions.id']};
+			if(expected_label != null){
+				body['expected_label']= expected_label;
+			}
             fetch("https://api-v2.factrank.org/feedback", {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({'user': user, 'prediction_id': this.result['predictions.id'], 'expected_label': expected_label}),
+                body: JSON.stringify(body),
             }).then(response => response.json()).then((data) => {
 				this.user_feedback = 'expected_label' in data ? data['expected_label'] : '';
 				this.not_yet_fetched_feedback = false;
             });
 		},
 		postAgreement(user) {
-			this.postFeedback(user, 'FR');
+			this.postFeedback(user, this.user_feedback == 'FR' ? '' : 'FR');
 		},
 		postDisagreement(user) {
-			this.postFeedback(user, 'NFR');
+			this.postFeedback(user, this.user_feedback == 'NFR' ? '' : 'NFR');
 		},
 		fetchFeedback(user) {
 			this.postFeedback(user);
