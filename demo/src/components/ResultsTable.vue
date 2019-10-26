@@ -37,10 +37,8 @@
                     <span v-if="data.item.context && data.item.context.post_statement" class="text-context">
                         {{data.item.context.post_statement.content}}
                     </span>
-                    <p class="text-secondary confidence">
-                        check-worthiness: {{data.item.confidence | truncate}}
-                    </p>
                 </p>
+                <feedback :result="data.item"/>
             </blockquote>
         </template>
 
@@ -53,12 +51,14 @@
 <script>
 import moment from 'moment'
 import RotateLoader from 'vue-spinner/src/RotateLoader'
+import Feedback from './Feedback'
 
 export default {
     name: 'ResultsTable',
     props: ['results', 'model_version'],
     components: {
-        'rotate-loader': RotateLoader
+        'rotate-loader': RotateLoader,
+        'feedback': Feedback
     },
     data () {
         return {
@@ -99,9 +99,6 @@ export default {
             }
             return '🇳🇱 ';
         },
-        truncate(number){
-            return Number((number*100).toFixed(0)) + ' %';
-        },
     }
 }
 </script>
@@ -126,14 +123,6 @@ footer > p.info {
 }
 svg.twitter {
     color: #1da1f2;
-}
-p.confidence {
-    float: right;
-    margin-bottom: 0rem;
-    font-size: 50%;
-    font-style: italic;
-    margin-top: .5rem;
-    margin-right: .5rem;
 }
 .loader-container{
   text-align: center;
