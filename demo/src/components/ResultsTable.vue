@@ -15,7 +15,8 @@
             <blockquote class="blockquote">
                 <footer v-if="data.item.speaker || data.item.source "class="blockquote-footer">
                     <span v-if="data.item.speaker" class="speaker">
-                        {{data.item.speaker.country | flag }}
+                        <img v-if="flemish(data.item.source.name)" style="vertical-align:middle;max-height: 15px;" src="https://www.vlaamsparlement.be/sites/all/themes/balance_theme/favicon.ico">
+                        {{data.item.speaker.country | flag(data.item.source.name) }}
                         {{data.item.speaker.name}}
                         <cite v-if="data.item.speaker && data.item.speaker.association" title="Speaker">({{data.item.speaker.association.name}})</cite>
                     </span>
@@ -68,6 +69,14 @@ export default {
             ],
         }
     },
+    methods: {
+        flemish(source) {
+            return source.includes('Flemish');
+        },
+        checkworthy(condidence) {
+            return confidence > .5;
+        }
+    },
     filters: {
         formatDate(time_stamp) {
             // make sure this is recognized as UTC timestamp
@@ -93,8 +102,9 @@ export default {
             }
             return 'university';
         },
-        flag(country) {
+        flag(country, source) {
             if(country == 'BE'){
+                if(source.includes('Flemish')) return;
                 return '🇧🇪 ';
             }
             return '🇳🇱 ';
