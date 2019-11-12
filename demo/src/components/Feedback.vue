@@ -88,19 +88,16 @@ p.bottom {
     margin-bottom: 0rem;
     font-size: 50%;
     font-style: italic;
-    margin-top: .8rem;
+    margin-top: .5rem;
     margin-right: .5rem;
 	margin-left: .5rem;
 }
-p.confidence {
-	float: left;
+span.feedback {
+    float: right;
 }
-p.feedback {
+p.feedback, p.give-feedback {
 	float: right;
-    margin-bottom: 0rem;
-}
-p.give-feedback {
-	float: right;
+    margin-bottom: 0;
 }
 .btn {
 	margin-left: 0.5rem;
