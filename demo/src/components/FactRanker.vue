@@ -54,7 +54,7 @@ export default {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({'top_last': this.top_last, 'version': this.model_version, 'limit': 50, 'source_type': 'PARLIAMENTARY_MEETING'}),
+                body: JSON.stringify({'top_last': this.top_last, 'version': this.model_version, 'limit': 50}),
             }).then(response => response.json()).then((data) => {
                 this.top_results = data
             });
