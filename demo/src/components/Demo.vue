@@ -71,7 +71,7 @@ export default {
         'detect': this.detection,
         'text': sentences
       }
-      fetch("https://api-v2.factrank.org/infer", {
+      fetch(this.$api_url + "/infer", {
         body: JSON.stringify(req),
         method: "POST",
         headers: {
@@ -80,7 +80,6 @@ export default {
       }).then(response => response.json())
         .then((data) => {
           this.sentence_result = data;
-          console.log(data);
         })
     }
   }
