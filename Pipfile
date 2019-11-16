@@ -16,6 +16,7 @@ factrank = {editable = true,path = "."}
 gensim = "*"
 matplotlib = "*"
 pytest = "*"
+transformers = {editable = true,path = "submodules/transformers"}
 
 [requires]
 python_version = "3.6"

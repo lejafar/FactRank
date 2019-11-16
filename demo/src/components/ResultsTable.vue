@@ -13,7 +13,7 @@
         <!-- extended statement virtual column -->
         <template slot="extended_statement" slot-scope="data">
             <blockquote class="blockquote">
-                <footer v-if="data.item.speaker || data.item.source "class="blockquote-footer">
+                <footer v-if="data.item.speaker || data.item.source" class="blockquote-footer">
                     <span v-if="data.item.speaker" class="speaker">
                         <img v-if="flemish(data.item.source.name)" style="vertical-align:middle;max-height: 15px;" src="https://www.vlaamsparlement.be/sites/all/themes/balance_theme/favicon.ico">
                         {{data.item.speaker.country | flag(data.item.source.name) }}
@@ -73,7 +73,7 @@ export default {
         flemish(source) {
             return source.includes('Flemish');
         },
-        checkworthy(condidence) {
+        checkworthy(confidence) {
             return confidence > .5;
         }
     },
