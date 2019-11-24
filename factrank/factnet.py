@@ -22,7 +22,7 @@ class FactNet:
     def __init__(self, options=None):
         self.options = options
 
-        self._statement_field = data.Field(lower=True, tokenize=Tokenize(self.options).tokenize)
+        self._statement_field = data.Field(lower=True, tokenize=Tokenize().tokenize)
         self._label_field = data.Field(sequential=False, unk_token=None)
 
     @property
@@ -251,7 +251,7 @@ class FactNetBert(FactNet):
 
     @property
     def model_path(self):
-        return self.options.run_path / f"{self.options.prefix}.bert.pth"
+        return self.options.run_path / f"{self.options.prefix}.model.bin"
 
     @cachedproperty
     def model(self):
@@ -383,4 +383,28 @@ class FactNetBert(FactNet):
         l.info(f"Evaluation - loss: {loss:.6f}  acc: {accuracy:.4f}% ({correct}/{len(test_loader.dataset)})")
 
         return accuracy
+
+    def infer(self, text_or_sentences):
+        if isinstance(text_or_sentences, str):
+            # it's not yet list of sentences so we'll split the text
+            text_or_sentences = list(self.statement_processor.sentencize(text_or_sentences))
+        return list(self(text_or_sentences))
+
+    def __call__(self, sentences):
+        """ infer label for all sentences """
+        # translate sentences to tensor of indices meaningfull to the model
+        for sentence in sentences:
+            input_ids, token_type_ids = self.statement_processor.encode(sentence)
+            logit, = self.model(input_ids, token_type_ids=token_type_ids)
+
+            # translate logits in labels & probabilities
+            prob, = F.softmax(logit, dim=-1)
+            max_arg = torch.argmax(prob, dim=-1)
+            max_prob, _ = torch.max(prob, dim=-1)
+
+            all_probs = {self.statement_processor.label_list[dim]: p.item() for dim, p in enumerate(prob)}
+            yield self.statement_processor.label_list[max_arg], max_prob.item(), all_probs, sentence
+
+    def checkworthyness(self, text_or_sentences):
+        return sorted([(all_probs['FR'], sentence) for *_, all_probs, sentence in self.infer(text_or_sentences)], reverse=True)
 
