@@ -44,7 +44,7 @@ class StatementProcessor(FieldProcessor):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.tokenizer = Tokenize(self.options)
+        self.tokenizer = Tokenize()
 
     def build_vocab(self, *datasets):
         self.field.build_vocab(*datasets, min_freq=self.options.min_freq)
@@ -65,9 +65,25 @@ class BertStatementProcessor:
     def __init__(self, options):
         self.options = options
 
+    def encode(self, sentence):
+        inputs = self.tokenizer.encode_plus(sentence, None, add_special_tokens=True, return_tensors='pt')
+        return inputs["input_ids"], inputs["token_type_ids"]
+
     @cachedproperty
     def tokenizer(self):
         return BertTokenizer.from_pretrained(self.options.pretrained_model_shortcut)
+
+    @cachedproperty
+    def sentencize(self):
+        return Tokenize().sentencize
+
+    @property
+    def label_list(self):
+        return ["FR", "FNR", "NF"]
+
+    @property
+    def label_map(self):
+        return {label: i for i, label in enumerate(self.label_list)}
 
 class BertDataProcessor:
 
@@ -86,14 +102,6 @@ class BertDataProcessor:
         full_path = pathlib.Path(__file__).parent / self.csv_path
         logger.info("loading %s", full_path)
         return pd.read_csv(full_path)
-
-    @cachedproperty
-    def label_list(self):
-        return self.dataframe.label.unique().tolist()
-
-    @property
-    def label_map(self):
-        return {label: i for i, label in enumerate(self.label_list)}
 
     @cachedproperty
     @log_runtime("creating features")
@@ -119,7 +127,7 @@ class BertDataProcessor:
             assert len(attention_mask) == self.options.max_seq_length
             assert len(token_type_ids) == self.options.max_seq_length
 
-            label_id = self.label_map[label]
+            label_id = self.tokenizer.label_map[label]
 
             if i % 1000 == 0:
                 logger.info("*** example feature %s ***" % i)
