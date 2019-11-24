@@ -7,7 +7,7 @@ verify_ssl = true
 pyyaml = "*"
 sklearn = "*"
 pandas = "*"
-spacy = "*"
+spacy = "==2.1.6"
 dickens = "*"
 torch = "==1.1.0"
 dataclasses = "*"
