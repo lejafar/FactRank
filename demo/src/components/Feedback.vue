@@ -1,48 +1,57 @@
 <template>
 	<span class="feedback">
 		<p v-if="debug" class="text-secondary confidence bottom">
-            <span> (score: {{result.score | round}}) </span>
+        <span> (confidence: {{result.confidence | round}}, score: {{result.score | round}}) </span>
 		</p>
 		<p class="text-secondary confidence bottom">
-			<span v-if="result.score > 0.99"> 🔥 Check-Worthy</span>
-			<span v-else-if="result.score > 0.85"> ✔︎ Check-Worthy</span>
-			<span v-else-if="result.score > 0.5"> Might be Check-Worthy (confidence: {{result.confidence | truncate}}) </span>
+			<span v-if="metric > 0.99"> 🔥 Check-Worthy</span>
+			<span v-else-if="metric > 0.85"> ✔︎ Check-Worthy</span>
+			<span v-else-if="metric > 0.50"> Might be Check-Worthy (confidence: {{metric | truncate}}) </span>
 		</p>
-		<p v-if="!$auth.loading && $auth.isAuthenticated && fetchFeedback($auth.user)" class="text-secondary feedback">
-			<b-spinner v-if="not_yet_fetched_feedback" :variant="warning" :key="warning" type="grow"></b-spinner>
-			<span v-else-if="user_feedback">
-				<span v-if="user_feedback == 'FR'">
-					<b-button pill variant="success" @click="postAgreement($auth.user)" >{{update(result.upvotes, 'FR')}}<icon class="feedback" name="thumbs-up" scale="1"/></b-button>
-					<b-button pill variant="outline-danger" @click="postDisagreement($auth.user)" >{{update(result.downvotes, 'NFR')}}<icon class="feedback" name="thumbs-down" scale="1"/></b-button>
-				</span>
-				<span v-else>
-					<b-button pill variant="outline-success" @click="postAgreement($auth.user)" >{{update(result.upvotes, 'FR')}}<icon class="feedback" name="thumbs-up" scale="1"/></b-button>
-					<b-button pill variant="danger" @click="postDisagreement($auth.user)" >{{update(result.downvotes, 'NFR')}}<icon class="feedback" name="thumbs-down" scale="1"/></b-button>
-				</span>
-			</span>
-			<span v-else>
-				<b-button pill variant="outline-success" @click="postAgreement($auth.user)" >{{update(result.upvotes, 'FR')}}<icon class="feedback" name="thumbs-up" scale="1"/></b-button>
-				<b-button pill variant="outline-danger" @click="postDisagreement($auth.user)" >{{update(result.downvotes, 'NFR')}}<icon class="feedback" name="thumbs-down" scale="1"/></b-button>
-			</span>
-		</p>
-		<p v-else class="text-secondary feedback feedback-results">
-        <b-button pill @click="login" variant="outline-success" class="vote-result">{{update(result.upvotes, 'FR')}}<icon class="feedback" name="thumbs-up" scale="1"/></b-button>
-            <b-button pill @click="login" variant="outline-danger" class="vote-result">{{update(result.downvotes, 'NFR')}}<icon class="feedback" name="thumbs-down" scale="1"/></b-button>
-        </p>
+        <template v-if="feedbackAvailable()">
+            <p v-if="!$auth.loading && $auth.isAuthenticated && fetchFeedback($auth.user)" class="text-secondary feedback">
+                <b-spinner v-if="not_yet_fetched_feedback" :variant="warning" :key="warning" type="grow"></b-spinner>
+                <span v-else-if="user_feedback">
+                    <span v-if="user_feedback == 'FR'">
+                        <b-button pill variant="success" @click="postAgreement($auth.user)" >{{update(result.upvotes, 'FR')}}<icon class="feedback" name="thumbs-up" scale="1"/></b-button>
+                        <b-button pill variant="outline-danger" @click="postDisagreement($auth.user)" >{{update(result.downvotes, 'NFR')}}<icon class="feedback" name="thumbs-down" scale="1"/></b-button>
+                    </span>
+                    <span v-else>
+                        <b-button pill variant="outline-success" @click="postAgreement($auth.user)" >{{update(result.upvotes, 'FR')}}<icon class="feedback" name="thumbs-up" scale="1"/></b-button>
+                        <b-button pill variant="danger" @click="postDisagreement($auth.user)" >{{update(result.downvotes, 'NFR')}}<icon class="feedback" name="thumbs-down" scale="1"/></b-button>
+                    </span>
+                </span>
+                <span v-else>
+                    <b-button pill variant="outline-success" @click="postAgreement($auth.user)" >{{update(result.upvotes, 'FR')}}<icon class="feedback" name="thumbs-up" scale="1"/></b-button>
+                    <b-button pill variant="outline-danger" @click="postDisagreement($auth.user)" >{{update(result.downvotes, 'NFR')}}<icon class="feedback" name="thumbs-down" scale="1"/></b-button>
+                </span>
+            </p>
+            <p v-else class="text-secondary feedback feedback-results">
+            <b-button pill @click="login" variant="outline-success" class="vote-result">{{update(result.upvotes, 'FR')}}<icon class="feedback" name="thumbs-up" scale="1"/></b-button>
+                <b-button pill @click="login" variant="outline-danger" class="vote-result">{{update(result.downvotes, 'NFR')}}<icon class="feedback" name="thumbs-down" scale="1"/></b-button>
+            </p>
+        </template>
 	</span>
 </template>
 
 <script>
 export default {
     name: 'Feedback',
-    props: ['result', 'debug'],
+    props: {
+        result: Object,
+        debug: Boolean,
+    },
     data () {
         return {
 			user_feedback: '',
 			not_yet_fetched_feedback: true,
+            metric: this.result.score || this.result.confidence
         }
     },
 	methods: {
+        feedbackAvailable() {
+            return ('id' in this.result);
+        },
 		// Log the user in
 		login() {
 			this.$auth.loginWithPopup();
@@ -79,9 +88,7 @@ export default {
             }
 		},
 		postDisagreement(user) {
-            const was_up = this.user_feedback == 'FR';
 			this.postFeedback(user, this.user_feedback == 'NFR' ? '' : 'NFR');
-            const is_down = this.user_feedback == 'NFR';
             this.downvotes += 1;
 		},
 		fetchFeedback(user) {
