@@ -58,7 +58,7 @@ export default {
     name: 'ResultsTable',
     props: {
         results: Array,
-        model_version: Number,
+        model_version: String,
         debug: Boolean,
         hideLoader: Boolean
     },
