@@ -1,12 +1,17 @@
 import spacy
 import re
 import unicodedata
+from descriptors import cachedproperty
 
 class Tokenize:
 
-    def __init__(self):
-        self.nlp = spacy.load('nl_core_news_sm')
-        self.sentence_regex = re.compile(r' ?((?:[A-Z@#]|[\"][^\n]+?[\"] ?)(?:[\"][^\n]+?[\"]|\.{3}|[^?!\.\n]|\.[^ \nA-Z\"])*(?:!|\?|\n|\.{1})) ?')
+    @cachedproperty
+    def nlp(self):
+        return spacy.load('nl_core_news_sm')
+
+    @cachedproperty
+    def sentence_regex(self):
+        return re.compile(r' ?((?:[A-Z@#]|[\"][^\n]+?[\"] ?)(?:[\"][^\n]+?[\"]|\.{3}|[^?!\.\n]|\.[^ \nA-Z\"])*(?:!|\?|\n|\.{1})) ?')
 
     @staticmethod
     def clean_text(text):
@@ -28,7 +33,7 @@ class Tokenize:
         # replace double punctuations
         text = re.sub(r"\?+","?", text)
         text = re.sub(r"\!+","!", text)
-        text = re.sub(r"\,",",", text)
+        text = re.sub(r"\,+",",", text)
         # different whitespace representations
         text = re.sub(r" "," ", text)
         text = re.sub(r"­"," ", text)

@@ -10,8 +10,10 @@ import pandas as pd
 import numpy as np
 
 from .modules import CNNText
-from .processing import FieldProcessor, StatementProcessor
+from .processing import FieldProcessor, StatementProcessor, BertDataProcessor, BertStatementProcessor
 from .tokenize import Tokenize
+
+from transformers import BertForSequenceClassification, BertTokenizer, BertConfig, AdamW, get_linear_schedule_with_warmup
 
 l = logging.getLogger(__name__)
 
@@ -20,7 +22,7 @@ class FactNet:
     def __init__(self, options=None):
         self.options = options
 
-        self._statement_field = data.Field(lower=True, tokenize=Tokenize(self.options).tokenize)
+        self._statement_field = data.Field(lower=True, tokenize=Tokenize().tokenize)
         self._label_field = data.Field(sequential=False, unk_token=None)
 
     @property
@@ -239,3 +241,170 @@ class FactNet:
 
     def checkworthyness(self, text_or_sentences):
         return sorted([(all_probs['FR'], sentence) for *_, all_probs, sentence in self.infer(text_or_sentences)], reverse=True)
+
+
+class FactNetBert(FactNet):
+
+    def __init__(self, options=None):
+        self.options = options
+        #Tokenize(self.options)
+
+    @property
+    def model_path(self):
+        return self.options.run_path / f"{self.options.prefix}.model.bin"
+
+    @cachedproperty
+    def model(self):
+        """ create new model or load pre-trained if available """
+        model = BertForSequenceClassification.from_pretrained(self.options.pretrained_model_shortcut, config=self.bert_config)
+
+        if self.model_path.exists():
+            # we have a pre-trained model in run_path so we'll load this
+            l.info("loading pre-trained model from %s", self.model_path)
+            model = BertForSequenceClassification.from_pretrained(self.model_path, config=self.bert_config)
+            model.eval() # switch model to 'eval' mode, turning off dropout and batch_norm
+            return model
+
+        return model
+
+    def save(self):
+        self.model_path.parent.mkdir(exist_ok=True, parents=True)
+        l.info("saving model to %s", self.model_path)
+        self.model.save_pretrained(self.model_path)
+
+    @cachedproperty
+    def statement_processor(self):
+        return BertStatementProcessor(self.options)
+
+    @cachedproperty
+    def bert_config(self):
+        # TODO: set num_labels in options after reading in data
+        return BertConfig.from_pretrained(self.options.pretrained_model_shortcut,
+                                          num_labels=3)
+
+    @cachedproperty
+    def datasets(self):
+        train = BertDataProcessor(self.options, self.statement_processor, self.options.statements_train_path).dataset
+        test = BertDataProcessor(self.options, self.statement_processor, self.options.statements_test_path).dataset
+        return train, test
+
+    @cachedproperty
+    def dataloaders(self):
+        train_set, test_set = self.datasets
+        train = torch.utils.data.DataLoader(train_set, batch_size=self.options.batch_size, shuffle=True)
+        test = torch.utils.data.DataLoader(test_set, batch_size=self.options.batch_size, shuffle=True)
+        return train, test
+
+    @cachedproperty
+    def optimizer(self):
+	# prepare optimizer and schedule (linear warmup and decay)
+        no_decay = ['bias', 'layernorm.weight']
+        optimizer_parameters = [
+            {'params': [p for n, p in self.model.named_parameters() if not any(nd in n for nd in no_decay)], 'weight_decay': self.options.weight_decay},
+            {'params': [p for n, p in self.model.named_parameters() if any(nd in n for nd in no_decay)], 'weight_decay': 0.0}
+            ]
+        return AdamW(optimizer_parameters, lr=self.options.lr, eps=self.options.adam_epsilon)
+
+    @cachedproperty
+    def scheduler(self):
+        return get_linear_schedule_with_warmup(self.optimizer, num_warmup_steps=self.options.warmup_steps, num_training_steps=self.options.max_epochs)
+
+    def fit(self):
+        """ train network """
+
+        train_loader, _ = self.dataloaders
+        steps = best_accuracy = 0
+        for epoch in range(self.options.max_epochs):
+
+            self.model.train()
+
+            for step, (input_ids, attention_mask, token_type_ids, labels) in enumerate(train_loader):
+
+                # move to correct device
+                input_ids = input_ids.to(self.options.gpu_id)
+                attention_mask = attention_mask.to(self.options.gpu_id)
+                token_type_ids = token_type_ids.to(self.options.gpu_id)
+                labels = labels.to(self.options.gpu_id)
+
+                self.model.zero_grad()
+                self.optimizer.zero_grad()
+
+                loss, logits, *_ = self.model(input_ids=input_ids,
+                                              attention_mask=attention_mask,
+                                              token_type_ids=token_type_ids,
+                                              labels=labels)
+
+                loss.backward()
+                self.optimizer.step()
+                self.scheduler.step()
+
+                if step % self.options.log_metrics_step == 0:
+                    correct = (torch.max(logits, 1)[1].view(labels.size()).data == labels.data).sum()
+                    accuracy = 100.0 * correct / len(labels)
+                    learning_rate = [param_group['lr'] for param_group in self.optimizer.param_groups][0]
+                    l.info(f"Epoch[{epoch}] Batch[{step}] - loss: {loss.item():.6f} acc: {accuracy:.4f}% ({correct} / {len(labels)}) lr: {learning_rate:.4f}")
+
+            if epoch % self.options.log_metrics_step == 0:
+                test_accuracy = self.evaluate()
+                if test_accuracy > best_accuracy:
+                    best_accuracy = test_accuracy
+                    self.save()
+
+                l.info(f"Epoch[{epoch}] - best model so far {best_accuracy:.4f}")
+
+    def evaluate(self):
+        """ evaluate network """
+
+        _, test_loader = self.dataloaders
+        correct, losses = 0, []
+        self.model.eval()
+
+        for inputs_id, attention_mask, token_type_ids, labels in test_loader:
+
+            # move to correct device
+            input_ids = input_ids.to(self.options.gpu_id)
+            attention_mask = attention_mask.to(self.options.gpu_id)
+            token_type_ids = token_type_ids.to(self.options.gpu_id)
+            labels = labels.to(self.options.gpu_id)
+
+            with torch.no_grad():
+                loss, logits, *_ = self.model(input_ids=input_ids,
+                                              attention_mask=attention_mask,
+                                              token_type_ids=token_type_ids,
+                                              labels=labels)
+
+                losses += [loss.item()]
+                correct += (torch.max(logits, 1)[1].view(labels.size()).data == labels.data).sum()
+                l.info(confusion_matrix(labels.data.cpu().numpy(), labels.max(logits, 1)[1].cpu().numpy()))
+
+        loss = np.mean(losses)
+        accuracy = 100.0 * correct / len(test_loader.dataset)
+
+        l.info(f"Evaluation - loss: {loss:.6f}  acc: {accuracy:.4f}% ({correct}/{len(test_loader.dataset)})")
+
+        return accuracy
+
+    def infer(self, text_or_sentences):
+        if isinstance(text_or_sentences, str):
+            # it's not yet list of sentences so we'll split the text
+            text_or_sentences = list(self.statement_processor.sentencize(text_or_sentences))
+        return list(self(text_or_sentences))
+
+    def __call__(self, sentences):
+        """ infer label for all sentences """
+        # translate sentences to tensor of indices meaningfull to the model
+        for sentence in sentences:
+            input_ids, token_type_ids = self.statement_processor.encode(sentence)
+            logit, = self.model(input_ids, token_type_ids=token_type_ids)
+
+            # translate logits in labels & probabilities
+            prob, = F.softmax(logit, dim=-1)
+            max_arg = torch.argmax(prob, dim=-1)
+            max_prob, _ = torch.max(prob, dim=-1)
+
+            all_probs = {self.statement_processor.label_list[dim]: p.item() for dim, p in enumerate(prob)}
+            yield self.statement_processor.label_list[max_arg], max_prob.item(), all_probs, sentence
+
+    def checkworthyness(self, text_or_sentences):
+        return sorted([(all_probs['FR'], sentence) for *_, all_probs, sentence in self.infer(text_or_sentences)], reverse=True)
+
