@@ -57,7 +57,7 @@ export default {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({'top_last': this.top_last, 'version': this.model_version, 'limit': 50}),
+                body: JSON.stringify({'top_last': this.top_last, 'version': this.model_version, 'limit': 50, 'source_type': 'PARLIAMENTARY_MEETING'}),
             }).then(response => response.json()).then((data) => {
                 this.top_results = data
             });
@@ -67,8 +67,8 @@ export default {
         'results-table': ResultsTable
     },
     mounted() {
-        this.top_last = this.$route.query.limit || 'week'
-        this.model_version = this.$route.query.version || 'v0.6.0'
+        this.top_last = this.$route.query.limit || 'month'
+        this.model_version = this.$route.query.version || 'v0.5.0'
         this.debug = this.$route.query.debug || false
         this.fetchTopCheckWorthy ()
     }
