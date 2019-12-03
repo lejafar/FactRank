@@ -22,16 +22,22 @@ class Options:
     kernel_num: int = 100
     n_layers: int = 1
     # optimization
-    weight_decay: float = 0.00001
-    lr: float = 0.001
+    weight_decay: float = 0.0
+    adam_epsilon: float = 1e-8
+    warmup_steps: int = 0
+    lr: float = 5e-5
     lr_decay_step: float = 100
     lr_decay: float = 0.5
 
+    """ bert settings """
+    pretrained_model_shortcut: str = "bert-base-uncased"
+    max_seq_length: int = 128
+
     """ data settings """
     gpu_id: int = 'cpu'
-    run: str = "factnet"
+    run: str = "factnetbert"
     _run_path: str = None
-    prefix: str = "factnet"
+    prefix: str = "factnetbert"
     statements_train_path: str = "data/training/statements_train.csv"
     statements_test_path: str = "data/training/statements_test.csv"
     min_freq: int = 1
@@ -39,7 +45,7 @@ class Options:
     word_embeddings_noise: float = 1e-6
     split_ratio: float = 0.8
     stratified: bool = True
-    log_metrics_step: int = 10
+    log_metrics_step: int = 1
     log_level: str = 'INFO'
 
     LOG_BASE = 'log'
