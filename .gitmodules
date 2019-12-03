@@ -1,0 +1,3 @@
+[submodule "submodules/transformers"]
+	path = submodules/transformers
+	url = git@github.com:lejafar/transformers.git
