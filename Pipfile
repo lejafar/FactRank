@@ -7,7 +7,7 @@ verify_ssl = true
 pyyaml = "*"
 sklearn = "*"
 pandas = "*"
-spacy = "==2.1.6"
+spacy = "*"
 dickens = "*"
 torch = "==1.1.0"
 dataclasses = "*"
@@ -16,7 +16,6 @@ factrank = {editable = true,path = "."}
 gensim = "*"
 matplotlib = "*"
 pytest = "*"
-transformers = {editable = true,path = "submodules/transformers"}
 
 [requires]
 python_version = "3.6"
