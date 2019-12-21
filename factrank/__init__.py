@@ -1,25 +1,23 @@
 import pathlib
 
-from .factnet import FactNet, FactNetBert
+from .factnet import FactNet
 from .options import Options
 from .log import init_package_logger
 
-model_map = {'factnet': FactNet, 'factnetbert': FactNetBert}
-
-_model = {}
-def get_model(suffix='factnet'):
+_model = None
+def get_model():
     global _model
-    if _model.get(suffix) is None:
-        run_path = pathlib.Path(__file__).parent / f'data/model/{suffix}'
-        options = Options.load(run_path / f'{suffix}.options.yml')
+    if _model is None:
+        run_path = pathlib.Path(__file__).parent / 'data/model'
+        options = Options.load(run_path / 'factnet.options.yml')
         init_package_logger(options)
-        _model[suffix] = model_map[suffix](options)
-    return _model[suffix]
+        _model = FactNet(options)
+    return _model
 
-def infer(text_or_sentences, **kwargs):
-    return get_model(**kwargs).infer(text_or_sentences)
+def infer(text_or_sentences):
+    return get_model().infer(text_or_sentences)
 
-def checkworthyness(text_or_sentences, **kwargs):
-    return get_model(**kwargs).checkworthyness(text_or_sentences)
+def checkworthyness(text_or_sentences):
+    return get_model().checkworthyness(text_or_sentences)
 
 

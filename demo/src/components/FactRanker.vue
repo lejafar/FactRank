@@ -1,13 +1,13 @@
 <template>
     <div>
         <b-form inline>
-            <label class="mr-sm-2" for="inline-form-custom-select-pref">Top Check-Worthy Factual Statements of</label>
+            <label class="mr-sm-2" for="inline-form-custom-select-pref">Top Check-Worthy Factual Statement of</label>
         <!--<b-form-group label-cols="8" label-cols-lg="4" label-size="sm" label="Top Check-Worthy Factual Statement of" label-for="input-sm">-->
             <b-form-select class="mb-2 mr-sm-2 mb-sm-0" @change="fetchTopCheckWorthy" v-model="top_last" :options="options"></b-form-select>
             <!--<b-form-select class="mb-2 mr-sm-2 mb-sm-0" @change="fetchTopCheckWorthy" v-model="model_version" :options="model_versions"></b-form-select>-->
         </b-form>
         <!--</b-form-group>-->
-        <results-table v-bind:results="top_results" :model_version="model_version" :debug="debug"/>
+        <results-table v-bind:results="top_results" :model_version="model_version"/>
     </div>
 </template>
 
@@ -28,14 +28,13 @@ export default {
                 { value: 'all_time', text: 'all time' },
             ],
             model_version: 'v0.2.0',
-            model_versions: [],
-            debug: false
+            model_versions: []
         }
     },
     created: function () { this.fetchModelVersions(); },
     methods: {
         fetchModelVersions() {
-            fetch(this.$api_url + "/models", {
+            fetch("https://api-v2.factrank.org/models", {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -48,10 +47,8 @@ export default {
         },
         fetchTopCheckWorthy () {
             this.top_results = null;
-            var q = {limit: this.top_last, version: this.model_version};
-            if(this.debug) q.debug = true;
-            this.$router.push({query: q});
-            fetch(this.$api_url + "/search", {
+            this.$router.push({query: {limit: this.top_last, version: this.model_version}})
+            fetch("https://api-v2.factrank.org/search", {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -67,9 +64,8 @@ export default {
         'results-table': ResultsTable
     },
     mounted() {
-        this.top_last = this.$route.query.limit || 'week'
-        this.model_version = this.$route.query.version || 'v0.6.0'
-        this.debug = this.$route.query.debug || false
+        this.top_last = this.$route.query.limit || 'month'
+        this.model_version = this.$route.query.version || 'v0.5.0'
         this.fetchTopCheckWorthy ()
     }
 }
