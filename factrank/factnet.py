@@ -20,7 +20,7 @@ class FactNet:
     def __init__(self, options=None):
         self.options = options
 
-        self._statement_field = data.Field(lower=True, tokenize=Tokenize(self.options).tokenize)
+        self._statement_field = data.Field(lower=True, tokenize=Tokenize().tokenize)
         self._label_field = data.Field(sequential=False, unk_token=None)
 
     @property
