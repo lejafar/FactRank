@@ -33,7 +33,7 @@ class StatementProcessor(FieldProcessor):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.tokenizer = Tokenize(self.options)
+        self.tokenizer = Tokenize()
 
     def build_vocab(self, *datasets):
         self.field.build_vocab(*datasets, min_freq=self.options.min_freq)
