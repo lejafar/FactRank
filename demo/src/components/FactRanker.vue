@@ -1,9 +1,9 @@
 <template>
     <div>
         <b-form inline>
-            <label class="mr-sm-2" for="inline-form-custom-select-pref">Top Check-Worthy Factual Statement of</label>
+            <!--<label class="mr-sm-2" for="inline-form-custom-select-pref">Top Check-Worthy Factual Statement of</label>-->
         <!--<b-form-group label-cols="8" label-cols-lg="4" label-size="sm" label="Top Check-Worthy Factual Statement of" label-for="input-sm">-->
-            <b-form-select class="mb-2 mr-sm-2 mb-sm-0" @change="fetchTopCheckWorthy" v-model="top_last" :options="options"></b-form-select>
+            <!--<b-form-select class="mb-2 mr-sm-2 mb-sm-0" @change="fetchTopCheckWorthy" v-model="top_last" :options="options"></b-form-select>-->
             <!--<b-form-select class="mb-2 mr-sm-2 mb-sm-0" @change="fetchTopCheckWorthy" v-model="model_version" :options="model_versions"></b-form-select>-->
         </b-form>
         <!--</b-form-group>-->
@@ -19,7 +19,7 @@ export default {
     data () {
         return {
             top_results: null,
-            top_last: 'month',
+            top_last: 'all_time',
             options: [
                 { value: 'day', text: 'last 24h' },
                 { value: 'week', text: 'last week' },
@@ -27,7 +27,7 @@ export default {
                 { value: 'year', text: 'last year' },
                 { value: 'all_time', text: 'all time' },
             ],
-            model_version: 'v0.2.0',
+            model_version: 'v0.5.0',
             model_versions: [],
             debug: false
         }
@@ -50,14 +50,14 @@ export default {
             this.top_results = null;
             var q = {limit: this.top_last, version: this.model_version};
             if(this.debug) q.debug = true;
-            this.$router.push({query: q});
+            // this.$router.push({query: q});
             fetch(this.$api_url + "/search", {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({'top_last': this.top_last, 'version': this.model_version, 'limit': 50}),
+                body: JSON.stringify({'top_last': this.top_last, 'version': this.model_version, 'limit': 100}),
             }).then(response => response.json()).then((data) => {
                 this.top_results = data
             });
@@ -67,8 +67,8 @@ export default {
         'results-table': ResultsTable
     },
     mounted() {
-        this.top_last = this.$route.query.limit || 'month'
-        this.model_version = this.$route.query.version || 'v0.5.0'
+        // this.top_last = this.$route.query.limit || 'all_time'
+        // this.model_version = this.$route.query.version || 'v0.5.0'
         this.debug = this.$route.query.debug || false
         this.fetchTopCheckWorthy ()
     }
