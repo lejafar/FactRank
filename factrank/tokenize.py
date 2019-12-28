@@ -40,10 +40,14 @@ class Tokenize:
         # clean dirt
         text = re.sub(r"…","...", text)
         text = re.sub(r"[\*\n\\…\=•\[\]\|]", "", text)
-        # clean leading or trailing twitter dirt
-        while text.strip()[0] == '@':
-            text = re.sub(r"^@[^ ]* *", "", text)
-        print(text)
+        # clean excessive whitespace
+        text = re.sub(r" +"," ", text).strip()
+        # clean leading twitter dirt
+        while text.strip().split()[0][0] in {'#', '@'}:
+            text = re.sub(r"^[@#][^ ]* *", "", text)
+        # clean trailing twitter dirt
+        while text.strip().split()[-1][0] in {'#', '@'}:
+            text = re.sub(r" *[@#][^ ]* *([.?!]) *$", "\g<1>", text)
         return text
 
     def clean_sentence_for_inference(self, sentence):
@@ -76,6 +80,7 @@ class Tokenize:
 
     def sentencize(self, text):
         for sentence in self.sentence_regex.findall(self.clean_text(text)):
+            print('too long', sentence)
             if len(sentence.split()) < 3 or len(sentence.split()) > 50:
                 continue # too long / too short
             if sentence.count("\"") % 2:
