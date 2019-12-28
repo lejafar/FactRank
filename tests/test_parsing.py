@@ -27,4 +27,10 @@ def test_previous_parsing_errors(tokenizer):
     assert tokenizer.sentencize(txt).__next__() == txt
     txt = """En dus kwamen coalitiepartners VVD, CDA, D66 en ChristenUnie tot een eigen asieldeal waarin er nog één keer royaal pardon wordt verleend aan zo'n 700 gezinnen en de regeling daarna verdwijnt."""
     assert tokenizer.sentencize(txt).__next__() == txt
+    txt = """
+    "36 procent van de Belgische vrouwen kreeg al te maken met seksueel geweld, een bijzonder hoog cijfer. We moeten samen bouwen aan een wereld waar vrouwen geen geweld moeten vrezen binnen hun familie, op straat, op school, of elders.” 
+    @UN_Women
+    #orangetheworld #GenerationEquality.
+    """
+    assert tokenizer.sentencize(txt).__next__() == "\"36 procent van de Belgische vrouwen kreeg al te maken met seksueel geweld, een bijzonder hoog cijfer. We moeten samen bouwen aan een wereld waar vrouwen geen geweld moeten vrezen binnen hun familie, op straat, op school, of elders.\"."
 
