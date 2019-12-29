@@ -1,5 +1,35 @@
 <template>
     <div>
+	<b-form inline @submit="onSubmit">
+		<b-form-select
+		class="mb-2 mr-sm-2 mb-sm-0"
+		v-model="source_type"
+		@change="fetchTopCheckWorthy"
+		:options="{ '': 'All sources', 'TWITTER': 'Twitter', 'FLEMISH_PARLIAMENTARY_MEETING': 'Flemish Parliament', 'BELGIAN_PARLIAMENTARY_MEETING': 'Belgian Parliament', 'DUTCH_PARLIAMENTARY_MEETING': 'Dutch Parliament'}"
+		id="inline-form-custom-select-source"
+		>
+		</b-form-select>
+
+		<b-form-select
+		class="mb-1 mr-sm-1 mb-sm-0"
+		v-model="speaker_country"
+		@change="fetchTopCheckWorthy"
+		:options="{ '': '🇧🇪/🇳🇱',
+                  'BE': '🇧🇪',
+                  'NL': '🇳🇱'}"
+		id="inline-form-custom-select-country"
+		>
+		</b-form-select>
+		<span> {{country}} </span>
+
+		<b-form-input
+		class="mb-2 mr-sm-2 mb-sm-0"
+		v-model="search_query"
+		placeholder="Search"
+		type="search"
+		></b-form-input>
+
+	</b-form>
         <b-form inline>
             <!--<label class="mr-sm-2" for="inline-form-custom-select-pref">Top Check-Worthy Factual Statement of</label>-->
         <!--<b-form-group label-cols="8" label-cols-lg="4" label-size="sm" label="Top Check-Worthy Factual Statement of" label-for="input-sm">-->
@@ -29,7 +59,10 @@ export default {
             ],
             model_version: 'v0.5.0',
             model_versions: [],
-            debug: false
+            debug: false,
+			speaker_country: '',
+			source_type: '',
+			search_query: ''
         }
     },
     created: function () { this.fetchModelVersions(); },
@@ -57,11 +90,15 @@ export default {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({'top_last': this.top_last, 'version': this.model_version, 'limit': 100}),
+                body: JSON.stringify({'top_last': this.top_last, 'version': this.model_version, 'limit': 100, 'source_type': this.source_type, 'speaker_country': this.speaker_country, 'q': this.search_query}),
             }).then(response => response.json()).then((data) => {
                 this.top_results = data
             });
         },
+		onSubmit(evt) {
+			evt.preventDefault();
+			this.fetchTopCheckWorthy();
+		},
     },
     components: {
         'results-table': ResultsTable
