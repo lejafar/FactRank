@@ -62,7 +62,6 @@ export default {
     data () {
         return {
             top_results: null,
-            top_last: this.$route.query.limit,
             options: [
                 { value: 'day', text: 'last 24h' },
                 { value: 'week', text: 'last week' },
@@ -73,9 +72,10 @@ export default {
             model_version: 'v0.5.0',
             model_versions: [],
             debug: false,
-			speaker_country: this.$route.query.country,
-			source_type: this.$route.query.type,
-			search_query: this.$route.query.q,
+			top_last: '',
+			speaker_country: '',
+			source_type: '',
+			search_query: '',
         }
     },
     methods: {
@@ -94,8 +94,7 @@ export default {
         fetchTopCheckWorthy () {
             this.top_results = null;
             var q = {type: this.source_type, country: this.speaker_country, limit: this.top_last, q: this.search_query};
-            q = Object.fromEntries(Object.entries(q).filter(([k,v]) => v != ''));
-            if(this.debug) q.debug = true;
+            q = Object.fromEntries(Object.entries(q).filter(([_,v]) => v != ''));
             this.$router.push({query: q});
             fetch(this.$api_url + "/search", {
                 method: 'POST',
@@ -117,9 +116,10 @@ export default {
         'results-table': ResultsTable
     },
     mounted() {
-    	this.thi
-        // this.top_last = this.$route.query.limit || 'all_time'
-        // this.model_version = this.$route.query.version || 'v0.5.0'
+		this.top_last = 'limit' in this.$route.query ? this.$route.query.limit : '',
+		this.speaker_country='country' in this.$route.query ? this.$route.query.country : '',
+		this.source_type= 'type' in this.$route.query ? this.$route.query.type : '',
+		this.search_query= 'q' in this.$route.query ? this.$route.query.q : '',
         this.debug = this.$route.query.debug || false
         this.fetchTopCheckWorthy ()
     }
