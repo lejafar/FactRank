@@ -4,31 +4,34 @@
             <span> (score: {{result.score | round}}) </span>
 		</p>
 		<p class="text-secondary confidence bottom">
-			<span v-if="result.score > 0.99"> 🔥 Check-Worthy</span>
-			<span v-else-if="result.score > 0.85"> ✔︎ Check-Worthy</span>
-			<span v-else-if="result.score > 0.5"> Might be Check-Worthy (score: {{result.score | truncate}}) </span>
+			<span v-if="result.score > 0.99" v-b-tooltip.hover :title="`score: ${round(result.score)}`"> 🔥 Check-Worthy</span>
+			<span v-else-if="result.score > 0.85" v-b-tooltip.hover :title="`score: ${round(result.score)}`"> ✔︎ Check-Worthy</span>
+			<span v-else-if="result.score > 0.5" v-b-tooltip.hover :title="`score: ${round(result.score)}`"> Might be Check-Worthy </span>
+			<span v-else v-b-tooltip.hover :title="`score: ${round(result.score)}`"> ✘ Not Check-Worthy </span>
 		</p>
-		<p v-if="!$auth.loading && $auth.isAuthenticated && $auth.user && fetchFeedback($auth.user)" class="text-secondary feedback">
-			<b-spinner v-if="not_yet_fetched_feedback" :variant="warning" :key="warning" type="grow"></b-spinner>
-			<span v-else-if="user_feedback">
-				<span v-if="user_feedback == 'FR'">
-					<b-button pill variant="success" @click="postAgreement($auth.user)" >{{this.upvotes}}<icon class="feedback" name="thumbs-up" scale="1"/></b-button>
-					<b-button pill variant="outline-danger" @click="postDisagreement($auth.user)" >{{this.downvotes}}<icon class="feedback" name="thumbs-down" scale="1"/></b-button>
+		<template v-if="doesHaveVotes">
+			<p v-if="!$auth.loading && $auth.isAuthenticated && $auth.user && fetchFeedback($auth.user)" class="text-secondary feedback">
+				<b-spinner v-if="not_yet_fetched_feedback" :variant="warning" :key="warning" type="grow"></b-spinner>
+				<span v-else-if="user_feedback">
+					<span v-if="user_feedback == 'FR'">
+						<b-button pill v-b-tooltip.hover title="I think this statements is Check-Worthy" @click="postAgreement($auth.user)" variant="success" class="vote-result">{{this.upvotes}}<icon class="feedback" name="search" scale="1"/></b-button>
+						<b-button pill v-b-tooltip.hover title="I think this statements is NOT Check-Worthy" @click="postDisagreement($auth.user)" variant="outline-danger" class="vote-result">{{this.downvotes}}<icon class="feedback" name="trash" scale="1"/></b-button>
+					</span>
+					<span v-else>
+						<b-button pill v-b-tooltip.hover title="I think this statements is Check-Worthy" @click="postAgreement($auth.user)" variant="outline-success" class="vote-result">{{this.upvotes}}<icon class="feedback" name="search" scale="1"/></b-button>
+						<b-button pill v-b-tooltip.hover title="I think this statements is NOT Check-Worthy" @click="postDisagreement($auth.user)" variant="danger" class="vote-result">{{this.downvotes}}<icon class="feedback" name="trash" scale="1"/></b-button>
+					</span>
 				</span>
 				<span v-else>
-					<b-button pill variant="outline-success" @click="postAgreement($auth.user)" >{{this.upvotes}}<icon class="feedback" name="thumbs-up" scale="1"/></b-button>
-					<b-button pill variant="danger" @click="postDisagreement($auth.user)" >{{this.downvotes}}<icon class="feedback" name="thumbs-down" scale="1"/></b-button>
+					<b-button pill v-b-tooltip.hover title="I think this statements is Check-Worthy" @click="postAgreement($auth.user)" variant="outline-success" class="vote-result">{{this.upvotes}}<icon class="feedback" name="search" scale="1"/></b-button>
+					<b-button pill v-b-tooltip.hover title="I think this statements is NOT Check-Worthy" @click="postDisagreement($auth.user)" variant="outline-danger" class="vote-result">{{this.downvotes}}<icon class="feedback" name="trash" scale="1"/></b-button>
 				</span>
-			</span>
-			<span v-else>
-				<b-button pill variant="outline-success" @click="postAgreement($auth.user)" >{{this.upvotes}}<icon class="feedback" name="thumbs-up" scale="1"/></b-button>
-				<b-button pill variant="outline-danger" @click="postDisagreement($auth.user)" >{{this.downvotes}}<icon class="feedback" name="thumbs-down" scale="1"/></b-button>
-			</span>
-		</p>
-		<p v-else class="text-secondary feedback feedback-results">
-        <b-button pill @click="login" variant="outline-success" class="vote-result">{{this.upvotes}}<icon class="feedback" name="thumbs-up" scale="1"/></b-button>
-            <b-button pill @click="login" variant="outline-danger" class="vote-result">{{this.downvotes}}<icon class="feedback" name="thumbs-down" scale="1"/></b-button>
-        </p>
+			</p>
+			<p v-else class="text-secondary feedback feedback-results">
+				<b-button pill v-b-tooltip.hover title="I think this statements is Check-Worthy" @click="login" variant="outline-success" class="vote-result">{{this.upvotes}}<icon class="feedback" name="search" scale="1"/></b-button>
+				<b-button pill v-b-tooltip.hover title="I think this statements is NOT Check-Worthy" @click="login" variant="outline-danger" class="vote-result">{{this.downvotes}}<icon class="feedback" name="trash" scale="1"/></b-button>
+			</p>
+		</template>
 	</span>
 </template>
 
@@ -39,11 +42,18 @@ export default {
     data () {
         return {
 			user_feedback: '',
-            upvotes: null,
-            downvotes: null,
+            upvotes: 0,
+            downvotes: 0,
 			not_yet_fetched_feedback: true,
         }
     },
+	computed: {
+		// a computed getter
+		doesHaveVotes: function () {
+		// `this` points to the vm instance
+			return ('upvotes' in this.result | 'downvotes' in this.result);
+		}
+	},
 	methods: {
 		// Log the user in
 		login() {
@@ -77,7 +87,10 @@ export default {
 		fetchFeedback(user) {
 			this.postFeedback(user);
 			return true;
-		}
+		},
+        round(number){
+            return parseFloat(Math.round(number * 100) / 100).toFixed(2);
+        },
 	},
 	filters: {
         round(number){
