@@ -65,7 +65,6 @@ export default {
 			search_query: ''
         }
     },
-    created: function () { this.fetchModelVersions(); },
     methods: {
         fetchModelVersions() {
             fetch("https://api-v2.factrank.org/models", {
