@@ -130,7 +130,7 @@ export default {
 form {
     margin-bottom: 1rem;
 }
-label.search-glass {
+label, label.search-glass {
 	display: none;
 }
 @media (min-width: 768px) {
@@ -145,7 +145,7 @@ label.search-glass {
 		border-bottom: 1px dotted #ced4da;
 		border-radius: 0px;
 	}
-	label.search-glass {
+	label, label.search-glass {
 		display: inline-block;
 	}
 	input.search {
@@ -157,6 +157,13 @@ label.search-glass {
 		width: 90%;
 		margin-left: 2.5%;
 		}
+	input:focus, select:focus {
+		border: 0;
+		border-bottom: 1px dotted #ced4da;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		box-shadow: none;
+	}
 }
 
 </style>
