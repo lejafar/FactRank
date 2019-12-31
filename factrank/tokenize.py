@@ -1,17 +1,12 @@
 import spacy
 import re
 import unicodedata
-from descriptors import cachedproperty
 
 class Tokenize:
 
-    @cachedproperty
-    def nlp(self):
-        return spacy.load('nl_core_news_sm')
-
-    @cachedproperty
-    def sentence_regex(self):
-        return re.compile(r' ?((?:[A-Z@#]|[\"][^\n]+?[\"] ?)(?:[\"][^\n]+?[\"]|\.{3}|[^?!\.\n]|\.[^ \nA-Z\"])*(?:!|\?|\n|\.{1})) ?')
+    def __init__(self):
+        self.nlp = spacy.load('nl_core_news_sm')
+        self.sentence_regex = re.compile(r' ?((?:[A-Z@#]|[\"][^\n]+?[\"] ?)(?:[\"\(][^\n]+?[\"\)]|\.{3}|[^?!\.\n]|\.[^ \nA-Z\"])*(?:!|\?|\n|\.{1})) ?')
 
     @staticmethod
     def clean_text(text):
@@ -33,7 +28,7 @@ class Tokenize:
         # replace double punctuations
         text = re.sub(r"\?+","?", text)
         text = re.sub(r"\!+","!", text)
-        text = re.sub(r"\,+",",", text)
+        text = re.sub(r"\,",",", text)
         # different whitespace representations
         text = re.sub(r" "," ", text)
         text = re.sub(r"­"," ", text)
@@ -45,6 +40,14 @@ class Tokenize:
         # clean dirt
         text = re.sub(r"…","...", text)
         text = re.sub(r"[\*\n\\…\=•\[\]\|]", "", text)
+        # clean excessive whitespace
+        text = re.sub(r" +"," ", text).strip()
+        # clean leading twitter dirt
+        while text.strip().split()[0][0] in {'#', '@'}:
+            text = re.sub(r"^[@#][^ ]* *", "", text)
+        # clean trailing twitter dirt
+        while text.strip().split()[-1][0] in {'#', '@'}:
+            text = re.sub(r" *[@#][^ ]* *([.?!]) *$", "\g<1>", text)
         return text
 
     def clean_sentence_for_inference(self, sentence):
@@ -81,7 +84,7 @@ class Tokenize:
                 continue # too long / too short
             if sentence.count("\"") % 2:
                 continue # unclosed quotes
-            if sentence.count("(") % 2 or sentence.count(")") % 2:
+            if sentence.count("(") and sentence.count("(") - sentence.count(")"):
                 continue # unclosed brackets
             if sentence.count('#') > len(sentence.split()) / 2:
                 continue # probably too many hashtags

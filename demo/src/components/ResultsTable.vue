@@ -13,9 +13,8 @@
         <!-- extended statement virtual column -->
         <template slot="extended_statement" slot-scope="data">
             <blockquote class="blockquote">
-                <footer v-if="data.item.speaker || data.item.source" class="blockquote-footer">
+                <footer v-if="data.item.speaker || data.item.source "class="blockquote-footer">
                     <span v-if="data.item.speaker" class="speaker">
-                        <img v-if="flemish(data.item.source.name)" style="vertical-align:middle;max-height: 15px;" src="https://www.vlaamsparlement.be/sites/all/themes/balance_theme/favicon.ico">
                         {{data.item.speaker.country | flag(data.item.source.name) }}
                         {{data.item.speaker.name | cleanName }}
                         <cite v-if="data.item.speaker && data.item.speaker.association" title="Speaker">({{data.item.speaker.association.name}})</cite>
@@ -23,6 +22,7 @@
                     <p v-if="data.item.source" class="info">
                         {{ data.item.source.published_at | formatDate }}
                         <a class="source_type text-secondary" :href="data.item.source.url" target="_blank">
+                        	<img v-if="flemish(data.item.source.name)" style="vertical-align:middle;max-height: 15px;" src="https://www.vlaamsparlement.be/sites/all/themes/balance_theme/favicon.ico">
                             <icon :class="data.item.source.type.toLowerCase()" :name="data.item.source.type | pick_icon" size="xs"/>
                             <icon class="url text-context" name="link" size="xs"/>
                         </a>
@@ -44,7 +44,7 @@
         </template>
 
     </b-table>
-    <div v-else-if="!hideLoader" class="loader-container">
+    <div v-else class="loader-container">
         <rotate-loader :color="'#ffc107'"></rotate-loader>
     </div>
 </template>
@@ -56,12 +56,7 @@ import Feedback from './Feedback'
 
 export default {
     name: 'ResultsTable',
-    props: {
-        results: Array,
-        model_version: Number,
-        debug: Boolean,
-        hideLoader: Boolean
-    },
+    props: ['results', 'model_version', 'debug'],
     components: {
         'rotate-loader': RotateLoader,
         'feedback': Feedback
@@ -78,7 +73,7 @@ export default {
         flemish(source) {
             return source.includes('Flemish');
         },
-        checkworthy(confidence) {
+        checkworthy(condidence) {
             return confidence > .5;
         }
     },
@@ -112,7 +107,6 @@ export default {
         },
         flag(country, source) {
             if(country == 'BE'){
-                if(source.includes('Flemish')) return;
                 return '🇧🇪 ';
             }
             return '🇳🇱 ';
