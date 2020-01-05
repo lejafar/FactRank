@@ -21,7 +21,8 @@ Vue.component('icon', Icon)
 
 import VueMarkdown from 'vue-markdown'
 Vue.component('vue-markdown', VueMarkdown)
-Vue.prototype.$api_version = process.env.VUE_APP_API_VERSION || 'v0.1.1'
+Vue.prototype.$api_version = process.env.VUE_APP_API_VERSION || 'v2'
+Vue.prototype.$api_url = "https://api-" + Vue.prototype.$api_version + ".factrank.org"
 Vue.prototype.$branch_version = process.env.VUE_APP_BRANCH_VERSION
 
 import pdf from 'pdfvuer'
