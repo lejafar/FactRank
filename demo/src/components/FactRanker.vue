@@ -6,7 +6,12 @@
 		class="mb-2 mr-sm-2 mb-sm-0"
 		v-model="source_type"
 		@change="fetchTopCheckWorthy"
-		:options="{ '': 'All sources', 'TWITTER': 'Twitter', 'FLEMISH_PARLIAMENTARY_MEETING': 'Flemish Parliament', 'BELGIAN_PARLIAMENTARY_MEETING': 'Belgian Parliament', 'DUTCH_PARLIAMENTARY_MEETING': 'Dutch Parliament'}"
+		:options="{ '': 'All sources',
+					'TWITTER': 'Twitter',
+					'FLEMISH_PARLIAMENTARY_MEETING': 'Flemish Parliament',
+					'BELGIAN_PARLIAMENTARY_MEETING': 'Belgian Parliament',
+					'DUTCH_PARLIAMENTARY_MEETING': 'Dutch Parliament',
+					'FACTCHECK_VLAANDEREN': 'FactCheck Flanders'}"
 		id="inline-form-custom-select-source"
 		>
 		</b-form-select>

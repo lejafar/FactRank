@@ -19,12 +19,26 @@
                         {{data.item.speaker.name | cleanName }}
                         <cite v-if="data.item.speaker && data.item.speaker.association" title="Speaker">({{data.item.speaker.association.name}})</cite>
                     </span>
+                    <span v-else-if="data.item.source.is_factcheck == 1" class="speaker factchecked">
+                        <a class="source_type text-secondary" :href="data.item.source.url" target="_blank">
+							<b-badge pill variant="success"><icon class="search" name="search" scale="1"/>FactCheck<icon name="link" class="link" size="xs"/></b-badge>
+						</a>
+                    </span>
+                    <span v-else class="speaker">
+						unknown speaker
+                    </span>
                     <p v-if="data.item.source" class="info">
                         {{ data.item.source.published_at | formatDate }}
                         <a class="source_type text-secondary" :href="data.item.source.url" target="_blank">
-                        	<img v-if="flemish(data.item.source.name)" style="vertical-align:middle;max-height: 15px;" src="https://www.vlaamsparlement.be/sites/all/themes/balance_theme/favicon.ico">
-                            <icon :class="data.item.source.type.toLowerCase()" :name="data.item.source.type | pick_icon" size="xs"/>
-                            <icon class="url text-context" name="link" size="xs"/>
+							<template v-if="data.item.source.type == 'FACTCHECK_VLAANDEREN'">
+								<img style="vertical-align:middle;max-height: 15px;" src="https://factcheck.vlaanderen/static/favicon/favicon-32x32.png">
+								<icon class="url text-context" name="link" size="xs"/>
+							</template>
+							<template v-else>
+								<img v-if="flemish(data.item.source.name)" style="vertical-align:middle;max-height: 15px;" src="https://www.vlaamsparlement.be/sites/all/themes/balance_theme/favicon.ico">
+								<icon :class="data.item.source.type.toLowerCase()" :name="data.item.source.type | pick_icon" size="xs"/>
+								<icon class="url text-context" name="link" size="xs"/>
+							</template>
                         </a>
                     </p>
                 </footer>
@@ -129,6 +143,15 @@ footer > p.info {
 }
 .source_type > svg {
     margin-left: .5rem;
+}
+.factchecked svg {
+	width: 12px;
+}
+.factchecked svg.search {
+	margin-right: 5px;
+}
+.factchecked svg.link {
+	margin-left: 5px;
 }
 .text-context {
     color: #b4bbc1;

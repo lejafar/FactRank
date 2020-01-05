@@ -4,10 +4,10 @@
             <span> (score: {{result.score | round}}) </span>
 		</p>
 		<p class="text-secondary confidence bottom">
-			<span v-if="result.score > 0.99" v-b-tooltip.hover :title="`score: ${round(result.score)}`"> 🔥 Check-Worthy</span>
-			<span v-else-if="result.score > 0.85" v-b-tooltip.hover :title="`score: ${round(result.score)}`"> ✔︎ Check-Worthy</span>
-			<span v-else-if="result.score > 0.5" v-b-tooltip.hover :title="`score: ${round(result.score)}`"> Might be Check-Worthy </span>
-			<span v-else v-b-tooltip.hover :title="`score: ${round(result.score)}`"> ✘ Not Check-Worthy </span>
+			<span v-if="result.score > 0.99" v-b-tooltip.hover :title="`AI-confidence: ${truncate(result.confidence)} \n Score with voting: ${round(result.score)}`"> 🔥 Check-Worthy</span>
+			<span v-else-if="result.score > 0.85" v-b-tooltip.hover :title="`AI-confidence: ${truncate(result.confidence)} \n Score with voting: ${round(result.score)}`"> ✔︎ Check-Worthy</span>
+			<span v-else-if="result.score > 0.5" v-b-tooltip.hover :title="`AI-confidence: ${truncate(result.confidence)} \n Score with voting: ${round(result.score)}`"> Might be Check-Worthy </span>
+			<span v-else v-b-tooltip.hover :title="`AI-confidence: ${truncate(result.confidence)} \n Score with voting: ${round(result.score)}`"> ✘ Not Check-Worthy </span>
 		</p>
 		<template v-if="doesHaveVotes">
 			<p v-if="!$auth.loading && $auth.isAuthenticated && $auth.user && fetchFeedback($auth.user)" class="text-secondary feedback">
@@ -90,6 +90,9 @@ export default {
 		},
         round(number){
             return parseFloat(Math.round(number * 100) / 100).toFixed(2);
+        },
+        truncate(number){
+            return Number((number*100).toFixed(0)) + ' %';
         },
 	},
 	filters: {
