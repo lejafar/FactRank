@@ -97,6 +97,10 @@ export default {
 
         },
         fetchTopCheckWorthy () {
+			// fix some incompatibilities
+			if (this.source_type == 'FACTCHECK_VLAANDEREN') {
+				this.speaker_country = '';
+			}
             this.top_results = null;
             var q = {type: this.source_type, country: this.speaker_country, limit: this.top_last, q: this.search_query};
             q = Object.fromEntries(Object.entries(q).filter(([_,v]) => v != ''));
