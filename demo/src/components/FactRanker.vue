@@ -6,7 +6,13 @@
 		class="mb-2 mr-sm-2 mb-sm-0"
 		v-model="source_type"
 		@change="fetchTopCheckWorthy"
-		:options="{ '': 'All sources', 'TWITTER': 'Twitter', 'FLEMISH_PARLIAMENTARY_MEETING': 'Flemish Parliament', 'BELGIAN_PARLIAMENTARY_MEETING': 'Belgian Parliament', 'DUTCH_PARLIAMENTARY_MEETING': 'Dutch Parliament'}"
+		:options="{ '': 'All sources',
+					'TWITTER': 'Twitter',
+					'FLEMISH_PARLIAMENTARY_MEETING': 'Flemish Parliament',
+					'BELGIAN_PARLIAMENTARY_MEETING': 'Belgian Parliament',
+					'DUTCH_PARLIAMENTARY_MEETING': 'Dutch Parliament',
+					'FACTCHECK_VLAANDEREN': 'FactCheck Flanders',
+					'VRT_SUBTITLES': 'VRT Subtitles'}"
 		id="inline-form-custom-select-source"
 		>
 		</b-form-select>
@@ -92,6 +98,10 @@ export default {
 
         },
         fetchTopCheckWorthy () {
+			// fix some incompatibilities
+			if (this.source_type == 'FACTCHECK_VLAANDEREN' | this.source_type == 'VRT_SUBTITLES') {
+				this.speaker_country = '';
+			}
             this.top_results = null;
             var q = {type: this.source_type, country: this.speaker_country, limit: this.top_last, q: this.search_query};
             q = Object.fromEntries(Object.entries(q).filter(([_,v]) => v != ''));
