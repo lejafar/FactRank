@@ -11,7 +11,8 @@
 					'FLEMISH_PARLIAMENTARY_MEETING': 'Flemish Parliament',
 					'BELGIAN_PARLIAMENTARY_MEETING': 'Belgian Parliament',
 					'DUTCH_PARLIAMENTARY_MEETING': 'Dutch Parliament',
-					'FACTCHECK_VLAANDEREN': 'FactCheck Flanders'}"
+					'FACTCHECK_VLAANDEREN': 'FactCheck Flanders',
+					'VRT_SUBTITLES': 'VRT Subtitles'}"
 		id="inline-form-custom-select-source"
 		>
 		</b-form-select>
