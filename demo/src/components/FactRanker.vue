@@ -99,7 +99,7 @@ export default {
         },
         fetchTopCheckWorthy () {
 			// fix some incompatibilities
-			if (this.source_type == 'FACTCHECK_VLAANDEREN') {
+			if (this.source_type == 'FACTCHECK_VLAANDEREN' | this.source_type == 'VRT_SUBTITLES') {
 				this.speaker_country = '';
 			}
             this.top_results = null;
