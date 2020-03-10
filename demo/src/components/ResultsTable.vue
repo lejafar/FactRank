@@ -7,7 +7,7 @@
 
         <!-- A virtual column -->
         <template slot="index" slot-scope="data">
-            {{ data.index + 1 }}
+            {{ (page - 1) * 100 + (data.index + 1) }}
         </template>
 
         <!-- extended statement virtual column -->
@@ -82,7 +82,7 @@ import Feedback from './Feedback'
 
 export default {
     name: 'ResultsTable',
-    props: ['results', 'model_version', 'debug'],
+    props: ['results', 'model_version', 'debug', 'page'],
     components: {
         'rotate-loader': RotateLoader,
         'feedback': Feedback
