@@ -56,7 +56,16 @@
             <!--<b-form-select class="mb-2 mr-sm-2 mb-sm-0" @change="fetchTopCheckWorthy" v-model="model_version" :options="model_versions"></b-form-select>-->
         <!--</b-form>-->
         <!--</b-form-group>-->
-        <results-table v-bind:results="top_results" :model_version="model_version" :debug="debug"/>
+        <results-table v-bind:results="top_results" :model_version="model_version" :debug="debug" :page="currentPage"/>
+		<b-pagination
+		v-model="currentPage"
+		:total-rows="rows"
+		:per-page="limit"
+		:limit=15
+		@input="fetchTopCheckWorthy"
+		align="center"
+		pills
+		></b-pagination>
     </div>
 </template>
 
@@ -82,6 +91,9 @@ export default {
 			speaker_country: '',
 			source_type: '',
 			search_query: '',
+            limit: 100,
+            currentPage: 1,
+			rows: 0
         }
     },
     methods: {
@@ -103,7 +115,7 @@ export default {
 				this.speaker_country = '';
 			}
             this.top_results = null;
-            var q = {type: this.source_type, country: this.speaker_country, limit: this.top_last, q: this.search_query};
+            var q = {type: this.source_type, country: this.speaker_country, limit: this.top_last, q: this.search_query, page: this.currentPage};
             q = Object.fromEntries(Object.entries(q).filter(([_,v]) => v != ''));
             this.$router.push({query: q});
             fetch(this.$api_url + "/search", {
@@ -112,9 +124,10 @@ export default {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({'top_last': this.top_last, 'version': this.model_version, 'limit': 100, 'source_type': this.source_type, 'speaker_country': this.speaker_country, 'q': this.search_query}),
+                body: JSON.stringify({'top_last': this.top_last, 'version': this.model_version, 'limit': this.limit, 'page': this.currentPage, 'source_type': this.source_type, 'speaker_country': this.speaker_country, 'q': this.search_query}),
             }).then(response => response.json()).then((data) => {
-                this.top_results = data
+                this.top_results = data.results;
+				this.rows = data.total;
             });
         },
 		onSubmit(evt) {
@@ -130,6 +143,7 @@ export default {
 		this.speaker_country='country' in this.$route.query ? this.$route.query.country : '',
 		this.source_type= 'type' in this.$route.query ? this.$route.query.type : '',
 		this.search_query= 'q' in this.$route.query ? this.$route.query.q : '',
+		this.currentPage = 'page' in this.$route.query ? parseInt(this.$route.query.page) : 1,
         this.debug = this.$route.query.debug || false
         this.fetchTopCheckWorthy ()
     }
