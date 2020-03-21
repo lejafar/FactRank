@@ -50,7 +50,7 @@ class CNNText(nn.Module):
         x = self.embed(x)  # (N, W, D)
 
         # add noise to embedding
-        x += torch.randn(x.shape) * self.options.word_embeddings_noise
+        x += torch.randn(x.shape).to(self.options.gpu_id) * self.options.word_embeddings_noise
 
         if self.options.static:
             x = Variable(x)

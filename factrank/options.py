@@ -13,10 +13,10 @@ class Options:
 
     """ hyperparameters """
     # learning settings
-    batch_size: int = 32
-    max_epochs: int = 500
+    batch_size: int = 512
+    max_epochs: int = 1000
     # network configuration
-    dropout: float = 0.9
+    dropout: float = 0.6
     static: bool = True
     embed_dim: int = 320
     kernel_num: int = 100
@@ -28,15 +28,15 @@ class Options:
     lr_decay: float = 0.5
 
     """ data settings """
-    gpu_id: int = 'cpu'
+    gpu_id: int = 3
     run: str = "factnet"
     _run_path: str = None
     prefix: str = "factnet"
-    statements_train_path: str = "data/training/statements_train.csv"
+    statements_train_path: str = "data/training/statements_train_.csv"
     statements_test_path: str = "data/training/statements_test.csv"
     min_freq: int = 1
     word_embeddings_path: str = "data/word_embeddings/cow-big-slim.txt"
-    word_embeddings_noise: float = 1e-6
+    word_embeddings_noise: float = 1e-3
     split_ratio: float = 0.8
     stratified: bool = True
     log_metrics_step: int = 10
