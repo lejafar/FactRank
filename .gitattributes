@@ -4,3 +4,4 @@ factrank/data/model/factnet.label-processor.pth filter=lfs diff=lfs merge=lfs -t
 factrank/data/model/factnet.options.yml filter=lfs diff=lfs merge=lfs -text
 factrank/data/model/factnet.statement-processor.pth filter=lfs diff=lfs merge=lfs -text
 factrank/data/model/full_set.log filter=lfs diff=lfs merge=lfs -text
+"factrank/data/word_embeddings/**/*" filter=lfs diff=lfs merge=lfs -text
