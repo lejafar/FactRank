@@ -5,6 +5,7 @@ from descriptors import cachedproperty
 from torchtext import data
 import torch
 import torch.nn.functional as F
+from torch.utils.data import ConcatDataset
 from sklearn.metrics import confusion_matrix
 import pandas as pd
 import numpy as np
@@ -38,12 +39,13 @@ class FactNet:
         if self.model_path.exists():
             # we have a pre-trained model in run_path so we'll load this
             l.info("loading pre-trained model from %s", self.model_path)
-            cnn.load_state_dict(torch.load(self.model_path, map_location=self.options.gpu_id))
+            cnn.load_state_dict(torch.load(self.model_path, map_location=torch.device(self.options.gpu_id)))
             cnn.eval() # switch model to 'eval' mode, turning off dropout and batch_norm
             return cnn
 
         if self.pre_trained_word_embeddings is not None:
             cnn.set_pre_trained_word_embeddings(self.pre_trained_word_embeddings)
+            cnn.to(self.options.gpu_id)
 
         return cnn
 
@@ -107,7 +109,7 @@ class FactNet:
 
     @cachedproperty
     def dataloaders(self):
-        train_set, test_set = self.datasets
+        train_set, test_set  = self.datasets
         train, test = data.Iterator.splits((train_set, test_set),
                                            batch_sizes=(self.options.batch_size, len(test_set)),
                                            device=self.options.gpu_id,
@@ -115,6 +117,18 @@ class FactNet:
                                            sort_key=lambda x: (len(x.statement)),
                                            shuffle=True)
         return train, test
+
+    @cachedproperty
+    def train_class_weight(self):
+        # determine class weights in training set
+        counter = self.label_processor.field.vocab.freqs
+        total = sum(counter.values())
+        itos = self.label_processor.field.vocab.itos
+        return torch.Tensor([total / counter[label] for label in itos]).to(self.options.gpu_id)
+
+    def target_mapper(self, target):
+        # maps {NF, FNR} -> {NFR} if applicable
+        return target
 
     @cachedproperty
     def pre_trained_word_embeddings(self):
@@ -158,10 +172,12 @@ class FactNet:
                 feature, target = train_batch.statement.transpose(0, 1), train_batch.label
                 feature, target = feature.to(self.options.gpu_id), target.to(self.options.gpu_id)
 
+                target = self.target_mapper(target)
+
                 self.model.optimizer.zero_grad()
 
                 logit = self.model(feature)
-                loss = F.cross_entropy(logit, target)
+                loss = F.cross_entropy(logit, target, weight=self.train_class_weight)
 
                 loss.backward()
                 self.model.optimizer.step()
