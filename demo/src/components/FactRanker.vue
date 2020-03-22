@@ -84,7 +84,7 @@ export default {
                 { value: 'year', text: 'last year' },
                 { value: '', text: 'all time' },
             ],
-            model_version: 'v0.5.0',
+            model_version: 'v0.6.0',
             model_versions: [],
             debug: false,
 			top_last: '',
