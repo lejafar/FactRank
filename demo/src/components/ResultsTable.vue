@@ -1,17 +1,17 @@
 <template>
     <b-table
-        v-if="results"
         :fields="fields"
         :items="results"
+        :busy="!results"
         caption-top>
 
         <!-- A virtual column -->
-        <template slot="index" slot-scope="data">
-            {{ (page - 1) * 100 + (data.index + 1) }}
+        <template v-slot:cell(index)="data">
+            {{ (page - 1) * limit + (data.index + 1) }}
         </template>
 
         <!-- extended statement virtual column -->
-        <template slot="extended_statement" slot-scope="data">
+        <template v-slot:cell(extended_statement)="data">
             <blockquote class="blockquote">
                 <footer v-if="data.item.speaker || data.item.source "class="blockquote-footer">
                     <span v-if="data.item.speaker" class="speaker">
@@ -68,11 +68,12 @@
                 <feedback :result="data.item" :debug="debug"/>
             </blockquote>
         </template>
-
+        <template v-slot:table-busy>
+            <div class="loader-container">
+            <rotate-loader :color="'#ffc107'"></rotate-loader>
+            </div>
+        </template>
     </b-table>
-    <div v-else class="loader-container">
-        <rotate-loader :color="'#ffc107'"></rotate-loader>
-    </div>
 </template>
 
 <script>
@@ -82,7 +83,7 @@ import Feedback from './Feedback'
 
 export default {
     name: 'ResultsTable',
-    props: ['results', 'model_version', 'debug', 'page'],
+    props: ['results', 'model_version', 'debug', 'page', 'limit'],
     components: {
         'rotate-loader': RotateLoader,
         'feedback': Feedback
@@ -199,5 +200,8 @@ tr:hover svg.url {
 }
 .vrt_logo {
     max-width: 50px;
+}
+table.b-table[aria-busy='true'] {
+  opacity: 0.9;
 }
 </style>
