@@ -7,7 +7,7 @@
       <b-form-select
         class="mb-2 mr-sm-2 mb-sm-0"
         v-model="source_type"
-        @change="fetchTopCheckWorthy"
+        @change="resetPageAndFetchTopCheckWorthy"
         :options="source_options"
         id="inline-form-custom-select-source"
       >
@@ -19,7 +19,7 @@
       <b-form-select
         class="mb-1 mr-sm-1 mb-sm-0"
         v-model="speaker_country"
-        @change="fetchTopCheckWorthy"
+        @change="resetPageAndFetchTopCheckWorthy"
         :options="country_options"
         id="inline-form-custom-select-country"
       ></b-form-select>
@@ -32,7 +32,7 @@
       </label>
       <b-form-select
         class="mb-2 mr-sm-2 mb-sm-0"
-        @change="fetchTopCheckWorthy"
+        @change="resetPageAndFetchTopCheckWorthy"
         v-model="top_last"
         :options="options"
         id="inline-form-custom-select-time"
@@ -42,7 +42,7 @@
       </label>
       <b-form-select
         class="mb-2 mr-sm-2 mb-sm-0"
-        @change="fetchTopCheckWorthy"
+        @change="resetPageAndFetchTopCheckWorthy"
         v-model="sort_by"
         :options="sort_options"
         id="inline-form-custom-select-time"
@@ -59,6 +59,7 @@
         type="search"
         id="inline-form-custom-select-search"
       ></b-form-input>
+
     </b-form>
     <results-table
       v-bind:results="top_results"
@@ -102,12 +103,33 @@ export default {
       ],
       source_options: [
         { value: "", text: "All sources" },
-        { value: "TWITTER", text: "Twitter" },
-        { value: "FLEMISH_PARLIAMENTARY_MEETING", text: "Flemish Parliament" },
-        { value: "BELGIAN_PARLIAMENTARY_MEETING", text: "Belgian Parliament" },
-        { value: "DUTCH_PARLIAMENTARY_MEETING", text: "Dutch Parliament" },
-        { value: "FACTCHECK_VLAANDEREN", text: "FactCheck Flanders" },
-        { value: "VRT_SUBTITLES", text: "VRT Subtitles" },
+        {
+            label: 'Social',
+            options: [
+            { value: "TWITTER", text: "Twitter" },
+            ]
+        },
+        {
+            label: 'Parliament',
+            options: [
+            { value: "FLEMISH_PARLIAMENTARY_MEETING", text: "Flemish Parliament" },
+            { value: "BELGIAN_PARLIAMENTARY_MEETING", text: "Belgian Parliament" },
+            { value: "DUTCH_PARLIAMENTARY_MEETING", text: "Dutch Parliament" }
+            ]
+        },
+        {
+            label: 'Subtitles',
+            options: [
+                { value: "VRT_TERZAKE", text: "Terzake" },
+                { value: "VRT_DE_AFSPRAAK", text: "De Afspraak" },
+            ]
+        },
+        {
+            label: 'FactCheckers',
+            options: [
+                { value: "FACTCHECK_VLAANDEREN", text: "FactCheck Flanders" },
+            ]
+        },
       ],
       sort_options: [
         { value: "", text: "relevance" },
@@ -156,19 +178,19 @@ export default {
         page: this.currentPage,
         sort: this.sort_by
       };
-      q = Object.fromEntries(Object.entries(q).filter(([_, v]) => v != ""));
+      q = Object.fromEntries(Object.entries(q).filter(([_, v]) => v != "" && v != 1));
       this.$router.push({ query: q });
+    },
+    resetPageAndFetchTopCheckWorthy(){
+       this.currentPage = 1;
+       this.fetchTopCheckWorthy();
     },
     fetchTopCheckWorthy() {
       // fix some incompatibilities
-      if (
-        (this.source_type == "FACTCHECK_VLAANDEREN") |
-        (this.source_type == "BELGIAN_PARLIAMENTARY_MEETING") |
-        (this.source_type == "FLEMISH_PARLIAMENTARY_MEETING") |
-        (this.source_type == "VRT_SUBTITLES")
-      ) {
+      if ( this.source_type != "TWITTER"){
         this.speaker_country = "";
       }
+
       this.top_results = null;
       this.pushOptionsToQuery();
       fetch(this.$api_url + "/search", {
@@ -195,6 +217,7 @@ export default {
         });
     },
     onSubmit(evt) {
+      this.currentPage = 1;
       evt.preventDefault();
       this.fetchTopCheckWorthy();
     },
@@ -211,7 +234,7 @@ export default {
         "type" in this.$route.query ? this.$route.query.type : ""),
       (this.search_query = "q" in this.$route.query ? this.$route.query.q : ""),
       (this.sort_by =
-        "sort" in this.$route.query ? this.$route.query.type : ""),
+        "sort" in this.$route.query ? this.$route.query.sort : ""),
       (this.currentPage =
         "page" in this.$route.query ? parseInt(this.$route.query.page) : 1),
       (this.debug = this.$route.query.debug || false);

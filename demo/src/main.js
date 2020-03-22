@@ -31,6 +31,7 @@ Vue.component('pdf', pdf)
 
 import VueMoment from 'vue-moment'
 import moment from 'moment-timezone'
+//require('moment/locale/nl')
 Vue.use(VueMoment, {
         moment,
 })

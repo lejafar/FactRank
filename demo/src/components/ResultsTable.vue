@@ -25,7 +25,7 @@
 						</a>
                     </span>
                     <span v-else class="speaker">
-                        {{data.item.source.name.split(" ")[0]}} {{data.item.source.published_at | formatDate(true)}}
+                        <b>{{data.item.source.name.split("2")[0]}}</b> {{data.item.source.published_at | formatDate(true)}}
                     </span>
                     <p v-if="data.item.source" class="info">
                         {{ data.item.source.published_at | formatDate }}
@@ -33,7 +33,7 @@
 							<template v-if="data.item.source.type == 'FACTCHECK_VLAANDEREN'">
 								<img style="vertical-align:middle;max-height: 15px;" src="https://factcheck.vlaanderen/static/favicon/favicon-32x32.png">
 							</template>
-							<template v-else-if="data.item.source.type == 'VRT_SUBTITLES'">
+							<template v-else-if="data.item.source.type.startsWith('VRT')">
 								<svg class="vrt_logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300.37 76.02" focusable="false">
 									<title>VRT NWS</title>
 									<path d="M37,75.94a37,37,0,1,1,0-74H74v37a37,37,0,0,1-37,37" fill="#5dfc71"></path>
@@ -121,15 +121,10 @@ export default {
                 time_format_str = " H:mm";
             }
             if (short) {
-                time_format_str = "";
-                year_format_str = "";
+                return published_at.calendar(null, { lastWeek: `LL`, sameElse: `LL`});
+            } else {
+                return published_at.calendar(null, { sameElse: `LLL`});
             }
-            return published_at.calendar(null, {
-                sameDay: `[Today]${time_format_str}`,
-                lastDay: `[Yesterday]${time_format_str}`,
-                lastWeek: `MMM Do ${year_format_str}${time_format_str}`,
-                sameElse: `MMM Do ${year_format_str}${time_format_str}`
-            });
         },
         pick_icon(source_type) {
             if(source_type == 'TWITTER'){
@@ -158,8 +153,9 @@ blockquote > footer.blockquote-footer {
 }
 footer > p.info {
     float: right;
-	min-width: 250px;
+	min-width: 300px;
     text-align: right;
+    margin-bottom: 0;
 }
 .source_type > svg {
     margin-left: .5rem;
@@ -202,6 +198,6 @@ tr:hover svg.url {
     max-width: 50px;
 }
 table.b-table[aria-busy='true'] {
-  opacity: 0.9;
+  opacity: 1.0;
 }
 </style>
