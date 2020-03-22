@@ -2,7 +2,7 @@
     <b-navbar toggleable="md" type="light" variant="light">
         <b-container>
             <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-            <b-navbar-brand href="#">FactRank</b-navbar-brand>
+            <b-navbar-brand href="#" @click="resetQuery">FactRank</b-navbar-brand>
             <!--<b-badge v-if="$branch_version" pill variant="warning">{{$api_version}} : {{$branch_version}}</b-badge>-->
             <!--<b-badge v-else pill variant="warning">{{$api_version}}</b-badge>-->
             <b-collapse is-nav id="nav_collapse">
@@ -31,6 +31,12 @@ export default {
             search_query: ''
         }
     },
+    methods: {
+        resetQuery() {
+        this.$router.push({ query: {}});
+        this.$router.go();
+        }
+    }
 }
 </script>
 
