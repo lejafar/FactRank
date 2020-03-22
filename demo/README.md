@@ -1,4 +1,4 @@
-# factrank ui
+# factrank UI
 
 ## Project setup
 ```
