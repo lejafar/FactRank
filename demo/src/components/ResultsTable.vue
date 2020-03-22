@@ -1,17 +1,17 @@
 <template>
     <b-table
-        v-if="results"
         :fields="fields"
         :items="results"
+        :busy="!results"
         caption-top>
 
         <!-- A virtual column -->
-        <template slot="index" slot-scope="data">
-            {{ (page - 1) * 100 + (data.index + 1) }}
+        <template v-slot:cell(index)="data">
+            {{ (page - 1) * limit + (data.index + 1) }}
         </template>
 
         <!-- extended statement virtual column -->
-        <template slot="extended_statement" slot-scope="data">
+        <template v-slot:cell(extended_statement)="data">
             <blockquote class="blockquote">
                 <footer v-if="data.item.speaker || data.item.source "class="blockquote-footer">
                     <span v-if="data.item.speaker" class="speaker">
@@ -25,7 +25,7 @@
 						</a>
                     </span>
                     <span v-else class="speaker">
-                        {{data.item.source.name.split(" ")[0]}} {{data.item.source.published_at | formatDate(true)}}
+                        <b>{{data.item.source.name.split("2")[0]}}</b> {{data.item.source.published_at | formatDate(true)}}
                     </span>
                     <p v-if="data.item.source" class="info">
                         {{ data.item.source.published_at | formatDate }}
@@ -33,7 +33,7 @@
 							<template v-if="data.item.source.type == 'FACTCHECK_VLAANDEREN'">
 								<img style="vertical-align:middle;max-height: 15px;" src="https://factcheck.vlaanderen/static/favicon/favicon-32x32.png">
 							</template>
-							<template v-else-if="data.item.source.type == 'VRT_SUBTITLES'">
+							<template v-else-if="data.item.source.type.startsWith('VRT')">
 								<svg class="vrt_logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300.37 76.02" focusable="false">
 									<title>VRT NWS</title>
 									<path d="M37,75.94a37,37,0,1,1,0-74H74v37a37,37,0,0,1-37,37" fill="#5dfc71"></path>
@@ -68,11 +68,12 @@
                 <feedback :result="data.item" :debug="debug"/>
             </blockquote>
         </template>
-
+        <template v-slot:table-busy>
+            <div class="loader-container">
+            <rotate-loader :color="'#ffc107'"></rotate-loader>
+            </div>
+        </template>
     </b-table>
-    <div v-else class="loader-container">
-        <rotate-loader :color="'#ffc107'"></rotate-loader>
-    </div>
 </template>
 
 <script>
@@ -82,7 +83,7 @@ import Feedback from './Feedback'
 
 export default {
     name: 'ResultsTable',
-    props: ['results', 'model_version', 'debug', 'page'],
+    props: ['results', 'model_version', 'debug', 'page', 'limit'],
     components: {
         'rotate-loader': RotateLoader,
         'feedback': Feedback
@@ -120,15 +121,10 @@ export default {
                 time_format_str = " H:mm";
             }
             if (short) {
-                time_format_str = "";
-                year_format_str = "";
+                return published_at.calendar(null, { lastWeek: `LL`, sameElse: `LL`});
+            } else {
+                return published_at.calendar(null, { sameElse: `LLL`});
             }
-            return published_at.calendar(null, {
-                sameDay: `[Today]${time_format_str}`,
-                lastDay: `[Yesterday]${time_format_str}`,
-                lastWeek: `MMM Do ${year_format_str}${time_format_str}`,
-                sameElse: `MMM Do ${year_format_str}${time_format_str}`
-            });
         },
         pick_icon(source_type) {
             if(source_type == 'TWITTER'){
@@ -157,8 +153,9 @@ blockquote > footer.blockquote-footer {
 }
 footer > p.info {
     float: right;
-	min-width: 250px;
+	min-width: 300px;
     text-align: right;
+    margin-bottom: 0;
 }
 .source_type > svg {
     margin-left: .5rem;
@@ -199,5 +196,8 @@ tr:hover svg.url {
 }
 .vrt_logo {
     max-width: 50px;
+}
+table.b-table[aria-busy='true'] {
+  opacity: 1.0;
 }
 </style>
