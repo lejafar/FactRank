@@ -90,7 +90,8 @@ class CNNText(nn.Module):
             x25_out = F.max_pool1d(x25, x25.size(2)).squeeze(2)
             x = torch.cat((x, x21_out, x22_out, x23_out, x24_out, x25_out), 1) # (N,len(Ks)*Co)
 
-        x = self.dropout(x)  # (N, len(Ks)*Co)
+        self.global_feature_vector = x
+        x = self.dropout(self.global_feature_vector)  # (N, len(Ks)*Co)
 
         return self.fc(x)
 
