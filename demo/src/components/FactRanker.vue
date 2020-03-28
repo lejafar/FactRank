@@ -128,6 +128,7 @@ export default {
             label: 'FactCheckers',
             options: [
                 { value: "FACTCHECK_VLAANDEREN", text: "FactCheck Flanders" },
+                { value: "NIEUWSCHECKERS", text: "NieuwsCheckers" },
             ]
         },
       ],
