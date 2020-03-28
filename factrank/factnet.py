@@ -239,9 +239,12 @@ class FactNet:
         # compute logits
         self.model.eval() # make sure it's set to evaluate
         logits = []
+        global_feature_vectors = []
         for i in range(max(1, len(feature) // batch_size)):
             logits.append(self.model(feature[i * batch_size:(i+1) * batch_size]))
+            global_feature_vectors.append(self.model.global_feature_vector)
         logit = torch.stack(logits, dim=1).squeeze(0)
+        global_feature_vectors = torch.stack(global_feature_vectors, dim=1).squeeze(0)
         #logit = self.model(feature)
 
         # translate logits in labels & probabilities
@@ -249,9 +252,11 @@ class FactNet:
         max_args = torch.argmax(probs, dim=-1)
         max_probs, _ = torch.max(probs, dim=-1)
 
-        for sentence, max_arg, max_prob, prob in zip(sentences, max_args, max_probs, probs):
+        for sentence, max_arg, max_prob, prob, gfv in zip(sentences, max_args, max_probs, probs, global_feature_vectors):
             all_probs = {self.label_processor[dim]: p.item() for dim, p in enumerate(prob)}
-            yield self.label_processor[max_arg], max_prob.item(), all_probs, sentence
+            yield self.label_processor[max_arg], max_prob.item(), all_probs, sentence, gfv
 
-    def checkworthyness(self, text_or_sentences):
-        return sorted([(all_probs['FR'], sentence) for *_, all_probs, sentence in self.infer(text_or_sentences)], reverse=True)
+    def checkworthyness(self, text_or_sentences, include_embedding=False):
+        if include_embedding:
+            return sorted([(all_probs['FR'], sentence, embedding) for *_, all_probs, sentence, embedding in self.infer(text_or_sentences)], reverse=True)
+        return sorted([(all_probs['FR'], sentence) for *_, all_probs, sentence, _ in self.infer(text_or_sentences)], reverse=True)
