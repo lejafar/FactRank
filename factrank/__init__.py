@@ -17,7 +17,7 @@ def get_model():
 def infer(text_or_sentences):
     return get_model().infer(text_or_sentences)
 
-def checkworthyness(text_or_sentences):
-    return get_model().checkworthyness(text_or_sentences)
+def checkworthyness(text_or_sentences, **kwargs):
+    return get_model().checkworthyness(text_or_sentences, **kwargs)
 
 
