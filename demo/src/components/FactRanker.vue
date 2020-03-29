@@ -129,6 +129,7 @@ export default {
             options: [
                 { value: "FACTCHECK_VLAANDEREN", text: "FactCheck Flanders" },
                 { value: "NIEUWSCHECKERS", text: "NieuwsCheckers" },
+                { value: "KNACK_FACTCHECK", text: "Knack Factcheck" },
             ]
         },
       ],
