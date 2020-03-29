@@ -1,23 +1,52 @@
 <template>
     <main>
       <vue-markdown>
-**FactRank** is an online and free-to-use software tool that aims to **automatically distill checkworthy statements** from full-text transcripts **in Dutch**. The current version `{{$api_version}}` - [the demo](/#/demo) - already does this, and as our tests on Belgian parliament debates show, with good-quality results.
 
-## The road to Factrank 1.0
+### What is FactRank?
 
-In order to be of day-to-day use for the public and fact-checkers in professional journalism FactRank needs to get better and more comprehensive. This is exactly what we are working on at the moment. In December 2018, FactRank was awarded a [grant](https://www.vlaamsjournalistiekfonds.be/500000-euro-subsidie-voor-innoverende-journalistiek) of € 39.869 by the Vlaams Journalistiek Fonds to fullfill that task by March 2020. The project is teamwork. Led by freelance journalist Jan Jagers ([fact-checker](https://www.knack.be/nieuws/factchecker/) Knack Magazine / [Free University of Brussels](https://www.vub.ac.be/people/jan-jagers)). A full collaboration with [Peter Burger](https://www.universiteitleiden.nl/en/staffmembers/peter-burger#tab-1) and [Alexander Pleijter](https://www.universiteitleiden.nl/medewerkers/alexander-pleijter#tab-1) ([Nieuwscheckers.nl](https://nieuwscheckers.nl/), Leiden University), [Peter Van Aelst](https://www.uantwerpen.be/nl/personeel/peter-vanaelst/) (University of Antwerp), [Bettina Berendt](https://people.cs.kuleuven.be/~bettina.berendt/) (Leuven University) and machine learning engineer [Rafael Hautekiet](https://github.com/lejafar).
+FactRank is a free tool that automatically identifies factual claims that are worthy of a fact-check, in transcripts of parliamentary debates and other Dutch-language texts. Currently, FactRank searches through the transcripts from the Flemish, Belgian and Dutch parliaments, through the tweets of Flemish and Dutch members of parliament, and through the subtitles of the Flemish public television broadcaster VRT’s news-analysis programmes Terzake and De Afspraak.
+
+FactRank orders claims by ‘check-worthiness’. Thus, at the top of the results list you will find claims that are factual as well as societally relevant.
+
+You can also use the tool to search the reports of the Flemish fact-checking organisation [Factcheck Vlaanderen](https://factcheck.vlaanderen/). These reports contain claims that have already been assessed for veracity by (human) fact-checkers.
+
+Tools like FactRank already exist, especially for English-language texts (one example is [Claimbuster](https://idir.uta.edu/claimbuster/)). Now there is also one for the Dutch language. 
+
+### What is FactRank not?
+
+FactRank is not a fact-checker. The tool ranks statements only by their check-worthiness, not by their reliability or correctness.
+
+FactRank is not perfect. The system keeps on learning – and you can help. If you see a claim that you think deserves a higher or lower position in the ranking than the one given by the tool, you can ‘upvote’ or ‘downvote’ it (“I think this statement is check-worthy / NOT check-worthy’’).
+
+### How can I use FactRank? 
+
+Fact-checkers, journalists, researchers, and others – whoever feels like it – can use FactRank in several ways:  
+- As a tool to filter large numbers of claims for their usefulness for a fact-check. Enter one or more search terms and select the country (the Netherlands or Flanders/Belgium) as well as the time period you are interested in. 
+- As a database of claims that have already been fact-checked by [Factcheck Vlaanderen](https://factcheck.vlaanderen/), a collaboration of Flemish universities, companies and media.
+- As a tool to filter out check-worthy claims from Dutch-language texts that you enter yourself (for example interviews or speeches). Please note that the tool has been trained on texts of parliamentary debates and will therefore perform best on such materials.
+- Last but not least, FactRank also offers the unique possibility to do keyword searches in the subtitles of the Flemish public television broadcaster VRT’s news-analysis programmes Terzake and De Afspraak and in the tweets of all Dutch and Flemish members of parliament.
+
+This is not an exhaustive list of all possible applications of FactRank. If you use the tool in a different way, we’d love to hear from you. Please <a href="mailto:jan.jagers@gmail.com" target="_top">e-mail</a> Jan Jagers, the project leader
+
+### How does FactRank work?
+
+FactRank is based on a combination of thousands of manually classified statements, taken from parliamentary debates and journalistic interviews with politicians, and a machine learning algorithm. Thus, the system leverages the judgements of experts in journalism and fact-checking, it learns from them, and it applies what it learned to new statements.
+
+Both components remain active: FactRank is continuously being fed new material, and users can improve the system by correcting the classification of individual claims. You can find a more in-depth description in our article FactRank: [Developing Automated Claim Detection for Dutch-Language Fact-Checkers](https://people.cs.kuleuven.be/~bettina.berendt/FactRank/).
+
+### Who created FactRank?
+
+FactRank began as a term project of computer science students Brecht Laperre, Ivo Merchiers and Rafael Hautekiet, in the course Knowledge and the Web offered by Prof. Dr. Bettina Berendt at the Department of Computer Science at the University of Leuven. Their goal was to develop a tool against fake news and misinformation.
+
+As a first step, they developed an algorithm that was able to automatically detect check-worthy factual statements. If such claims can be reliably identified, they can be forwarded to a fact-checking process for verification.
+
+For the detection of check-worthy claims, a machine learning system was trained on 1800 [manually classified statements](https://github.com/factrank/FactRank/blob/master/data/sentences_dump_28.12.csv), in order to predict their likelihood of being checkworthy. 
+
+This yielded a working prototype, which was improved in 2019/20. The tool is now more accurate and draws on a larger number of sources. This was made possible by a [grant](https://www.vlaamsjournalistiekfonds.be/500000-euro-subsidie-voor-innoverende-journalistiek) of € 39.869 that FactRank was awarded by the Vlaams Journalistiek Fonds in December 2018.
+
+This new phase of the project, which was finalised in March 2020, is the result of Flemish-Dutch teamwork. Led by freelance journalist Dr. Jan Jagers (fact-checker of Knack Magazine and lecturer in journalism at Vrije Universiteit Brussel) the team also comprised Dr. Peter Burger and Dr. Alexander Pleijter (Nieuwscheckers.nl, University of Leiden), Prof. Dr. Peter Van Aelst (University of Antwerp), Prof. Dr. Bettina Berendt (KU Leuven and TU Berlin, Germany), and  machine learning engineer Rafael Hautekiet.
 
 ![logo_vjf](/assets/logo_VJF.jpg)
-
-## Earlier work
-
-The project was originally created during the course _Knowledge and the Web_ by prof. Bettina Berendt at KU Leuven where our[^1] goal was to come up with a method to help clamp down on **Fake news and the spread of misinformation**. As a starting point, we set out to develop an algorithm that would automatically **identify** interesting claims that are worth checking i.e. **Check-worthy Factual Statements**[^2]. Only when such statements can be reliably identified, they can be sent to the next step in the pipeline that actually tries to falsify the interesting claims.
-
-
-[^1]: Back then, it was developped by Brecht Laperre, Ivo merchiers and [Rafael Hautekiet](https://github.com/lejafar)
-[^2]: This terminology is also used by [the Claimbuster-project](http://idir-server2.uta.edu/claimbuster/), a big source of inspiration during the project.
-
-A classifier was trained using **1800** [hand-classified statements](https://github.com/factrank/FactRank/blob/master/data/sentences_dump_28.12.csv) in order to predict the probability of check-worthiness when provided with a statement. A demonstration of its current ability can be found on the [front page](/#/) in the from of a rank of Dutch statements made during the last Plenary Meeting of the Belgian Federal parliament based on their check-worthiness. To provide you with the ability to play around with input of your own and see how this is interpreted by FactRank, we made a little [demo](/#/demo).
 
 </vue-markdown>
 

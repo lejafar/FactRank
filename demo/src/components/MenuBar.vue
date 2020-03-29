@@ -16,7 +16,7 @@
                         <b-nav-item to="/press">Press</b-nav-item>
                         <b-nav-item href="https://github.com/lejafar/factrank"><icon name="brands/github" /></b-nav-item>
                     </b-navbar-nav>
-                    <b-button variant="outline-primary" to="/demo" id="try_it">Input text</b-button>
+                    <!-- <b-button variant="outline-primary" to="/demo" id="try_it">Input text</b-button> -->
                 </b-navbar-nav>
             </b-collapse>
         </b-container>
