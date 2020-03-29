@@ -12,6 +12,8 @@
 
         <!-- extended statement virtual column -->
         <template v-slot:cell(extended_statement)="data">
+            <b-alert v-if="data.item.match && data.item.match.matched" show variant="primary">matched to factcheck <a :href="data.item.match.url" class="alert-link">“{{data.item.match.statement}}” <icon name="link" class="link" size="xs"/></a>
+            <span class="float-right">conclusion was <strong>{{data.item.match.conclusion.toLowerCase().replace('_', ' ')}}</strong></span></b-alert>
             <blockquote class="blockquote">
                 <footer v-if="data.item.speaker || data.item.source "class="blockquote-footer">
                     <span v-if="data.item.speaker" class="speaker">
@@ -44,6 +46,14 @@
 									<path d="M239.74,2h-12.1a1,1,0,0,0-1,.79l-12,54.61-11-54.6a1,1,0,0,0-1-.81H184.89a1,1,0,0,0-1,.81l-11,54.6L160.8,2.78a1,1,0,0,0-1-.79H147.72a1,1,0,0,0-1,1.24l16.59,70a1,1,0,0,0,1,.77h17.3a1,1,0,0,0,1-.8l11.14-54.4,11.14,54.4a1,1,0,0,0,1,.8h17.3a1,1,0,0,0,1-.77l16.53-70A1,1,0,0,0,240,2h-.28Z" fill="#16284a"></path>
 									<path d="M97.92,23.38h-.2V72.94a1,1,0,0,1-1,1H84.84a1,1,0,0,1-1-1V3a1,1,0,0,1,1-1h15.78a1,1,0,0,1,.87.51l28.19,49.35h.2V3a1,1,0,0,1,1-1h11.87a1,1,0,0,1,1,1V72.94a1,1,0,0,1-1,1H127.24a1,1,0,0,1-.88-.51Z" fill="#16284a"></path>
 								</svg>
+							</template>
+							<template v-else-if="data.item.source.type.startsWith('NIEUWSCHECKERS')">
+                            <svg class="nc_logo">
+                                <circle xmlns="http://www.w3.org/2000/svg" class="st0b" cx="5" cy="5" r="5"></circle>
+                            </svg>
+							</template>
+							<template v-else-if="data.item.source.type.startsWith('KNACK')">
+                                <img src="https://www.knack.be/images/svg/logos/logo_Site-Knack-NL.svg?v4.2.3" class="knack-logo">
 							</template>
 							<template v-else>
 								<img v-if="flemish(data.item.source.name)" style="vertical-align:middle;max-height: 15px;" src="https://www.vlaamsparlement.be/sites/all/themes/balance_theme/favicon.ico">
@@ -197,7 +207,23 @@ tr:hover svg.url {
 .vrt_logo {
     max-width: 50px;
 }
+.nc_logo {
+    height: 10px;
+    max-width: 10px;
+    margin-bottom: 5px;
+}
+img.knack-logo {
+    max-width: 60px;
+    margin-left: 10px;
+    margin-bottom: 3px;
+}
+.st0b{fill:#6BBA0F;}
+.st1b{fill:#0D3875;}
 table.b-table[aria-busy='true'] {
   opacity: 1.0;
+}
+.alert > a > .link {
+    margin-bottom: 3px;
+    margin-left: 5px;
 }
 </style>

@@ -1,5 +1,11 @@
 <template>
   <div>
+    <b-jumbotron lead="automatic identification of factual claims that are worthy of a fact-check">
+        <p>FactRank identifies these claims in transcripts of parliamentary debates and other Dutch-language texts. FactRank is however <strong>not</strong> an automatic fact-checker – whether the identified claims are true or false, or something in between, has to be determined by a fact-check.</p>
+        <p>You can also <b-link to="/demo">enter your own text</b-link> in order to have FactRank search it for claims that are factual and check-worthy.</p>
+
+        <p>if you have feedback, we’d love to hear from you. Send an email to <a href="mailto:factrank@gmail.com?Subject=Feedback" target="_top">factrank@gmail.com</a> and help fight disinformation.</p>
+        </b-jumbotron>
     <b-form inline @submit="onSubmit">
       <label class="mr-sm-2" for="inline-form-custom-select-source">
         Check-Worthy Factual Statements from
@@ -128,6 +134,8 @@ export default {
             label: 'FactCheckers',
             options: [
                 { value: "FACTCHECK_VLAANDEREN", text: "FactCheck Flanders" },
+                { value: "NIEUWSCHECKERS", text: "NieuwsCheckers" },
+                { value: "KNACK_FACTCHECK", text: "Knack Factcheck" },
             ]
         },
       ],
@@ -285,5 +293,9 @@ label.search-glass {
     -moz-box-shadow: none;
     box-shadow: none;
   }
+} 
+.jumbotron {
+    padding: 1.5rem 2rem;
+    background-color: #f8f9fa;
 }
 </style>
