@@ -50,6 +50,9 @@
                                 <circle xmlns="http://www.w3.org/2000/svg" class="st0b" cx="5" cy="5" r="5"></circle>
                             </svg>
 							</template>
+							<template v-else-if="data.item.source.type.startsWith('KNACK')">
+                                <img src="https://www.knack.be/images/svg/logos/logo_Site-Knack-NL.svg?v4.2.3" class="knack-logo">
+							</template>
 							<template v-else>
 								<img v-if="flemish(data.item.source.name)" style="vertical-align:middle;max-height: 15px;" src="https://www.vlaamsparlement.be/sites/all/themes/balance_theme/favicon.ico">
 								<icon :class="data.item.source.type.toLowerCase()" :name="data.item.source.type | pick_icon" size="xs"/>
@@ -206,6 +209,11 @@ tr:hover svg.url {
     height: 10px;
     max-width: 10px;
     margin-bottom: 5px;
+}
+img.knack-logo {
+    max-width: 60px;
+    margin-left: 10px;
+    margin-bottom: 3px;
 }
 .st0b{fill:#6BBA0F;}
 .st1b{fill:#0D3875;}
