@@ -26,7 +26,7 @@
         <b-alert show variant="light" class="text-right">
         </b-alert>
      </b-form-group>
-      <results-table v-if="show_result" v-bind:results="sentence_result" page="1"/>
+      <results-table v-if="show_result" v-bind:results="sentence_result" :page="1" :limit="1"/>
   </div>
 </template>
 

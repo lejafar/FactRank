@@ -12,6 +12,8 @@
 
         <!-- extended statement virtual column -->
         <template v-slot:cell(extended_statement)="data">
+            <b-alert v-if="data.item.match.matched" show variant="primary">matched to factcheck <a :href="data.item.match.url" class="alert-link">“{{data.item.match.statement}}” <icon name="link" class="link" size="xs"/></a>
+            <span class="float-right">conclusion was <strong>{{data.item.match.conclusion.toLowerCase()}}</strong></span></b-alert>
             <blockquote class="blockquote">
                 <footer v-if="data.item.speaker || data.item.source "class="blockquote-footer">
                     <span v-if="data.item.speaker" class="speaker">
@@ -219,5 +221,9 @@ img.knack-logo {
 .st1b{fill:#0D3875;}
 table.b-table[aria-busy='true'] {
   opacity: 1.0;
+}
+.alert > a > .link {
+    margin-bottom: 3px;
+    margin-left: 5px;
 }
 </style>
