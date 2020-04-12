@@ -42,4 +42,8 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style></style>
+<style>
+.badge-primary {
+  background-color: #1976d2;
+}
+</style>
