@@ -1,0 +1,47 @@
+{
+    "factranker": {
+		"content": {
+			"lead": "automatic identification of factual claims that are <u>worthy of a fact-check</u>"
+		},
+        "filters": { 
+            "checkWorthyStatementsFrom": "Check-Worthy Factual Statements from",
+            "madeBy": "made by",
+            "speaker": "speaker",
+            "during": "during",
+            "sortBy": "sort by",
+			"search": "Search",
+			"limit": {
+				"last24Hours": "last 24h",
+				"lastWeek": "last week",
+				"lastMonth": "last month",
+				"lastYear": "last year",
+				"allTime": "all time"
+			},
+			"source": {
+				"social": "Social",
+				"allSources": "All sources",
+				"twitter": "Twitter",
+				"parliament": "Parliament",
+				"flemishParliament": "Flemish Parliament",
+				"belgianParliament": "Belgian Parliament",
+				"dutchParliament": "Dutch Parliament",
+				"subtitles": "Subtitles",
+				"terzake": "Terzake",
+				"deAfspraak": "De Afspraak",
+				"factcheckers": "Factcheckers",
+				"factcheckFlanders": "Factcheck Flanders",
+				"nieuwscheckers": "Nieuwscheckers",
+				"knackFactcheck": "Knack Factcheck"
+			},
+			"sort": {
+				"relevance": "relevance",
+				"time": "time",
+				"score": "score"
+			}
+        }
+    },
+    "footer": {
+        "feedback": "if you have feedback, we’d love to hear from you. Send an email to <a href='mailto:factrank@gmail.com?Subject=Feedback' target='_top'>factrank@gmail.com</a> and help fight disinformation."
+    }
+}
+
