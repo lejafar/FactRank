@@ -1,8 +1,10 @@
 <template>
+<footer class="footer">
     <b-container>
 		<p>Made with ❤️ in Borgerhout by Rafael Hautekiet, comissioned by Feitsj VZW</p>
         <vue-markdown>{{ $t('footer.feedback') }}</vue-markdown>
     </b-container>
+</footer>
 </template>
 
 <script>
@@ -14,9 +16,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .container {
-	margin-top: 2rem;
-	margin-bottom: 2rem;
 	color: #b4bbc1;
+}
+.footer{
+	/*margin-top: 2rem;*/
+	padding-top: 2.5rem;
+	padding-bottom: 2rem;
+    background-color: #f5f5f5;
 }
 </style>
 <style>
