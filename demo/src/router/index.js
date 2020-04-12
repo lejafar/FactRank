@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import FactRanker from '../components/FactRanker'
-import About from '../components/About'
-import Search from '../components/Search'
-import Press from '../components/Press'
-import Demo from '../components/Demo'
+
+import Landing from '@/pages/Landing'
+import FactRanker from '@/pages/FactRanker'
+import About from '@/pages/About'
+import Search from '@/pages/Search'
+import Press from '@/pages/Press'
+import Demo from '@/pages/Demo'
 
 Vue.use(Router)
 
@@ -13,6 +15,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'Landing',
+      component: Landing
+    },
+    {
+      path: '/rank',
       name: 'Factranker',
       component: FactRanker
     },
