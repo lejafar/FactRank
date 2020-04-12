@@ -67,6 +67,29 @@ h4 {
 body {
   font-family: "Roboto", sans-serif !important;
 }
+
+html{ 
+height:100%;
+}
+body{
+min-height:100%;
+padding:0;
+margin:0;
+position:relative;
+}
+
+body::after{
+content:'';
+display:block;
+height:140px;
+}
+
+footer.footer{
+  position:absolute; 
+  bottom:0; 
+  width:100%; 
+  height:140px; 
+}
 .primary-color {
   color: #1976d2;
 }

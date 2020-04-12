@@ -19,7 +19,6 @@ export default {
 	color: #b4bbc1;
 }
 .footer{
-	/*margin-top: 2rem;*/
 	padding-top: 2.5rem;
 	padding-bottom: 2rem;
     background-color: #f5f5f5;
