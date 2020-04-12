@@ -1,7 +1,3 @@
-<template>
-    <main>
-      <vue-markdown>
-
 ### What is FactRank?
 
 FactRank is a free tool that automatically identifies factual claims that are worthy of a fact-check, in transcripts of parliamentary debates and other Dutch-language texts. Currently, FactRank searches through the transcripts from the Flemish, Belgian and Dutch parliaments, through the tweets of Flemish and Dutch members of parliament, and through the subtitles of the Flemish public television broadcaster VRT’s news-analysis programmes Terzake and De Afspraak.
@@ -47,34 +43,3 @@ This yielded a working prototype, which was improved in 2019/20. The tool is now
 This new phase of the project, which was finalised in March 2020, is the result of Flemish-Dutch teamwork. Led by freelance journalist Dr. Jan Jagers (fact-checker of Knack Magazine and lecturer in journalism at Vrije Universiteit Brussel) the team also comprised Dr. Peter Burger and Dr. Alexander Pleijter (Nieuwscheckers.nl, University of Leiden), Prof. Dr. Peter Van Aelst (University of Antwerp), Prof. Dr. Bettina Berendt (KU Leuven and TU Berlin, Germany), and  machine learning engineer Rafael Hautekiet.
 
 ![logo_vjf](/assets/logo_VJF.jpg)
-
-</vue-markdown>
-
-    </main>
-</template>
-
-<script>
-export default {
-  name: 'About',
-  data () {
-    return {
-    }
-  }
-}
-</script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
-section.footnotes{
-    font-size: .9rem;
-}
-section.footnotes p {
-    margin-bottom: .5rem;
-}
-.footnote-backref{
-    display:none;
-}
-img {
-    max-width: 60%;
-}
-</style>

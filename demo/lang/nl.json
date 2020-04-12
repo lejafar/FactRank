@@ -1,0 +1,7 @@
+{
+    "factranker": {
+        "filters": { 
+            "checkWorthyStatementsFrom": "Claims"
+        }
+    }
+}
