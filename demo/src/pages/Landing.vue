@@ -15,22 +15,22 @@
     </div>
     <b-container class="rank-demo-view">
       <h3>Subtititles</h3>
-      <ranker :limit="3" source_type="VRT_TERZAKE" :demo="true"/>
+      <ranker :limit="5" source_type="VRT_TERZAKE" :demo="true"/>
     </b-container>
 	<div class="bg-primary-color secondary-color">
     <b-container class="rank-demo-view">
       <h3>Parliament</h3>
-      <ranker :limit="3" source_type="FLEMISH_PARLIAMENTARY_MEETING" :demo="true"/>
+      <ranker :limit="5" source_type="FLEMISH_PARLIAMENTARY_MEETING" :demo="true"/>
     </b-container>
 	</div>
     <b-container class="rank-demo-view">
-      <h3>Social</h3>
-      <ranker :limit="3" source_type="TWITTER" :demo="true"/>
+      <h3>Fact-checks</h3>
+      <ranker :limit="5" source_type="KNACK_FACTCHECK" :demo="true"/>
     </b-container>
 	<div class="bg-primary-color secondary-color">
     <b-container class="rank-demo-view">
-      <h3>Fact-checks</h3>
-      <ranker :limit="3" source_type="KNACK_FACTCHECK" :demo="true"/>
+      <h3>Social</h3>
+      <ranker :limit="5" source_type="TWITTER" :demo="true"/>
     </b-container>
 	</div>
   </div>

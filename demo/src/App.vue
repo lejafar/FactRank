@@ -46,12 +46,15 @@ h4 {
 .bg-primary-color > .container > div > .table > tbody > tr > td > blockquote > footer.blockquote-footer > p > a.text-secondary{
   color: #ffffff !important;
 }
+.bg-primary-color > .container > div > .table > tbody > tr > td > blockquote > footer.blockquote-footer > p > a.text-secondary > svg.twitter {
+  color: #ffffff !important;
+}
 .bg-primary-color > .container > div > .table > tbody > tr > td > blockquote > p > span.text-context{
   color: #63a4ff !important;
 }
 .bg-primary-color > .container > div > .table > tbody > tr > td > blockquote > span > .feedback-results > button {
-  color: #63a4ff !important;
-  border-color: #63a4ff !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
 }
 .bg-primary-color > .container > div > .table > tbody > tr > td > blockquote > span > .text-secondary {
   color: #ffffff !important;
