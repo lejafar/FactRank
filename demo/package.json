@@ -22,7 +22,8 @@
     "vue-markdown": "^2.2.4",
     "vue-moment": "^4.1.0",
     "vue-router": "^3.0.6",
-    "vue-spinner": "^1.0.3"
+    "vue-spinner": "^1.0.3",
+    "vue-typed-js": "^0.1.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.6.0",

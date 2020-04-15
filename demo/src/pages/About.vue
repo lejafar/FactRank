@@ -1,14 +1,13 @@
 <template>
   <b-container>
-  <main>
-    <about-nl v-if="this.$i18n.locale.includes('nl')" />
-    <about-en v-else />
-  </main>
+    <main>
+      <about-nl v-if="this.$i18n.locale.includes('nl')" />
+      <about-en v-else />
+    </main>
   </b-container>
 </template>
 
 <script>
-
 import AboutEN from "@/content/en/about.md";
 import AboutNL from "@/content/nl/about.md";
 
@@ -38,5 +37,4 @@ section.footnotes p {
 img {
   max-width: 60%;
 }
-
 </style>

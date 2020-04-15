@@ -1,6 +1,13 @@
 <template>
-  <p v-if="source" class="info">
-    {{ formatDate(source.published_at) }}
+  <span>
+    <template v-if="source.published_at">
+      <time class="d-none d-sm-inline-block" :datetime="source.published_at">
+        {{ formatDate(source.published_at) }}
+      </time>
+      <time class="d-inline-block d-sm-none" :datetime="source.published_at">
+        {{ formatDate(source.published_at, true) }}
+      </time>
+    </template>
     <a class="source_type text-secondary" :href="source.url" target="_blank">
       <img
         v-if="source.type == 'FACTCHECK_VLAANDEREN'"
@@ -22,14 +29,20 @@
           class="f_parl"
         />
         <icon
-          :class="source.type.toLowerCase()"
+          :class="`${source.type.toLowerCase()} text-context`"
           :name="source.type | pick_icon"
           size="xs"
         />
       </template>
-      <icon class="url text-context" name="link" size="xs" />
+      <icon
+        v-if="source.type.startsWith('VRT')"
+        class="url text-context"
+        name="play-circle"
+        size="xs"
+      />
+      <icon v-else class="url text-context" name="link" size="xs" />
     </a>
-  </p>
+  </span>
 </template>
 
 <script>
@@ -69,7 +82,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-.source_type > svg {
+.source_type > svg,
+.source_type > img {
   margin-left: 0.5rem;
 }
 

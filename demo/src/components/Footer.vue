@@ -1,10 +1,13 @@
 <template>
-<footer class="footer">
+  <footer class="footer">
     <b-container>
-		<p>Made with ❤️ in Borgerhout by Rafael Hautekiet, comissioned by Feitsj VZW</p>
-        <vue-markdown>{{ $t('footer.feedback') }}</vue-markdown>
+      <p>
+        Made with ❤️ in Borgerhout by Rafael Hautekiet, comissioned by Feitsj
+        VZW
+      </p>
+      <vue-markdown>{{ $t("footer.feedback") }}</vue-markdown>
     </b-container>
-</footer>
+  </footer>
 </template>
 
 <script>
@@ -16,12 +19,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .container {
-	color: #b4bbc1;
+  color: #b4bbc1;
 }
-.footer{
-	padding-top: 2.5rem;
-	padding-bottom: 2rem;
-    background-color: #f5f5f5;
+.footer {
+  padding-top: 2.5rem;
+  padding-bottom: 2rem;
+  background-color: #f5f5f5;
 }
 </style>
 <style>
