@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@1,900&family=Roboto:ital,wght@0,400;1,300&display=swap");
 
 th,
 td {
@@ -135,6 +135,9 @@ h4 {
 .main-content a {
   color: #1976d2;
   text-decoration: underline;
+}
+body {
+  font-family: "Roboto", sans-serif !important;
 }
 
 html {
