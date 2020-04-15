@@ -17,8 +17,10 @@
       </a>
     </span>
     <span v-else class="speaker">
-      <b>{{ source.name.split("2")[0] }}</b>
-      {{ formatDate(source.published_at, true) }}
+      {{ source.name.split("2")[0] }}
+      <time class="d-none d-sm-inline-block" :datetime="source.published_at">
+        {{ formatDate(source.published_at, true) }}
+      </time>
     </span>
   </span>
 </template>
@@ -37,13 +39,27 @@ export default {
         .replace("Mevrouw", "")
         .replace("Minister", "");
     },
+    flag(country, source) {
+      if (country == "BE") {
+        return "🇧🇪 ";
+      }
+      return "🇳🇱 ";
+    },
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped>
 .badge-primary {
   background-color: #1976d2;
+}
+@media (max-width: 575px) {
+  .speaker > time {
+    visibility: hidden;
+  }
+  blockquote > footer.blockquote-footer {
+    display: inline-block;
+  }
 }
 </style>

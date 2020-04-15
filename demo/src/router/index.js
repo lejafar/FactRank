@@ -6,7 +6,7 @@ import FactRanker from '@/pages/FactRanker'
 import About from '@/pages/About'
 import Search from '@/pages/Search'
 import Press from '@/pages/Press'
-import Demo from '@/pages/Demo'
+import Api from '@/pages/Api'
 
 Vue.use(Router)
 
@@ -39,9 +39,9 @@ export default new Router({
       component: Press
     },
     {
-      path: '/demo',
-      name: 'Demo',
-      component: Demo
+      path: '/api',
+      name: 'Api',
+      component: Api
     }
   ]
 })

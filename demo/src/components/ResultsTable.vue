@@ -10,15 +10,15 @@
       <b-alert
         v-if="data.item.match && data.item.match.matched"
         show
-        variant="primary"
+        variant="secondary"
+        :class="data.item.match.conclusion.toLowerCase()"
       >
-        matched to factcheck
-        <a :href="data.item.match.url" class="alert-link">
+        fact-checked:
+        <a :href="fix_url(data.item.match.url)" class="alert-link">
           “{{ data.item.match.statement }}”
-          <icon name="link" class="link" size="xs" />
+          <source-icon :source="matchToSource(data.item.match)" />
         </a>
         <span class="float-right">
-          conclusion was
           <strong>
             {{ data.item.match.conclusion.toLowerCase().replace("_", " ") }}
           </strong>
@@ -34,7 +34,9 @@
             :source="data.item.source"
             :speaker="data.item.speaker"
           />
-          <source-icon :source="data.item.source" />
+          <p v-if="data.item.source" class="info">
+            <source-icon :source="data.item.source" />
+          </p>
         </footer>
 
         <!-- statement -->
@@ -107,8 +109,27 @@ export default {
     checkworthy(confidence) {
       return confidence > 0.5;
     },
+    fix_url(url) {
+      if (!url.startsWith("https://")) {
+        url = "https://" + url;
+      }
+      return url;
+    },
+    matchToSource(match) {
+      var source = {};
+      if (match.url.includes("knack")) {
+        source["type"] = "KNACK_FACTCHECK";
+      } else if (match.url.includes("nieuwscheckers")) {
+        source["type"] = "NIEUWSCHECKERS";
+      } else if (match.url.includes("factcheck")) {
+        source["type"] = "FACTCHECK_VLAANDEREN";
+      } else {
+        source["type"] = "";
+      }
+      source.url = this.fix_url(match.url);
+      return source;
+    },
   },
-
 };
 </script>
 
@@ -121,6 +142,10 @@ p.statement {
 blockquote > footer.blockquote-footer {
   font-size: 70%;
   margin-bottom: 0.3rem;
+}
+
+.blockquote {
+  margin-bottom: 0rem;
 }
 
 footer > p.info {
@@ -153,8 +178,10 @@ footer > p.info {
 }
 
 tr svg.url {
-  visibility: hidden;
-  opacity: 0;
+  /*visibility: hidden;*/
+  /*opacity: 0;*/
+  visibility: visible;
+  opacity: 1;
   transition: visibility 0s 0.5s, opacity 0.5s linear;
   margin-right: -0.5rem;
 }
@@ -176,5 +203,33 @@ table.b-table[aria-busy="true"] {
 .alert > a > .link {
   margin-bottom: 3px;
   margin-left: 5px;
+}
+
+@media (max-width: 575px) {
+  footer > p.info {
+    min-width: 200px;
+  }
+}
+
+.alert-secondary {
+  background-color: #f5f5f5 !important;
+}
+
+.grotendeels_waar {
+  color: #155724 !important;
+  background-color: #d4edda !important;
+  border-color: #c3e6cb !important;
+}
+
+.onwaar {
+  color: #721c24 !important;
+  background-color: #f8d7da !important;
+  border-color: #f5c6cb !important;
+}
+
+.onduidelijk {
+  color: #856404 !important;
+  background-color: #fff3cd !important;
+  border-color: #ffeeba !important;
 }
 </style>

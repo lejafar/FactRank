@@ -7,36 +7,28 @@
       <span
         v-if="result.score > 0.99"
         v-b-tooltip.hover
-        :title="`AI-confidence: ${truncate(
-          result.confidence
-        )} \n Score with voting: ${round(result.score)}`"
+        :title="`AI-confidence: ${truncate(result.confidence)}`"
       >
         🔥 Check-Worthy
       </span>
       <span
         v-else-if="result.score > 0.85"
         v-b-tooltip.hover
-        :title="`AI-confidence: ${truncate(
-          result.confidence
-        )} \n Score with voting: ${round(result.score)}`"
+        :title="`AI-confidence: ${truncate(result.confidence)}`"
       >
         ✔︎ Check-Worthy
       </span>
       <span
         v-else-if="result.score > 0.5"
         v-b-tooltip.hover
-        :title="`AI-confidence: ${truncate(
-          result.confidence
-        )} \n Score with voting: ${round(result.score)}`"
+        :title="`AI-confidence: ${truncate(result.confidence)}`"
       >
         Might be Check-Worthy
       </span>
       <span
         v-else
         v-b-tooltip.hover
-        :title="`AI-confidence: ${truncate(
-          result.confidence
-        )} \n Score with voting: ${round(result.score)}`"
+        :title="`AI-confidence: ${truncate(result.confidence)}`"
       >
         ✘ Not Check-Worthy
       </span>
@@ -255,8 +247,10 @@ p.bottom {
   margin-left: 0.5rem;
 }
 
-span.feedback {
-  float: right;
+@media (min-width: 576px) {
+  span.feedback {
+    float: right;
+  }
 }
 
 p.feedback,
