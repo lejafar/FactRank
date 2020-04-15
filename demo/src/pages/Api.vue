@@ -47,10 +47,15 @@
 import ResultsTable from "../components/ResultsTable";
 
 export default {
-  name: "Demo",
+  name: "Api",
+  props: {
+    sentence_input: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
     return {
-      sentence_input: "",
       sentence_result: [],
       show_result: false,
       detection: "cfs",
@@ -80,6 +85,10 @@ export default {
     makePrediction(sentences) {
       this.sentence_result = false;
       this.show_result = true;
+      if (![".", "?", "!"].includes(sentences.trim().slice(-1))) {
+        sentences = sentences + ".";
+        this.sentence_input = sentences;
+      }
       var req = {
         detect: this.detection,
         text: sentences,
@@ -96,6 +105,9 @@ export default {
           this.sentence_result = data;
         });
     },
+  },
+  mounted() {
+    this.makePrediction(this.sentence_input);
   },
 };
 </script>

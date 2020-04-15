@@ -1,73 +1,73 @@
 <template>
   <div>
-	<div v-if="!demo">
-    <b-form inline @submit="onSubmit">
-      <label class="mr-sm-2" for="inline-form-custom-select-source">
-        {{ $t("factranker.filters.checkWorthyStatementsFrom") }}
-      </label>
-      <b-form-select
-        class="mb-2 mr-sm-2 mb-sm-0"
-        v-model="source_type"
-        @change="resetPageAndFetchTopCheckWorthy"
-        :options="source_options"
-		:disabled="demo"
-        id="inline-form-custom-select-source"
-      ></b-form-select>
+    <div v-if="!demo">
+      <b-form inline @submit="onSubmit">
+        <label class="mr-sm-2" for="inline-form-custom-select-source">
+          {{ $t("factranker.filters.checkWorthyStatementsFrom") }}
+        </label>
+        <b-form-select
+          class="mb-2 mr-sm-2 mb-sm-0"
+          v-model="source_type"
+          @change="resetPageAndFetchTopCheckWorthy"
+          :options="source_options"
+          :disabled="demo"
+          id="inline-form-custom-select-source"
+        ></b-form-select>
 
-      <label class="mr-sm-2" for="inline-form-custom-select-country">
-        {{ $t("factranker.filters.madeBy") }}
-      </label>
-      <b-form-select
-        class="mb-1 mr-sm-1 mb-sm-0"
-        v-model="speaker_country"
-        @change="resetPageAndFetchTopCheckWorthy"
-        :options="country_options"
-		:disabled="demo"
-        id="inline-form-custom-select-country"
-      ></b-form-select>
-      <label class="mr-sm-2" for="inline-form-custom-select-country">
-        {{ $t("factranker.filters.speaker") }},
-      </label>
+        <label class="mr-sm-2" for="inline-form-custom-select-country">
+          {{ $t("factranker.filters.madeBy") }}
+        </label>
+        <b-form-select
+          class="mb-1 mr-sm-1 mb-sm-0"
+          v-model="speaker_country"
+          @change="resetPageAndFetchTopCheckWorthy"
+          :options="country_options"
+          :disabled="demo"
+          id="inline-form-custom-select-country"
+        ></b-form-select>
+        <label class="mr-sm-2" for="inline-form-custom-select-country">
+          {{ $t("factranker.filters.speaker") }},
+        </label>
 
-      <label class="mr-sm-2" for="inline-form-custom-select-time">
-        {{ $t("factranker.filters.during") }},
-      </label>
-      <b-form-select
-        class="mb-2 mr-sm-2 mb-sm-0"
-        @change="resetPageAndFetchTopCheckWorthy"
-        v-model="top_last"
-        :options="options"
-		:disabled="demo"
-        id="inline-form-custom-select-time"
-      ></b-form-select>
+        <label class="mr-sm-2" for="inline-form-custom-select-time">
+          {{ $t("factranker.filters.during") }},
+        </label>
+        <b-form-select
+          class="mb-2 mr-sm-2 mb-sm-0"
+          @change="resetPageAndFetchTopCheckWorthy"
+          v-model="top_last"
+          :options="options"
+          :disabled="demo"
+          id="inline-form-custom-select-time"
+        ></b-form-select>
 
-      <label class="mr-sm-2" for="inline-form-custom-select-time">
-        {{ $t("factranker.filters.sortBy") }}
-      </label>
-      <b-form-select
-        class="mb-2 mr-sm-2 mb-sm-0"
-        @change="resetPageAndFetchTopCheckWorthy"
-        v-model="sort_by"
-        :options="sort_options"
-		:disabled="demo"
-        id="inline-form-custom-select-time"
-      ></b-form-select>
-    </b-form>
+        <label class="mr-sm-2" for="inline-form-custom-select-time">
+          {{ $t("factranker.filters.sortBy") }}
+        </label>
+        <b-form-select
+          class="mb-2 mr-sm-2 mb-sm-0"
+          @change="resetPageAndFetchTopCheckWorthy"
+          v-model="sort_by"
+          :options="sort_options"
+          :disabled="demo"
+          id="inline-form-custom-select-time"
+        ></b-form-select>
+      </b-form>
 
-    <b-form @submit="onSubmit">
-      <label class="search-glass" for="inline-form-custom-select-search">
-        <icon name="search" scale="1" />
-      </label>
-      <b-form-input
-        class="search"
-        v-model="search_query"
-        :placeholder="$t('factranker.filters.search')"
-        type="search"
-		:disabled="demo"
-        id="inline-form-custom-select-search"
-      ></b-form-input>
-    </b-form>
-	</div>
+      <b-form @submit="onSubmit">
+        <label class="search-glass" for="inline-form-custom-select-search">
+          <icon name="search" scale="1" />
+        </label>
+        <b-form-input
+          class="search"
+          v-model="search_query"
+          :placeholder="$t('factranker.filters.search')"
+          type="search"
+          :disabled="demo"
+          id="inline-form-custom-select-search"
+        ></b-form-input>
+      </b-form>
+    </div>
     <results-table
       v-bind:results="top_results"
       :model_version="model_version"
@@ -94,35 +94,35 @@ import ResultsTable from "./ResultsTable";
 export default {
   name: "Ranker",
   props: {
-	limit: {
-		type: Number,
-		default: 30
+    limit: {
+      type: Number,
+      default: 30,
     },
-	top_last: {
-		type: String,
-		default: ""
-	},
-	speaker_country: {
-		type: String,
-		default: ""
-	},
-	source_type: {
-		type: String,
-		default: ""
-	},
-	search_query: {
-		type: String,
-		default: ""
-	},
-	sort_by: {
-		type: String,
-		default: ""
-   },
-	demo: {
-		type: Boolean,
-		default: false
-	}
-},
+    top_last: {
+      type: String,
+      default: "",
+    },
+    speaker_country: {
+      type: String,
+      default: "",
+    },
+    source_type: {
+      type: String,
+      default: "",
+    },
+    search_query: {
+      type: String,
+      default: "",
+    },
+    sort_by: {
+      type: String,
+      default: "",
+    },
+    demo: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       top_results: null,
@@ -326,20 +326,21 @@ export default {
     "results-table": ResultsTable,
   },
   mounted() {
-	if (!this.demo){
-    (this.top_last =
-      "limit" in this.$route.query ? this.$route.query.limit : ""),
-      (this.speaker_country =
-        "country" in this.$route.query ? this.$route.query.country : ""),
-      (this.source_type =
-        "type" in this.$route.query ? this.$route.query.type : ""),
-      (this.search_query = "q" in this.$route.query ? this.$route.query.q : ""),
-      (this.sort_by =
-        "sort" in this.$route.query ? this.$route.query.sort : ""),
-      (this.currentPage =
-        "page" in this.$route.query ? parseInt(this.$route.query.page) : 1),
-      (this.debug = this.$route.query.debug || false);
-	}
+    if (!this.demo) {
+      (this.top_last =
+        "limit" in this.$route.query ? this.$route.query.limit : ""),
+        (this.speaker_country =
+          "country" in this.$route.query ? this.$route.query.country : ""),
+        (this.source_type =
+          "type" in this.$route.query ? this.$route.query.type : ""),
+        (this.search_query =
+          "q" in this.$route.query ? this.$route.query.q : ""),
+        (this.sort_by =
+          "sort" in this.$route.query ? this.$route.query.sort : ""),
+        (this.currentPage =
+          "page" in this.$route.query ? parseInt(this.$route.query.page) : 1),
+        (this.debug = this.$route.query.debug || false);
+    }
     this.fetchTopCheckWorthy();
   },
 };
