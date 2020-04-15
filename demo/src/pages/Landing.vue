@@ -37,9 +37,9 @@
       </b-container>
     </div>
     <div class="bg-tertiary-color secondary-color">
-    <b-container class="rank-demo-view">
-      <h2>Claim Spotting.</h2>
-    </b-container>
+      <b-container class="rank-demo-view">
+        <h2>Claim Spotting.</h2>
+      </b-container>
     </div>
     <b-container class="rank-demo-view">
       <h3 id="subtitles">Subtitles</h3>
@@ -65,9 +65,11 @@
       </b-container>
     </div>
     <div class="spacing" />
-    <api sentence_input="Een arm kind heeft 7 maal meer kans op een C-attest dan gemiddeld.
+    <api
+      sentence_input="Een arm kind heeft 7 maal meer kans op een C-attest dan gemiddeld.
 Belgische vrouwen leveren 56 procent onbetaald werk.
-Aan een verslaving aan alcohol sterven meer mensen dan aan tabak." />
+Aan een verslaving aan alcohol sterven meer mensen dan aan tabak."
+    />
   </div>
 </template>
 

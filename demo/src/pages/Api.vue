@@ -107,7 +107,9 @@ export default {
     },
   },
   mounted() {
-    this.makePrediction(this.sentence_input);
+    if (this.sentence_input != "") {
+      this.makePrediction(this.sentence_input);
+    }
   },
 };
 </script>
