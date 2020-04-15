@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@1,900&display=swap");
 
 th,
 td {
