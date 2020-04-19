@@ -263,6 +263,9 @@ li:nth-child(4) {
   .speaker time {
     visibility: hidden;
   }
+  .btn-outline-primary {
+    margin-bottom: 20px;
+  }
   .bg-primary-color .btn-outline-primary {
     margin-bottom: 20px;
   }
