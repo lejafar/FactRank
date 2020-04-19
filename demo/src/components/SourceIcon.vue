@@ -141,4 +141,9 @@ img.f_parl {
   vertical-align: middle;
   max-height: 15px;
 }
+@media (max-width: 575px) {
+  .info {
+    margin-right: 10px;
+  }
+}
 </style>
