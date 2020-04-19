@@ -1,7 +1,97 @@
 {
-    "factranker": {
-        "filters": { 
-            "checkWorthyStatementsFrom": "Claims"
-        }
-    }
+	"factranker": {
+		"feedback": {
+			"negative": "Ik denk dat deze uitspraak GEEN fact-check waard is",
+			"positive": "Ik denk dat deze uitspraak een fact-check waard is"
+		},
+		"filters": {
+			"checkWorthyStatementsFrom": "Uitspraken van",
+			"during": "tijdens",
+			"limit": {
+				"allTime": "altijd",
+				"last24Hours": "laatste 24u",
+				"lastMonth": "laatste maand",
+				"lastWeek": "laatste week",
+				"lastYear": "laatste jaar"
+			},
+			"madeBy": "gemaakt door",
+			"search": "Zoek",
+			"sort": {
+				"relevance": "relevantie",
+				"score": "score",
+				"time": "tijd"
+			},
+			"sortBy": "sorteer op",
+			"source": {
+				"allSources": "Alle bronnen",
+				"belgianParliament": "Belgisch Parlement",
+				"deAfspraak": "De Afspraak",
+				"dutchParliament": "Nederlandse 2de Kamer",
+				"factcheckFlanders": "Factcheck Vlaanderen",
+				"factcheckers": "fact-checkers",
+				"flemishParliament": "Vlaams parlement",
+				"knackFactcheck": "Knack fact-check",
+				"nieuwscheckers": "Nieuwscheckers",
+				"parliament": "Parlement",
+				"social": "Sociale Media",
+				"subtitles": "Ondertitles",
+				"terzake": "Terzake",
+				"twitter": "Twitter"
+			},
+			"speaker": "spreker"
+		},
+		"results": {
+			"fact-checked": "fact-checked",
+			"statement": "Uitspraak"
+		}
+	},
+	"footer": {
+		"feedback": "We horen graag van jou indien je feedback hebt. Stuur ons een email via <a href='mailto:factrank@gmail.com?Subject=Feedback' target='_top'>factrank@gmail.com</a> en help misinformatie te bestrijden.",
+		"made": {
+			"comissioned": "in opdracht van Feitisj VZW, met de steun van het <a href='https://www.vlaamsjournalistiekfonds.be/'>Vlaams Journalistiek Fonds</a>",
+			"rafael": "Met veel ❤️gemaakt in Borgerhout door <a href='https://github.com/lejafar'>Rafael Hautekiet</a>"
+		}
+	},
+	"landing": {
+		"features": {
+			"feedback": "FactRank laat de gebruiker toe feedback te geven op gedetecteerde uitspraken om zichzelf te blijven verbeteren.",
+			"monitor": "FactRank monitort het publieke debat check-waardige uitspraken via ondertitels, transcripties en sociale media.",
+			"not": "FactRank is geen automatische fact-checker, of de uitspraak al dan niet klopt moet worden uitgemaakt door een fact-check.",
+			"tool": "FactRank laat toe om ook eigen bronnen te laten analyseren op feitelijk-relevante beweringen met onze"
+		},
+		"lead": "Automatische detectie van feitelijke beweringen die <u> een fact-check waard zijn</u>",
+		"sections": {
+			"matching": {
+				"lead": "match uitspraken die gemaakt worden aan {count} reeds bestaande fact-checks",
+				"title": "Claim Matching"
+			},
+			"spotting": {
+				"lead": "realtime monitor van het publieke debat",
+				"subsection": {
+					"parliament": "Parlement",
+					"social": "Sociale Media",
+					"subtitles": "Ondertitels"
+				},
+				"title": "Claim Spotting"
+			}
+		},
+		"show-more": "toon meer"
+	},
+	"menu-bar": {
+		"about": "Over",
+		"api": "API",
+		"press": "Pers",
+		"rank": "Rank",
+		"tool": "Tool"
+	},
+	"tool": {
+		"429": "API limiet van {max} requests per dag is bereikt",
+		"500": "Er liep iets mis langs onze kant, probeer het later a.u.b. opnieuw.",
+		"at-least": "Voer op zijn minst 6 woorden in",
+		"description": "Voer text in met een of meerdere uitspraken en kom te weten of deze volgens FactRank check-waardig zijn en of deze matchen met bestaande fact-checks.",
+		"enter-some-text": "Voer text in ...",
+		"enter-something": "Voer iets in",
+		"submit": "verstuur",
+		"thanks": "Bedankt!"
+	}
 }
