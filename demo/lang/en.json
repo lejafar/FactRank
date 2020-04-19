@@ -1,47 +1,97 @@
 {
-    "factranker": {
-		"content": {
-			"lead": "automatic identification of factual claims that are <u>worthy of a fact-check</u>"
+	"factranker": {
+		"feedback": {
+			"negative": "I think this statements is NOT Check-Worthy",
+			"positive": "I think this statements is Check-Worthy"
 		},
-        "filters": { 
-            "checkWorthyStatementsFrom": "Check-Worthy Factual Statements from",
-            "madeBy": "made by",
-            "speaker": "speaker",
-            "during": "during",
-            "sortBy": "sort by",
-			"search": "Search",
+		"filters": {
+			"checkWorthyStatementsFrom": "Claims from",
+			"during": "during",
 			"limit": {
+				"allTime": "all time",
 				"last24Hours": "last 24h",
-				"lastWeek": "last week",
 				"lastMonth": "last month",
-				"lastYear": "last year",
-				"allTime": "all time"
+				"lastWeek": "last week",
+				"lastYear": "last year"
 			},
-			"source": {
-				"social": "Social",
-				"allSources": "All sources",
-				"twitter": "Twitter",
-				"parliament": "Parliament",
-				"flemishParliament": "Flemish Parliament",
-				"belgianParliament": "Belgian Parliament",
-				"dutchParliament": "Dutch Parliament",
-				"subtitles": "Subtitles",
-				"terzake": "Terzake",
-				"deAfspraak": "De Afspraak",
-				"factcheckers": "Factcheckers",
-				"factcheckFlanders": "Factcheck Flanders",
-				"nieuwscheckers": "Nieuwscheckers",
-				"knackFactcheck": "Knack Factcheck"
-			},
+			"madeBy": "made by",
+			"search": "Search",
 			"sort": {
 				"relevance": "relevance",
-				"time": "time",
-				"score": "score"
+				"score": "score",
+				"time": "time"
+			},
+			"sortBy": "sort by",
+			"source": {
+				"allSources": "All sources",
+				"belgianParliament": "Belgian Parliament",
+				"deAfspraak": "De Afspraak",
+				"dutchParliament": "Dutch Parliament",
+				"factcheckFlanders": "Factcheck Flanders",
+				"factcheckers": "fact-checkers",
+				"flemishParliament": "Flemish Parliament",
+				"knackFactcheck": "Knack fact-check",
+				"nieuwscheckers": "Nieuwscheckers",
+				"parliament": "Parliament",
+				"social": "Social Media",
+				"subtitles": "Subtitles",
+				"terzake": "Terzake",
+				"twitter": "Twitter"
+			},
+			"speaker": "speaker"
+		},
+		"results": {
+			"fact-checked": "fact-checked",
+			"statement": "Statement"
+		}
+	},
+	"footer": {
+		"feedback": "if you have feedback, we’d love to hear from you. Send an email to <a href='mailto:factrank@gmail.com?Subject=Feedback' target='_top'>factrank@gmail.com</a> and help fight disinformation.",
+		"made": {
+			"comissioned": "comissioned by Feitisj VZW, with support of <a href='https://www.vlaamsjournalistiekfonds.be/'>Vlaams Journalistiek Fonds</a>",
+			"rafael": "Made with ❤️in Borgerhout by <a href='https://github.com/lejafar'>Rafael Hautekiet</a>"
+		}
+	},
+	"landing": {
+		"features": {
+			"feedback": "FactRank allows users to give feedback on identified claims in order to self-improve its deep-learning model.",
+			"monitor": "FactRank monitors the public debate for check-worthy claims using subtitles, transcripts and social media.",
+			"not": "FactRank is not an automatic fact-checker – whether the identified claims are true or false, has to be determined by a fact-check.",
+			"tool": "FactRank allows you to scan your own sources for claims that are factual and check-worthy, using our"
+		},
+		"lead": "Automatic identification of factual claims that are <u>worthy of a fact-check</u>",
+		"sections": {
+			"matching": {
+				"lead": "match claims that are being made to {count} already existing fact-checks",
+				"title": "Claim Matching"
+			},
+			"spotting": {
+				"lead": "real time monitor of the public debate",
+				"subsection": {
+					"parliament": "Parliament",
+					"social": "Social Media",
+					"subtitles": "Subtitles"
+				},
+				"title": "Claim Spotting"
 			}
-        }
-    },
-    "footer": {
-        "feedback": "if you have feedback, we’d love to hear from you. Send an email to <a href='mailto:factrank@gmail.com?Subject=Feedback' target='_top'>factrank@gmail.com</a> and help fight disinformation."
-    }
+		},
+		"show-more": "show more"
+	},
+	"menu-bar": {
+		"about": "About",
+		"api": "API",
+		"press": "Press",
+		"rank": "Rank",
+		"tool": "Tool"
+	},
+	"tool": {
+		"429": "API rate limit of {max} requests a day has been reached",
+		"500": "Something went wrong on our side, please try again in a while",
+		"at-least": "Enter at least 6 words",
+		"description": "Try one or more staments and see whether they appear Check-Whorty to FactRank en whether they match pre-existing fact-checks.",
+		"enter-some-text": "Enter some text ...",
+		"enter-something": "Please enter something",
+		"submit": "submit",
+		"thanks": "Thank you!"
+	}
 }
-

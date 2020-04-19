@@ -1,10 +1,9 @@
 <template>
   <footer class="footer">
     <b-container>
-      <p>
-        Made with ❤️ in Borgerhout by Rafael Hautekiet, comissioned by Feitsj
-        VZW
-      </p>
+      <vue-markdown>
+        {{ $t("footer.made.rafael") }}, {{ $t("footer.made.comissioned") }}
+      </vue-markdown>
       <vue-markdown>{{ $t("footer.feedback") }}</vue-markdown>
     </b-container>
   </footer>
@@ -28,7 +27,7 @@ export default {
 }
 </style>
 <style>
-.container > div > p > a {
+footer a {
   color: #1976d2 !important;
   text-decoration: underline;
 }

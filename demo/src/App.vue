@@ -21,6 +21,7 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@1,900&family=Roboto:ital,wght@0,400;1,300&display=swap");
+@import url("../node_modules/vue-code-highlight/themes/prism-solarizedlight.css");
 
 th,
 td {
@@ -178,6 +179,7 @@ footer.footer {
 }
 .main-content {
   margin-top: 2rem;
+  margin-bottom: 20px;
 }
 .spacing {
   height: 3rem;

@@ -7,28 +7,28 @@
       <span
         v-if="result.score > 0.99"
         v-b-tooltip.hover
-        :title="`AI-confidence: ${truncate(result.confidence)}`"
+        :title="`AI-confidence: ${truncate(result.score)}`"
       >
         🔥 Check-Worthy
       </span>
       <span
         v-else-if="result.score > 0.85"
         v-b-tooltip.hover
-        :title="`AI-confidence: ${truncate(result.confidence)}`"
+        :title="`AI-confidence: ${truncate(result.score)}`"
       >
         ✔︎ Check-Worthy
       </span>
       <span
         v-else-if="result.score > 0.5"
         v-b-tooltip.hover
-        :title="`AI-confidence: ${truncate(result.confidence)}`"
+        :title="`AI-confidence: ${truncate(result.score)}`"
       >
         Might be Check-Worthy
       </span>
       <span
         v-else
         v-b-tooltip.hover
-        :title="`AI-confidence: ${truncate(result.confidence)}`"
+        :title="`AI-confidence: ${truncate(result.score)}`"
       >
         ✘ Not Check-Worthy
       </span>
@@ -45,8 +45,8 @@
       >
         <b-spinner
           v-if="not_yet_fetched_feedback"
-          :variant="warning"
-          :key="warning"
+          variant="warning"
+          key="warning"
           type="grow"
         ></b-spinner>
         <span v-else-if="user_feedback">
@@ -54,7 +54,7 @@
             <b-button
               pill
               v-b-tooltip.hover
-              title="I think this statements is Check-Worthy"
+              :title="$t('factranker.feedback.positive')"
               @click="postAgreement($auth.user)"
               variant="success"
               class="vote-result"
@@ -65,7 +65,7 @@
             <b-button
               pill
               v-b-tooltip.hover
-              title="I think this statements is NOT Check-Worthy"
+              :title="$t('factranker.feedback.negative')"
               @click="postDisagreement($auth.user)"
               variant="outline-danger"
               class="vote-result"
@@ -78,7 +78,7 @@
             <b-button
               pill
               v-b-tooltip.hover
-              title="I think this statements is Check-Worthy"
+              :title="$t('factranker.feedback.positive')"
               @click="postAgreement($auth.user)"
               variant="outline-success"
               class="vote-result"
@@ -89,7 +89,7 @@
             <b-button
               pill
               v-b-tooltip.hover
-              title="I think this statements is NOT Check-Worthy"
+              :title="$t('factranker.feedback.negative')"
               @click="postDisagreement($auth.user)"
               variant="danger"
               class="vote-result"
@@ -103,7 +103,7 @@
           <b-button
             pill
             v-b-tooltip.hover
-            title="I think this statements is Check-Worthy"
+            :title="$t('factranker.feedback.positive')"
             @click="postAgreement($auth.user)"
             variant="outline-success"
             class="vote-result"
@@ -114,7 +114,7 @@
           <b-button
             pill
             v-b-tooltip.hover
-            title="I think this statements is NOT Check-Worthy"
+            :title="$t('factranker.feedback.negative')"
             @click="postDisagreement($auth.user)"
             variant="outline-danger"
             class="vote-result"
@@ -128,7 +128,7 @@
         <b-button
           pill
           v-b-tooltip.hover
-          title="I think this statements is Check-Worthy"
+          :title="$t('factranker.feedback.positive')"
           @click="login"
           variant="outline-success"
           class="vote-result"
@@ -139,7 +139,7 @@
         <b-button
           pill
           v-b-tooltip.hover
-          title="I think this statements is NOT Check-Worthy"
+          :title="$t('factranker.feedback.negative')"
           @click="login"
           variant="outline-danger"
           class="vote-result"

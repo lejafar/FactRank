@@ -13,7 +13,7 @@
         variant="secondary"
         :class="data.item.match.conclusion.toLowerCase()"
       >
-        fact-checked:
+        {{ $t("factranker.results.fact-checked") }}:
         <a :href="fix_url(data.item.match.url)" class="alert-link">
           “{{ data.item.match.statement }}”
           <source-icon :source="matchToSource(data.item.match)" />
@@ -100,7 +100,7 @@ export default {
         },
         {
           key: "extended_statement",
-          label: "Statement",
+          label: this.$t("factranker.results.statement"),
         },
       ],
     };
@@ -215,7 +215,7 @@ table.b-table[aria-busy="true"] {
   background-color: #f5f5f5 !important;
 }
 
-.grotendeels_waar {
+.grotendeels_waar, .waar {
   color: #155724 !important;
   background-color: #d4edda !important;
   border-color: #c3e6cb !important;

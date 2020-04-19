@@ -6,7 +6,9 @@ import FactRanker from '@/pages/FactRanker'
 import About from '@/pages/About'
 import Search from '@/pages/Search'
 import Press from '@/pages/Press'
+import Tool from '@/pages/Tool'
 import Api from '@/pages/Api'
+import Contact from '@/pages/Contact'
 
 Vue.use(Router)
 
@@ -22,6 +24,11 @@ export default new Router({
       path: '/rank',
       name: 'Factranker',
       component: FactRanker
+    },
+    {
+      path: '/tool',
+      name: 'Tool',
+      component: Tool
     },
     {
       path: '/about',
@@ -42,6 +49,11 @@ export default new Router({
       path: '/api',
       name: 'Api',
       component: Api
+    },
+    {
+      path: '/contact',
+      name: 'Contact',
+      component: Contact
     }
   ]
 })

@@ -14,21 +14,20 @@
         <b-navbar-brand to="/" @click="resetQuery">
           FactRank.
         </b-navbar-brand>
-        <!--<span class="subtitle"> - automatic identification of factual claims that are worthy of a fact-check -</span>-->
-        <!--<b-badge v-if="$branch_version" pill variant="warning">{{$api_version}} : {{$branch_version}}</b-badge>-->
-        <!--<b-badge v-else pill variant="warning">{{$api_version}}</b-badge>-->
         <b-collapse is-nav id="nav_collapse">
-          <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
             <b-navbar-nav>
-              <b-nav-item @click="resetQuery" to="/rank" exact>Rank</b-nav-item>
-              <b-nav-item to="/about">About</b-nav-item>
-              <b-nav-item to="/press">Press</b-nav-item>
+              <b-nav-item @click="resetQuery" to="/rank" exact>
+                {{ $t("menu-bar.rank") }}
+              </b-nav-item>
+              <b-nav-item to="/tool">{{ $t("menu-bar.tool") }}</b-nav-item>
+              <b-nav-item to="/about">{{ $t("menu-bar.about") }}</b-nav-item>
+              <b-nav-item to="/press">{{ $t("menu-bar.press") }}</b-nav-item>
+              <b-nav-item to="/api">{{ $t("menu-bar.api") }}</b-nav-item>
               <b-nav-item href="https://github.com/lejafar/factrank">
                 <icon name="brands/github" />
               </b-nav-item>
             </b-navbar-nav>
-            <!-- <b-button variant="outline-primary" to="/demo" id="try_it">Input text</b-button> -->
           </b-navbar-nav>
         </b-collapse>
       </b-container>
