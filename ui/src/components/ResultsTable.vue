@@ -215,7 +215,8 @@ table.b-table[aria-busy="true"] {
   background-color: #f5f5f5 !important;
 }
 
-.grotendeels_waar, .waar {
+.grotendeels_waar,
+.waar {
   color: #155724 !important;
   background-color: #d4edda !important;
   border-color: #c3e6cb !important;

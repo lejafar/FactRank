@@ -71,18 +71,24 @@
       </b-container>
     </div>
     <b-container class="rank-demo-view">
-      <h3>{{ $t("landing.spotting.subsection.social") }}</h3>
+      <h3>{{ $t("landing.sections.spotting.subsection.social") }}</h3>
       <ranker :limit="5" source_type="TWITTER" :demo="true" />
       <b-button pill to="/rank?type=TWITTER" variant="outline-primary">
         {{ $t("landing.show-more") }}
       </b-button>
     </b-container>
     <div class="bg-primary-color secondary-color">
-      <b-container class="rank-demo-view section-dark">
+      <b-container class="rank-demo-view section section-dark">
         <a href="/tool">
           <h2>{{ $t("landing.sections.matching.title") }}</h2>
         </a>
-        <p>{{ $t("landing.sections.matching.lead", {'count': this.factcheck_count }) }}</p>
+        <p>
+          {{
+            $t("landing.sections.matching.lead", {
+              count: this.factcheck_count,
+            })
+          }}
+        </p>
       </b-container>
     </div>
     <div class="spacing" />
@@ -105,10 +111,10 @@ export default {
     api: Api,
   },
   data() {
-	return {
-		'factcheck_count': ''
-	}
- },
+    return {
+      factcheck_count: "",
+    };
+  },
   methods: {
     fetchFactCheckCount() {
       fetch(this.$api_url + "/search", {
@@ -125,13 +131,13 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-			this.factcheck_count = data.total;
-		});
+          this.factcheck_count = data.total;
+        });
     },
   },
   mounted() {
-	this.fetchFactCheckCount();
- }
+    this.fetchFactCheckCount();
+  },
 };
 </script>
 
@@ -242,8 +248,6 @@ li:nth-child(4) {
 }
 .section-dark > p {
   color: #ffffff;
-  text-align: center;
-  font-style: italic;
 }
 
 @media (max-width: 575px) {
@@ -258,6 +262,9 @@ li:nth-child(4) {
   }
   .speaker time {
     visibility: hidden;
+  }
+  .bg-primary-color .btn-outline-primary {
+    margin-bottom: 20px;
   }
 }
 </style>
