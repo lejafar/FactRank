@@ -31,9 +31,23 @@ Vue.component('pdf', pdf)
 
 import VueMoment from 'vue-moment'
 import moment from 'moment-timezone'
-//require('moment/locale/nl')
+require('moment/locale/nl')
 Vue.use(VueMoment, {
         moment,
+})
+
+import VueI18n from 'vue-i18n'
+Vue.use(VueI18n)
+
+import { languages } from '../lang/index.js'
+const messages = {...languages}
+
+Vue.config.productionTip = false
+
+const i18n = new VueI18n({
+  locale: (navigator.language || navigator.userLanguage).split('-')[0],
+  fallbackLocale: 'en',
+  messages
 })
 
 // Import the Auth0 configuration
@@ -55,7 +69,12 @@ Vue.use(Auth0Plugin, {
   }
 });
 
+import VueCodeHighlight from 'vue-code-highlight';
+ 
+Vue.use(VueCodeHighlight) //registers the v-highlight directive
+
 new Vue({
+  i18n,
   router,
   render: h => h(App),
 }).$mount('#app')
