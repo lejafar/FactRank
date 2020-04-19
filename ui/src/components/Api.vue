@@ -85,7 +85,7 @@ export default {
       }
     },
     validFeedback() {
-      return this.state === true ? this.$t('tool.thanks') : "";
+      return this.state === true ? this.$t("tool.thanks") : "";
     },
   },
   methods: {
