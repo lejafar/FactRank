@@ -11,8 +11,7 @@ When a statement can be matched to an existing fact-check it will also be return
 <div v-highlight >
 <pre class="language-bash"><code>curl -X POST https://api-v2.factrank.org/ \
 	 -H "Content-Type: application/json" \
-	 -d '{"text": "Een Arm kind heeft meer kans op een C-attest. \
-                   Maar daar geloof ik persoonlijk niet veel van."}'
+	 -d '{"text": "Een Arm kind heeft meer kans op een C-attest. Maar daar geloof ik persoonlijk niet veel van."}'
 </code></pre>
 <pre class="language-javascript"><code>[
   {
