@@ -79,11 +79,11 @@
         </p>
       </b-container>
     </div>
-    <div class="spacing" />
+    <b-container class="rank-demo-view no-bottom-padding">
+    <p v-html="$t('landing.sections.matching.info')"/>
+    </b-container>
     <api
-      sentence_input="Dit is een voorbeeld text, waarin enkele beweringen staan die sterk lijken op reed gepubliceerde fact-checks. 
-
-Zeventig procent van de mensen die asiel aanvragen in Nederland, heeft daar geen recht op. Belgische vrouwen leveren blijkbaar ook 56 procent onbetaald werk. En aan een verslaving aan alcohol sterven meer mensen dan aan tabak."
+      sentence_input="Zeventig procent van de mensen die asiel aanvragen in Nederland, heeft daar geen recht op. Belgische vrouwen leveren blijkbaar ook 56 procent onbetaald werk. En aan een verslaving aan alcohol sterven meer mensen dan aan tabak."
     />
   </div>
 </template>
@@ -202,7 +202,10 @@ li:nth-child(4) {
   }
 }
 .rank-demo-view {
-  padding: 2rem 0rem;
+  padding: 2rem 1rem;
+}
+.no-bottom-padding {
+  padding-bottom: 0rem;
 }
 .btn-outline-primary {
   color: #1976d2;

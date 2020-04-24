@@ -65,6 +65,7 @@
 		"lead": "Automatic identification of factual claims that are <u>worthy of a fact-check</u>",
 		"sections": {
 			"matching": {
+				"info": "The following example text contains a few statements that are very similar to existing fact-checks in our database:",
 				"lead": "match claims that are being made to {count} already existing fact-checks",
 				"title": "Claim Matching"
 			},
