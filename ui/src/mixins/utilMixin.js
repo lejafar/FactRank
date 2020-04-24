@@ -13,7 +13,11 @@ export default {
           return datestring.slice(0, -5);
       }
       if (short) {
-          return published_at.calendar(null, { lastWeek: `LL`, sameElse: `LL` }).slice(0, -5);
+          let datestring = published_at.calendar(null, { lastWeek: `LL`, sameElse: `LL` })
+          if (datestring.includes('om')){
+              return datestring.slice(0, -8);
+          }
+          return datestring.slice(0, -5);
       } else {
           return published_at.calendar(null, { sameElse: `LLL` });
       }
