@@ -4,7 +4,7 @@ Wij bieden een open API aan met een limiet van 200 aanvragen per dag.
 
 #### `/` endpoint
 
-Dit endpoint laat toe om text te versturen, die vervolgens wordt opgesplits in individuele beweringen en gesorteerd volgens checkwaardigheids <kbd>score</kbd>. 
+Dit endpoint laat toe om text te versturen, die vervolgens wordt opgesplitst in individuele beweringen en gesorteerd volgens checkwaardigheids <kbd>score</kbd>. 
 
 Wanneer een bewering kan gematched worden aan een reeds gepubliceerde fact-check uit onze database wordt deze ook teruggegeven.
 

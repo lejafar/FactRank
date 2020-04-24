@@ -1,7 +1,10 @@
 {
 	"factranker": {
 		"feedback": {
+			"check-worthy": "check-worthy",
+			"might-be-check-worthy": "might be check-worthy",
 			"negative": "I think this statements is NOT Check-Worthy",
+			"not-check-worthy": "not check-worthy",
 			"positive": "I think this statements is Check-Worthy"
 		},
 		"filters": {
@@ -27,7 +30,7 @@
 				"belgianParliament": "Belgian Parliament",
 				"deAfspraak": "De Afspraak",
 				"dutchParliament": "Dutch Parliament",
-				"factcheckFlanders": "Factcheck Flanders",
+				"factcheckFlanders": "Fact-check Flanders",
 				"factcheckers": "fact-checkers",
 				"flemishParliament": "Flemish Parliament",
 				"knackFactcheck": "Knack fact-check",
@@ -46,18 +49,18 @@
 		}
 	},
 	"footer": {
-		"feedback": "if you have feedback, we’d love to hear from you. Send an email to <a href='mailto:factrank@gmail.com?Subject=Feedback' target='_top'>factrank@gmail.com</a> and help fight disinformation.",
+		"feedback": "If you have feedback, we’d love to hear from you. <a href=\"/contact\">Contact us</a> and help fight disinformation.",
 		"made": {
-			"comissioned": "comissioned by Feitisj VZW, with support of <a href='https://www.vlaamsjournalistiekfonds.be/'>Vlaams Journalistiek Fonds</a>",
-			"rafael": "Made with ❤️in Borgerhout by <a href='https://github.com/lejafar'>Rafael Hautekiet</a>"
+			"comissioned": "under the management of Feitisj VZW, with support of <a href='https://www.vlaamsjournalistiekfonds.be/'>Vlaams Journalistiek Fonds</a>",
+			"rafael": "Made with ❤️ in Borgerhout by <a href='https://github.com/lejafar'>Rafael Hautekiet</a>"
 		}
 	},
 	"landing": {
 		"features": {
-			"feedback": "FactRank allows users to give feedback on identified claims in order to self-improve its deep-learning model.",
-			"monitor": "FactRank monitors the public debate for check-worthy claims using subtitles, transcripts and social media.",
-			"not": "FactRank is not an automatic fact-checker – whether the identified claims are true or false, has to be determined by a fact-check.",
-			"tool": "FactRank allows you to scan your own sources for claims that are factual and check-worthy, using our"
+			"feedback": "FactRank allows users to give feedback on identified claims in order to do a better job in the future",
+			"monitor": "FactRank monitors the public debate for check-worthy claims using subtitles, transcripts and social media",
+			"not": "FactRank is not an automatic fact-checker – whether the identified claims are true or false, has to be determined by a fact-check",
+			"tool": "FactRank allows you to <a href=\"/api\" class=\"landing-link\">enter your own text</a> and have it searched for claims that are factual and check-worthy"
 		},
 		"lead": "Automatic identification of factual claims that are <u>worthy of a fact-check</u>",
 		"sections": {
@@ -88,7 +91,7 @@
 		"429": "API rate limit of {max} requests a day has been reached",
 		"500": "Something went wrong on our side, please try again in a while",
 		"at-least": "Enter at least 6 words",
-		"description": "Try one or more staments and see whether they appear Check-Whorty to FactRank en whether they match pre-existing fact-checks.",
+		"description": "Try one or more statements and see whether they appear Check-Worthy to FactRank en whether they match pre-existing fact-checks.",
 		"enter-some-text": "Enter some text ...",
 		"enter-something": "Please enter something",
 		"submit": "submit",

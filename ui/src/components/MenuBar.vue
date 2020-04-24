@@ -24,6 +24,8 @@
               <b-nav-item to="/about">{{ $t("menu-bar.about") }}</b-nav-item>
               <b-nav-item to="/press">{{ $t("menu-bar.press") }}</b-nav-item>
               <b-nav-item to="/api">{{ $t("menu-bar.api") }}</b-nav-item>
+              <b-nav-item v-if="this.$i18n.locale.includes('nl')" @click="switchLang('en')"><u>NL</u> / EN</b-nav-item>
+              <b-nav-item v-else @click="switchLang('nl')">NL / <u>EN</u></b-nav-item>
               <b-nav-item href="https://github.com/lejafar/factrank">
                 <icon name="brands/github" />
               </b-nav-item>
@@ -42,11 +44,6 @@
 <script>
 export default {
   name: "MenuBar",
-  data() {
-    return {
-      search_query: "",
-    };
-  },
   methods: {
     resetQuery() {
       this.$router.push({
@@ -54,7 +51,17 @@ export default {
       });
       this.$router.go();
     },
+    switchLang(local) {
+        localStorage.lang = local;
+        this.$i18n.locale = local;
+    },
   },
+  mounted() {
+    if (localStorage.getItem("lang") === null) {
+        localStorage.lang = (navigator.language || navigator.userLanguage).split('-')[0];
+    }
+    this.$i18n.locale = localStorage.lang;
+  }
 };
 </script>
 

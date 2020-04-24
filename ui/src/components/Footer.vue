@@ -1,10 +1,8 @@
 <template>
   <footer class="footer">
     <b-container>
-      <vue-markdown>
-        {{ $t("footer.made.rafael") }}, {{ $t("footer.made.comissioned") }}
-      </vue-markdown>
-      <vue-markdown>{{ $t("footer.feedback") }}</vue-markdown>
+      <div><span v-html="$t('footer.made.rafael')"/>, <span v-html="$t('footer.made.comissioned')"/></div>
+      <div v-html="$t('footer.feedback')"></div>
     </b-container>
   </footer>
 </template>

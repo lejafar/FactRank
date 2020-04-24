@@ -20,7 +20,7 @@ Fact-checkers, journalists, researchers, and others – whoever feels like it �
 - As a tool to [search](/rank) a large number of sources for useful claims to fact-check. Enter a search term, select the country (🇧🇪/🇳🇱), time period, etc.
 - As a database of claims that have already been fact-checked by [Knack](https://www.knack.be/nieuws/factchecker/), [Factcheck Vlaanderen](https://factcheck.vlaanderen/) and [Nieuwscheckers](https://nieuwscheckers.nl/).
 - As a tool to search for check-worthy claims in Dutch-language texts that [you enter yourself](/tool) (for example interviews or speeches). 
-- Last but not least, FactRank also offers the unique possibility to [do keyword searches](/rank?type=VRT_TERZAKE,VRT_DE_AFSPRAAK) in the subtitles of the Flemish public television broadcaster VRT’s news-analysis programmes Terzake and De Afspraak.
+- Last but not least, FactRank also offers the unique possibility to [do keyword searches](/rank?type=VRT_TERZAKE,VRT_DE_AFSPRAAK) in the subtitles of the Flemish public television broadcaster VRT’s news-analysis programmes Terzake and De Afspraak and in the tweets of all Dutch and Flemish members of parliament.
 
 This is not an exhaustive list of all possible applications of FactRank. If you use the tool in a different way, we’d love to hear from you. Please [contact](/contact) us.
 
@@ -28,7 +28,7 @@ This is not an exhaustive list of all possible applications of FactRank. If you 
 
 FactRank uses a deep-learning model that has been trained on thousands of statements, manually labeled by students of the University of Leiden in turn trained by experts in the field of fact-checking.
 
-We've also made sure to "close the loop" in that we collect user feedback which - using periodic retraining of the deep-learning model - results in continuous self-improvement, without further labeling cost. You can find a more in-depth description in our article [FactRank: Developing Automated Claim Detection for Dutch-Language Fact-Checkers](https://people.cs.kuleuven.be/~bettina.berendt/FactRank/).
+We've also made sure to "close the loop" in that we collect user feedback which - using periodic retraining of the deep-learning model - results in continuous self-improvement. You can find a more in-depth description in our article [FactRank: Developing Automated Claim Detection for Dutch-Language Fact-Checkers](https://people.cs.kuleuven.be/~bettina.berendt/FactRank/).
 
 ### Who created FactRank?
 

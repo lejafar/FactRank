@@ -22,7 +22,7 @@
           v-model="speaker_country"
           @change="resetPageAndFetchTopCheckWorthy"
           :options="country_options"
-          :disabled="demo"
+          :disabled="demo || no_country"
           id="inline-form-custom-select-country"
         ></b-form-select>
         <label class="mr-sm-2" for="inline-form-custom-select-country">
@@ -162,6 +162,7 @@ export default {
           text: "🇳🇱",
         },
       ],
+      no_country: false,
       source_options: [
         {
           value: "",
@@ -287,8 +288,19 @@ export default {
     },
     fetchTopCheckWorthy() {
       // fix some incompatibilities
-      if (this.source_type != "TWITTER") {
-        this.speaker_country = "";
+      if (this.source_type == "TWITTER" || this.source_type == "") {
+        this.no_country = false;
+      } else {
+        if (this.source_type.includes("BELGIAN") || this.source_type.includes("FLEMISH")) {
+            this.speaker_country = "BE";
+        }
+        else if (this.source_type.includes("DUTCH")) {
+            this.speaker_country = "NL";
+        }
+        else {
+            this.speaker_country = "";
+        }
+        this.no_country = true;
       }
 
       this.top_results = null;
@@ -394,5 +406,10 @@ label.search-glass {
     -moz-box-shadow: none;
     box-shadow: none;
   }
+}
+@media (min-width: 576px) {
+    #inline-form-custom-select-country {
+        border-radius: 5px;
+    }
 }
 </style>
