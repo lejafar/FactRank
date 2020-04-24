@@ -9,28 +9,28 @@
         v-b-tooltip.hover
         :title="`AI-confidence: ${truncate(result.score)}`"
       >
-        🔥 Check-Worthy
+        🔥 {{ $t('factranker.feedback.check-worthy') }}
       </span>
       <span
         v-else-if="result.score > 0.85"
         v-b-tooltip.hover
         :title="`AI-confidence: ${truncate(result.score)}`"
       >
-        ✔︎ Check-Worthy
+         ✔︎  {{ $t('factranker.feedback.check-worthy') }}
       </span>
       <span
         v-else-if="result.score > 0.5"
         v-b-tooltip.hover
         :title="`AI-confidence: ${truncate(result.score)}`"
       >
-        Might be Check-Worthy
+        {{ $t('factranker.feedback.might-be-check-worthy') }}
       </span>
       <span
         v-else
         v-b-tooltip.hover
         :title="`AI-confidence: ${truncate(result.score)}`"
       >
-        ✘ Not Check-Worthy
+        ✘ {{ $t('factranker.feedback.not-check-worthy') }}
       </span>
     </p>
     <template v-if="doesHaveVotes">

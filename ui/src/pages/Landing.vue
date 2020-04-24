@@ -4,25 +4,13 @@
       <b-container class="factrank-info">
         <b-jumbotron>
           <h3>
-            <vue-markdown class="navbar-subtitle">
-              {{ $t("landing.lead") }}
-            </vue-markdown>
+              <div class="navbar-subtitle" v-html="$t('landing.lead')"></div>
           </h3>
           <ul class="features">
-            <li class="yes">
-              {{ $t("landing.features.monitor") }}
-            </li>
-            <li class="yes">
-              {{ $t("landing.features.feedback") }}
-            </li>
-            <li class="yes">
-              {{ $t("landing.features.tool") }}
-              <b-link to="/tool" class="landing-link">tool</b-link>
-              .
-            </li>
-            <li class="no">
-              {{ $t("landing.features.not") }}
-            </li>
+            <li class="yes" v-html='$t("landing.features.monitor")'/>
+            <li class="yes" v-html='$t("landing.features.feedback")'/>
+            <li class="yes" v-html='$t("landing.features.tool")'/>
+            <li class="no" v-html='$t("landing.features.not")'/>
           </ul>
         </b-jumbotron>
         <div class="spacing bg-primary-color" />
@@ -155,16 +143,11 @@ export default {
   font-style: italic;
   margin-bottom: 0rem;
 }
-
 .rank-demo-view h2 {
   text-align: center;
 }
 .rank-demo-view a {
   text-decoration: none;
-}
-a.landing-link {
-  color: #ffffff !important;
-  text-decoration: underline;
 }
 .main-content {
   margin-top: 0rem;
@@ -269,5 +252,11 @@ li:nth-child(4) {
   .bg-primary-color .btn-outline-primary {
     margin-bottom: 20px;
   }
+}
+</style>
+<style>
+a.landing-link {
+      color: #ffffff !important;
+        text-decoration: underline;
 }
 </style>
