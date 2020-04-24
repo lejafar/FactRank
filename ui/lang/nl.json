@@ -65,6 +65,7 @@
 		"lead": "Automatische detectie van feitelijke beweringen die <u> een factcheck waard zijn</u>",
 		"sections": {
 			"matching": {
+				"info": "In volgende voorbeeld tekst staan enkele beweringen staan die sterk lijken op reed gepubliceerde factchecks in onze database:",
 				"lead": "match uitspraken die gemaakt worden aan {count} reeds bestaande factchecks",
 				"title": "Claim Matching"
 			},
