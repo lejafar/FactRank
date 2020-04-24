@@ -4,7 +4,7 @@ FactRank is een gratis tool die uit verslagen van parlementaire debatten en uit 
 
 FactRank rangschikt beweringen op volgorde van ‘checkwaardigheid’: bovenaan staan beweringen die zowel feitelijk zijn als maatschappelijk relevant. 
 
-FactRank laat ook toe om [eigen text](/tool) invoer te doorzoeken op checkwaardige beweringen. De text wordt opgesplitst in individuele beweringen waarvan enerzijds de checkwaardigheid wordt beoordeeld en anderzijds tracht FactRank elke bewering te matchen aan (momenteel zo'n 360) reeds gepubliceerde fact-checks in [Knack](https://www.knack.be/nieuws/factchecker/), [Factcheck Vlaanderen](https://factcheck.vlaanderen/) en [Nieuwscheckers](https://nieuwscheckers.nl/).
+FactRank laat ook toe om [eigen text](/tool) in te voeren en te laten doorzoeken op checkwaardige beweringen. De text wordt opgesplitst in individuele beweringen waarvan de checkwaardigheid wordt beoordeeld. Ook kijkt FactRank of het een bewering kan matchen aan een reeds gepubliceerde fact-checks in [Knack](https://www.knack.be/nieuws/factchecker/), [Factcheck Vlaanderen](https://factcheck.vlaanderen/) en [Nieuwscheckers](https://nieuwscheckers.nl/).
 
 Tools als FactRank bestonden reeds al voor andere talen (bijvoorbeeld [Claimbuster](https://idir.uta.edu/claimbuster/)).
 
@@ -20,15 +20,15 @@ Factcheckers, journalisten, onderzoekers en anderen – u, kortom, kunt FactRank
 - als tool om efficiënt grote aantallen beweringen te [doorzoeken](/rank) op bruikbaarheid voor een factcheck. Vul een zoekterm in, selecteer een land (🇧🇪/🇳🇱), een periode, etc.
 - als database van beweringen die zijn gecheckt door [Knack](https://www.knack.be/nieuws/factchecker/), [Factcheck Vlaanderen](https://factcheck.vlaanderen/) en [Nieuwscheckers](https://nieuwscheckers.nl/).
 - als tool om Nederlandstalige teksten (bijvoorbeeld interviews of speeches) die u [zelf invoert](/tool) te doorzoeken op beweringen die het checken waard zijn. 
-- ten slotte biedt FactRank de unieke mogelijkheid om [op trefwoord te zoeken]((/rank?type=VRT_TERZAKE,VRT_DE_AFSPRAAK)) in bijvoorbeeld de ondertitels van de VRT-actualiteitsprogramma’s Terzake en De Afspraak.
+- ten slotte biedt FactRank de unieke mogelijkheid om [op trefwoord te zoeken](/rank?type=VRT_TERZAKE,VRT_DE_AFSPRAAK) in bijvoorbeeld de ondertitels van de VRT-actualiteitsprogramma’s Terzake en De Afspraak alsook in tweets van alle Nederlandse en Vlaamse parlementsleden.
 
 Hiermee zijn de mogelijke toepassingen van FactRank niet uitgeput: als u de tool op een andere manier benut, [horen we het graag](/contact).
 
 ### Hoe werkt FactRank?
 
-FactRank gebruikt een deep-learning model getrained op duizenden uitspraken, handmatig gelabeld door door studenten van de Universiteit Leiden, die op hun beurt werden opgeleid door experten op het gebied van journalistiek en factchecken.
+FactRank gebruikt een deep-learning model getraind op duizenden uitspraken, handmatig gelabeld door studenten van de Universiteit Leiden, die op hun beurt werden opgeleid door experten op het gebied van journalistiek en factchecken.
 
-We hebben er ook voor gezorgd dat FactRank zichzelf kan blijven verbeteren door feedback van de gebruikers te verzamelen, deze zorgt in combinatie met periodieke hertraining van het deep-learning model voor een continue verbetering zonder de nood voor kostelijke data labeling. Een uitgebreidere verantwoording vindt u in ons artikel [FactRank: Developing Automated Claim Detection for Dutch-Language Fact-Checkers](https://people.cs.kuleuven.be/~bettina.berendt/FactRank/).
+We hebben er ook voor gezorgd dat FactRank zichzelf kan blijven verbeteren door feedback van gebruikers te verzamelen. Deze zorgt in combinatie met periodieke hertraining van het deep-learning model, voor een continue verbetering. Een uitgebreidere verantwoording vindt u in ons artikel [FactRank: Developing Automated Claim Detection for Dutch-Language Fact-Checkers](https://people.cs.kuleuven.be/~bettina.berendt/FactRank/).
 
 ### Wie maakten FactRank?
 
@@ -36,11 +36,11 @@ FactRank begon als project van Brecht Laperre, Ivo Merchiers en [Rafael Hautekie
 
 Als eerste stap ontwikkelden ze een algoritme dat automatisch feitelijke beweringen kon identificeren die een factcheck waard waren. Als zulke beweringen betrouwbaar kunnen worden geïdentificeerd, kunnen ze worden doorgestuurd naar het volgende stadium van het factcheckproces, waarin ze worden geverifieerd. 
 
-Voor de detectie van ‘checkwaardige’ claims werd een machine learning systeem op basis van [1800 met de hand geclassificeerde beweringen]((https://github.com/factrank/FactRank/blob/master/data/sentences_dump_28.12.csv)) getraind om van beweringen te voorspellen hoe waarschijnlijk het was dat ze checkwaardig zijn. 
+Voor de detectie van ‘checkwaardige’ claims werd een machine learning systeem op basis van [1800 met de hand geclassificeerde beweringen](https://github.com/factrank/FactRank/blob/master/data/sentences_dump_28.12.csv) getraind om van beweringen te voorspellen hoe waarschijnlijk het was dat ze checkwaardig zijn. 
 
-Dit leverde een werkend prototype op dat gedurende 2019 werd verbeterd: de tool is nauwkeuriger en put uit een grotere dataset gelabelde beweringen. Dit is mogelijk gemaakt door een [subsidie]((https://www.vlaamsjournalistiekfonds.be/500000-euro-subsidie-voor-innoverende-journalistiek) van € 39.869 die FactRank in december 2018 ontving van het Vlaams Journalistiek Fonds. 
+Dit leverde een werkend prototype op dat gedurende 2019 werd verbeterd: de tool is nauwkeuriger en put uit een grotere dataset gelabelde beweringen. Dit is mogelijk gemaakt door een [subsidie](https://www.vlaamsjournalistiekfonds.be/500000-euro-subsidie-voor-innoverende-journalistiek) van € 39.869 die FactRank in december 2018 ontving van het Vlaams Journalistiek Fonds. 
 
-Deze nieuwe fase van het project, die in maart 2020 werd afgesloten, is het resultaat van Vlaams-Nederlands teamwork. Onder leiding van freelance journalist dr. Jan Jagers (fact-checker van [Knack Magazine](https://www.knack.be) en [docent journalistiek]((https://www.vub.ac.be/people/jan-jagers) aan de Vrije Universiteit Brussel) werkten mee: [dr. Peter Burger](https://www.universiteitleiden.nl/en/staffmembers/peter-burger#tab-1) en [dr. Alexander Pleijter](https://www.universiteitleiden.nl/medewerkers/alexander-pleijter#tab-1) (Nieuwscheckers.nl, Universiteit Leiden), [prof. dr. Peter Van Aelst](https://www.uantwerpen.be/nl/personeel/peter-vanaelst/) (Universiteit Antwerpen), [prof. dr. Bettina Berendt](https://people.cs.kuleuven.be/~bettina.berendt/) (KU Leuven en TU Berlijn) en machine learning engineer [Rafael Hautekiet](https://github.com/lejafar).
+Deze nieuwe fase van het project, die in maart 2020 werd afgesloten, is het resultaat van Vlaams-Nederlands teamwork. Onder leiding van freelance journalist dr. Jan Jagers (fact-checker van [Knack Magazine](https://www.knack.be) en [docent journalistiek](https://www.vub.ac.be/people/jan-jagers) aan de Vrije Universiteit Brussel) werkten mee: [dr. Peter Burger](https://www.universiteitleiden.nl/en/staffmembers/peter-burger#tab-1) en [dr. Alexander Pleijter](https://www.universiteitleiden.nl/medewerkers/alexander-pleijter#tab-1) (Nieuwscheckers.nl, Universiteit Leiden), [prof. dr. Peter Van Aelst](https://www.uantwerpen.be/nl/personeel/peter-vanaelst/) (Universiteit Antwerpen), [prof. dr. Bettina Berendt](https://people.cs.kuleuven.be/~bettina.berendt/) (KU Leuven en TU Berlijn) en machine learning engineer [Rafael Hautekiet](https://github.com/lejafar).
 
 ![logo_vjf](/assets/logo_VJF.jpg)
 
