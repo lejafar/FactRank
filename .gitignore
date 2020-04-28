@@ -1,5 +1,6 @@
 __pycache__/
 tools/credentials.py
+auth_config.json
 
 .DS_Store
 node_modules
@@ -22,3 +23,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# virtual environmentns
+.venv
