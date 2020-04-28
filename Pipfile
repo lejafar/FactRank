@@ -1,0 +1,24 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pyyaml = "*"
+sklearn = "*"
+pandas = "*"
+spacy = "*"
+dickens = "*"
+torch = "==1.1.0"
+dataclasses = "*"
+torchtext = {git = "ssh://git@github.com/pytorch/text.git"}
+factrank = {editable = true,path = "."}
+gensim = "*"
+matplotlib = "*"
+pytest = "*"
+
+[requires]
+python_version = "3.6"
+
+[packages]
+click = "*"
