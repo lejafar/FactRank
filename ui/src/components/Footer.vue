@@ -1,8 +1,8 @@
 <template>
   <footer class="footer">
     <b-container>
-      <div><span v-html="$t('footer.made.rafael')"/>, <span v-html="$t('footer.made.comissioned')"/></div>
-      <div v-html="$t('footer.feedback')"></div>
+      <p><span v-html="$t('footer.made.rafael')"/>, <span v-html="$t('footer.made.comissioned')"/></p>
+      <p v-html="$t('footer.feedback')"></p>
     </b-container>
   </footer>
 </template>
