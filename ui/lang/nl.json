@@ -2,7 +2,7 @@
 	"factranker": {
 		"feedback": {
 			"check-worthy": "checkwaardig",
-			"might-be-check-worthy": "mogelijks checkwaardig",
+			"might-be-check-worthy": "misschien checkwaardig",
 			"negative": "Ik denk dat deze uitspraak GEEN factcheck waard is",
 			"not-check-worthy": "niet checkwaardig",
 			"positive": "Ik denk dat deze uitspraak een factcheck waard is"
@@ -49,9 +49,9 @@
 		}
 	},
 	"footer": {
-		"feedback": "We horen graag van jou indien je feedback hebt. <a href=\"/contact\">Contacteer ons</a> en help misinformatie te bestrijden.",
+		"feedback": "Hebt u feedback? <a href=\"/contact\">Mail ’m ons</a>, en help daarmee in de strijd tegen desinformatie.",
 		"made": {
-			"comissioned": "onder beheer van Feitisj VZW, met de steun van het <a href='https://www.vlaamsjournalistiekfonds.be/'>Vlaams Journalistiek Fonds</a>",
+			"comissioned": "onder beheer van Feitisj VZW, met de steun van het <a href='https://www.vlaamsjournalistiekfonds.be/'>Vlaams Journalistiek Fonds</a> (7/2/2019)",
 			"rafael": "Met veel ❤️ gemaakt in Borgerhout door <a href='https://github.com/lejafar'>Rafael Hautekiet</a>"
 		}
 	},
@@ -65,7 +65,7 @@
 		"lead": "Automatische detectie van feitelijke beweringen die <u> een factcheck waard zijn</u>",
 		"sections": {
 			"matching": {
-				"info": "In volgende voorbeeld tekst staan enkele beweringen staan die sterk lijken op reed gepubliceerde factchecks in onze database:",
+				"info": "In volgende voorbeeldtekst staan enkele beweringen die sterk lijken op reeds gepubliceerde factchecks in onze database:",
 				"lead": "match uitspraken die gemaakt worden aan {count} reeds bestaande factchecks",
 				"title": "Claim Matching"
 			},
