@@ -37,7 +37,7 @@ FactRank begon als project van Brecht Laperre, Ivo Merchiers en [Rafael Hautekie
 
 Als eerste stap ontwikkelden ze een algoritme dat automatisch feitelijke beweringen kon identificeren die een factcheck waard waren. Als zulke beweringen betrouwbaar kunnen worden geïdentificeerd, kunnen ze worden doorgestuurd naar het volgende stadium van het factcheckproces, waarin ze worden geverifieerd. 
 
-Voor de detectie van ‘checkwaardige’ claims werd een machine learning systeem op basis van [1800 met de hand geclassificeerde beweringen](https://github.com/factrank/FactRank/blob/master/data/sentences_dump_28.12.csv) getraind om van beweringen te voorspellen hoe waarschijnlijk het was dat ze checkwaardig zijn. 
+Voor de detectie van ‘checkwaardige’ claims werd een machine learning systeem op basis van [1800 met de hand geclassificeerde beweringen](https://github.com/factrank/FactRank/blob/master/factrank/legacy/data/sentences_dump_28.12.csv) getraind om van beweringen te voorspellen hoe waarschijnlijk het was dat ze checkwaardig zijn. 
 
 Dit leverde een werkend prototype op dat gedurende 2019 werd verbeterd: de tool is nauwkeuriger en put uit een grotere dataset gelabelde beweringen. Dit is mogelijk gemaakt door een [subsidie](https://www.vlaamsjournalistiekfonds.be/500000-euro-subsidie-voor-innoverende-journalistiek) van € 39.869 die FactRank in december 2018 ontving van het Vlaams Journalistiek Fonds. 
 
