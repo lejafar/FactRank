@@ -10,7 +10,6 @@ import shutil
 
 @dataclass(eq=False, frozen=True)
 class Options:
-
     """ hyperparameters """
     # learning settings
     batch_size: int = 512
@@ -26,13 +25,11 @@ class Options:
     lr: float = 0.001
     lr_decay_step: float = 100
     lr_decay: float = 0.5
-
     """ transformer settings """
     pretrained_model_shortcut: str = "wietsedv/bert-base-dutch-cased"
     max_seq_length: int = 70
     adam_epsilon: float = 1e-8
     warmup_steps: int = 50
-
     """ data settings """
     gpu_id: int = 0
     run: str = "factnet"
@@ -86,7 +83,7 @@ class Options:
             return cls.load(cls.get_run_path(args.rerun) / 'options.yml')
 
         # overwrite default options using all not None parser argument
-        options = cls(**{k:v for k, v in args.__dict__.items() if v is not None})
+        options = cls(**{k: v for k, v in args.__dict__.items() if v is not None})
 
         if options.run_path.exists():
             if click.confirm(f"Are you sure you want to overwrite run \033[1m{options.run}\033[0m?", default=True):
@@ -99,4 +96,3 @@ class Options:
         options.dump(options.run_path / f"{options.prefix}.options.yml")
 
         return options
-

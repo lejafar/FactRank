@@ -4,7 +4,7 @@ We have an open API with a rate limit of 200 requests a day and 50 requests per 
 
 #### `/` endpoint
 
-This endpoint allows one to send a text, which is split into statements and ranked according to their check-worthiness <kbd>score</kbd>. 
+This endpoint allows one to send a text, which is split into statements and ranked according to their check-worthiness <kbd>score</kbd>.
 
 When a statement can be matched to an existing fact-check it will also be returned.
 

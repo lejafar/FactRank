@@ -34,7 +34,9 @@ class CNNText(nn.Module):
         self.fc = nn.Linear((self.options.n_layers * 5) * self.options.kernel_num, class_num)
 
         self.optimizer = torch.optim.Adam(self.parameters(), lr=self.options.lr, weight_decay=self.options.weight_decay)
-        self.schedule = torch.optim.lr_scheduler.StepLR(self.optimizer, self.options.lr_decay_step, gamma=self.options.lr_decay)
+        self.schedule = torch.optim.lr_scheduler.StepLR(self.optimizer,
+                                                        self.options.lr_decay_step,
+                                                        gamma=self.options.lr_decay)
 
         self.to(self.options.gpu_id)
 
@@ -69,7 +71,7 @@ class CNNText(nn.Module):
         x14_out = F.max_pool1d(x14, x14.size(2)).squeeze(2)
         x15_out = F.max_pool1d(x15, x15.size(2)).squeeze(2)
 
-        x = torch.cat((x11_out, x12_out, x13_out, x14_out, x15_out), 1) # (N,len(Ks)*Co)
+        x = torch.cat((x11_out, x12_out, x13_out, x14_out, x15_out), 1)  # (N,len(Ks)*Co)
 
         if self.options.n_layers > 1:
             # second level
@@ -88,10 +90,9 @@ class CNNText(nn.Module):
             x23_out = F.max_pool1d(x23, x23.size(2)).squeeze(2)
             x24_out = F.max_pool1d(x24, x24.size(2)).squeeze(2)
             x25_out = F.max_pool1d(x25, x25.size(2)).squeeze(2)
-            x = torch.cat((x, x21_out, x22_out, x23_out, x24_out, x25_out), 1) # (N,len(Ks)*Co)
+            x = torch.cat((x, x21_out, x22_out, x23_out, x24_out, x25_out), 1)  # (N,len(Ks)*Co)
 
         self.global_feature_vector = x
         x = self.dropout(self.global_feature_vector)  # (N, len(Ks)*Co)
 
         return self.fc(x)
-
