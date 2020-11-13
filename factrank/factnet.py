@@ -242,6 +242,8 @@ class FactNet:
         if isinstance(text_or_sentences, str):
             # it's not yet list of sentences so we'll split the text
             text_or_sentences = self.statement_processor.sentencize(text_or_sentences)
+        if not text_or_sentences:
+            return []
         return self(text_or_sentences)
 
     def __call__(self, sentences, batch_size=1):
