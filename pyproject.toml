@@ -1,9 +1,10 @@
 [tool.poetry]
 name = "factrank"
-version = "0.1.0"
+version = "0.2.0"
 description = "Check-Worthiness Detection in Dutch"
 authors = ["Rafael Hautekiet <rafaelhautekiet@gmail.com>"]
 license = "MIT"
+exclude = ["factrank/data/training/*", "factrank/data/word_embeddings/*"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
