@@ -94,3 +94,15 @@ These embeddings are also used during inference and are embedded in the pickled 
 ### Experiments
 
 Experiments have been done using a (frozen) pre-trained [Bert model](https://arxiv.org/abs/1810.04805) as a backbone, the implementation of `FactNetTransformer` can be found in [`factnet.py`](factrank/factnet.py). The increase in performance was limited, but the increase in required compute was very significant. That's why we're currently using the CNN based model by default.
+
+## Train
+
+Training can be started as follows:
+
+```
+poetry run python -m factrank.train --run experiment1 --dropout 0.8
+```
+
+This will use the defaults in [`options.py`](factrank/options.py) and overwrite the values that are given as CLI arguments (like `run` and `dropout`)
+
+This will create a folder `log/experiment1` containing the logs, the saved model weights and the options used.
