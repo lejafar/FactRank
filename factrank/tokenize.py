@@ -42,12 +42,13 @@ class Tokenize:
         text = re.sub(r"[\*\n\\…\=•\[\]\|]", "", text)
         # clean excessive whitespace
         text = re.sub(r" +"," ", text).strip()
-        # clean leading twitter dirt
-        while text.strip().split()[0][0] in {'#', '@'}:
-            text = re.sub(r"^[@#][^ ]* *", "", text)
-        # clean trailing twitter dirt
-        while text.strip().split()[-1][0] in {'#', '@'}:
-            text = re.sub(r" *[@#][^ ]* *([.?!]) *$", "\g<1>", text)
+        if text:
+            # clean leading twitter dirt
+            while text.strip().split()[0][0] in {'#', '@'}:
+                text = re.sub(r"^[@#][^ ]* *", "", text)
+            # clean trailing twitter dirt
+            while text.strip().split()[-1][0] in {'#', '@'}:
+                text = re.sub(r" *[@#][^ ]* *([.?!]) *$", "\g<1>", text)
         return text
 
     def clean_sentence_for_inference(self, sentence):

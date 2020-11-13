@@ -27,12 +27,18 @@ class Options:
     lr_decay_step: float = 100
     lr_decay: float = 0.5
 
+    """ transformer settings """
+    pretrained_model_shortcut: str = "wietsedv/bert-base-dutch-cased"
+    max_seq_length: int = 70
+    adam_epsilon: float = 1e-8
+    warmup_steps: int = 50
+
     """ data settings """
-    gpu_id: int = 3
+    gpu_id: int = 0
     run: str = "factnet"
     _run_path: str = None
     prefix: str = "factnet"
-    statements_train_path: str = "data/training/statements_train_.csv"
+    statements_train_path: str = "data/training/statements_train_with_positive_feedback_21_03_2020.csv"
     statements_test_path: str = "data/training/statements_test.csv"
     min_freq: int = 1
     word_embeddings_path: str = "data/word_embeddings/cow-big-slim.txt"
