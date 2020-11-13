@@ -103,6 +103,4 @@ Training can be started as follows:
 poetry run python -m factrank.train --run experiment1 --dropout 0.8
 ```
 
-This will use the defaults in [`options.py`](factrank/options.py) and overwrite the values that are given as CLI arguments (like `run` and `dropout`)
-
-This will create a folder `log/experiment1` containing the logs, the saved model weights and the options used.
+This will use the defaults in [`options.py`](factrank/options.py) and overwrite the values that are given as CLI arguments (ex. `run` & `dropout`). A folder `log/experiment1` will be created, containing the logs, model weights and the options used.
