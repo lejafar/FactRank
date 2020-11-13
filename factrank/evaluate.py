@@ -15,6 +15,7 @@ from .log import init_package_logger
 
 l = logging.getLogger(__name__)
 
+
 class Evaluator:
 
     def __init__(self, model_name, statements_eval_path='data/training/statements_val.csv'):
@@ -64,6 +65,7 @@ class Evaluator:
         accuracy = 100.0 * correct / size
 
         print(f"Evaluation - acc: {accuracy:.4f}% ({correct}/{size})")
+
 
 if __name__ == "__main__":
     Evaluator(model_name="test_10").evaluate()
