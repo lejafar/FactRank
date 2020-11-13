@@ -1,12 +1,14 @@
 # FactRank
 
-FactRank is a novel claim detection tool for journalists specifically created for the Dutch language. To the best of our knowledge, this is the first and still the only such tool for Dutch. FactRank thus complements existing online claim detection tools for English and (a small number of) other languages. FactRank performs similarly to claim detection in [ClaimBuster](https://idir.uta.edu/claimbuster/), the state-of-the-art fact-checking tool for English. Our comparisons with a human baseline also indicate that given how much even expert human fact-checkers disagree, there may be a natural “upper bound” on the accuracy of check-worthiness detection by machine-learning methods.
-
-> paper has submitted for publishing, link will hopefully be available soon.
+Automatic identification of factual claims that are worthy of a fact-check
 
 ## About
 
-https://factrank.org/about
+FactRank ([factrank.org](https://factrank.org/)) is a novel claim detection tool for journalists specifically created for the Dutch language. To the best of our knowledge, this is the first and still the only such tool for Dutch. FactRank thus complements existing online claim detection tools for English and (a small number of) other languages. FactRank performs similarly to claim detection in [ClaimBuster](https://idir.uta.edu/claimbuster/), the state-of-the-art fact-checking tool for English. Our comparisons with a human baseline also indicate that given how much even expert human fact-checkers disagree, there may be a natural “upper bound” on the accuracy of check-worthiness detection by machine-learning methods.
+
+> paper has submitted for publishing, link will hopefully be available soon.
+
+More information: https://factrank.org/about
 
 ## Install
 
@@ -91,4 +93,4 @@ These embeddings are also used during inference and are embedded in the pickled 
 
 ### Experiments
 
-Experiments have been done with a using a (frozen) pre-trained [Bert model](https://arxiv.org/abs/1810.04805) as a backbone, the implementation of `FactNetTransformer` can be found in [`factnet.py`](factrank/factnet.py). The increase in performance was limited, but the increase in required compute was very significant. That's why we're currently using the CNN based model by default.
+Experiments have been done using a (frozen) pre-trained [Bert model](https://arxiv.org/abs/1810.04805) as a backbone, the implementation of `FactNetTransformer` can be found in [`factnet.py`](factrank/factnet.py). The increase in performance was limited, but the increase in required compute was very significant. That's why we're currently using the CNN based model by default.
