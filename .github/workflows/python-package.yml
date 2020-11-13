@@ -18,7 +18,7 @@ jobs:
       with:
         lfs: true
     - name: Pull LFS objects
-        run: git-lfs pull
+      run: git-lfs pull
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
