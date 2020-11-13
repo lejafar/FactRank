@@ -1,12 +1,9 @@
 {
-  "name": "factrank",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
-  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.3.2",
     "babel-runtime": "^6.26.0",
@@ -40,7 +37,6 @@
     "vue-template-compiler": "^2.5.21"
   },
   "eslintConfig": {
-    "root": true,
     "env": {
       "node": true
     },
@@ -48,21 +44,25 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {
-      "no-unused-vars": "off"
-    },
     "parserOptions": {
       "parser": "babel-eslint"
+    },
+    "root": true,
+    "rules": {
+      "no-unused-vars": "off"
     }
   },
+  "name": "factrank",
   "postcss": {
     "plugins": {
       "autoprefixer": {}
     }
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ]
+  "private": true,
+  "scripts": {
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "serve": "vue-cli-service serve"
+  },
+  "version": "0.1.0"
 }
