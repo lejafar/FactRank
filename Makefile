@@ -5,7 +5,7 @@ VENV_NAME=.venv
 # make poetry create local venv
 POETRY_VIRTUALENVS_IN_PROJECT=true
 
-.DEFAULT: test
+.DEFAULT_GOAL := test
 
 poetry.lock:
 	poetry lock -vvv
@@ -15,16 +15,18 @@ $(VENV_NAME): | poetry.lock
 	poetry install -vvv
 	poetry show --tree
 
+pre-commit: $(VENV_NAME)
+	poetry run pre-commit install
+
 .PHONY: test
-test: $(VENV_NAME)
+test: pre-commit
 	poetry run pytest tests/ -vv --ff
 
 .PHONY: update
-update: $(VENV_NAME)
+update: pre-commit
 	poetry update
 
 .PHONY: clean
 clean:
 	rm -rf $(VENV_NAME)
 	rm poetry.lock
-

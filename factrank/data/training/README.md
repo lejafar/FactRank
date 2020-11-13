@@ -33,7 +33,7 @@ NF           200
 ## `statements_feedback_21_03_2020.csv`
 
 > All feedback collected from [factrank.org](https://factrank.org/) up untill 21-03-2020
-> 
+>
 ```
        statement
 label

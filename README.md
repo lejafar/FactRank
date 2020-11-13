@@ -1,6 +1,6 @@
 # FactRank
 
-FactRank is a novel claim detection tool for journalists specifically created for the Dutch language. To the best of our knowledge, this is the first and still the only such tool for Dutch. FactRank thus complements existing online claim detection tools for English and (a small number of) other languages. FactRank performs similarly to claim detection in [ClaimBuster](https://idir.uta.edu/claimbuster/), the state-of-the-art fact-checking tool for English. Our comparisons with a human baseline also indicate that given how much even expert human fact-checkers disagree, there may be a natural “upper bound” on the accuracy of check-worthiness detection by machine-learning methods. 
+FactRank is a novel claim detection tool for journalists specifically created for the Dutch language. To the best of our knowledge, this is the first and still the only such tool for Dutch. FactRank thus complements existing online claim detection tools for English and (a small number of) other languages. FactRank performs similarly to claim detection in [ClaimBuster](https://idir.uta.edu/claimbuster/), the state-of-the-art fact-checking tool for English. Our comparisons with a human baseline also indicate that given how much even expert human fact-checkers disagree, there may be a natural “upper bound” on the accuracy of check-worthiness detection by machine-learning methods.
 
 > paper has submitted for publishing, link will hopefully be available soon.
 
@@ -12,6 +12,16 @@ https://factrank.org/about
 
 ```
 pip install "git+ssh://git@github.com/lejafar/FactRank.git#egg=factrank"
+```
+
+### Develop
+
+requires [poetry](https://github.com/python-poetry/poetry) (>= 1.0.0)
+
+```sh
+git clone git@github.com:lejafar/FactRank.git
+cd FactRank
+make # creates virtual-env and installs pre-commit hooks
 ```
 
 ## Usage
@@ -48,7 +58,7 @@ The online tool, available at [factrank.org](https://factrank.org/) allows users
 
 In order to combine this information we can either:
 
-1. only use the positive examples (FR) 
+1. only use the positive examples (FR)
 2. combine the negative examples (FR+FNR) from the original dataset into a (NFR) category and discard the distinction between them
 
 Currently only the first option has been explored due to time constraints. The original dataset combined with the positive examples can be found [here](factrank/data/training/statements_train_with_positive_feedback_21_03_2020.csv).
@@ -73,9 +83,9 @@ The built-in sentencizer in https://spacy.io/ did not meet our requirements, it 
 
 ### Word embeddings
 
-Word embeddings were taken from https://github.com/clips/dutchembeddings#embeddings (COW, Big). These embeddings are being held static during training for empirical reasons. 
+Word embeddings were taken from https://github.com/clips/dutchembeddings#embeddings (COW, Big). These embeddings are being held static during training for empirical reasons.
 
-The list of embeddings included in this repo [`cow-big-slim.txt`](factrank/data/word_embeddings/cow-big-slim.txt) is a subset, that contains all words that occur in our training data. 
+The list of embeddings included in this repo [`cow-big-slim.txt`](factrank/data/word_embeddings/cow-big-slim.txt) is a subset, that contains all words that occur in our training data.
 
 These embeddings are also used during inference and are embedded in the pickled statement processor [`factnet.statement-processor.pth`](factrank/data/model/factnet.statement-processor.pth)
 

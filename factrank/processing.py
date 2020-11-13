@@ -7,11 +7,11 @@ from descriptors import cachedproperty
 
 from .tokenize import Tokenize
 from .log import log_runtime
-from transformers import BertTokenizer, InputFeatures
 
 from torch.utils.data import TensorDataset
 
 logger = logging.getLogger(__name__)
+
 
 class FieldProcessor:
     """ processes fields """
@@ -39,6 +39,7 @@ class FieldProcessor:
         self.field.build_vocab(*datasets)
         return self
 
+
 class StatementProcessor(FieldProcessor):
     """ processes text or sentences into tensor of indices meaningfull to the network """
 
@@ -59,6 +60,7 @@ class StatementProcessor(FieldProcessor):
         """ splits text into sentences """
         return list(self.tokenizer.sentencize(text))
 
+
 class BertStatementProcessor:
     """ processes text or sentences into tensor of indices meaningfull to the Bert based network """
 
@@ -66,11 +68,16 @@ class BertStatementProcessor:
         self.options = options
 
     def encode(self, sentence):
-        inputs = self.tokenizer.encode_plus(sentence, None, add_special_tokens=True, return_tensors='pt', truncation=True)
+        inputs = self.tokenizer.encode_plus(sentence,
+                                            None,
+                                            add_special_tokens=True,
+                                            return_tensors='pt',
+                                            truncation=True)
         return inputs["input_ids"], inputs["token_type_ids"]
 
     @cachedproperty
     def tokenizer(self):
+        from transformers import BertTokenizer
         return BertTokenizer.from_pretrained(self.options.pretrained_model_shortcut)
 
     @cachedproperty
@@ -84,6 +91,7 @@ class BertStatementProcessor:
     @property
     def label_map(self):
         return {label: i for i, label in enumerate(self.label_list)}
+
 
 class BertDataProcessor:
 
@@ -106,10 +114,14 @@ class BertDataProcessor:
     @cachedproperty
     @log_runtime("creating features")
     def features(self):
+        from transformers import InputFeatures
         # load features
         features = []
         for i, (_, statement, label) in enumerate(self.dataframe.itertuples(index=False)):
-            inputs = self.tokenizer.encode_plus(statement, None, add_special_tokens=True, max_length=self.options.max_seq_length)
+            inputs = self.tokenizer.encode_plus(statement,
+                                                None,
+                                                add_special_tokens=True,
+                                                max_length=self.options.max_seq_length)
             input_ids, token_type_ids = inputs["input_ids"], inputs["token_type_ids"]
 
             # The mask has 1 for real tokens and 0 for padding tokens, so only real tokens are attended to
@@ -137,10 +149,11 @@ class BertDataProcessor:
                 logger.info("token_type_ids: %s" % " ".join([str(x) for x in token_type_ids]))
                 logger.info("label: %s (id = %d)" % (label, label_id))
 
-            features.append(InputFeatures(input_ids=input_ids,
-                                          attention_mask=attention_mask,
-                                          token_type_ids=token_type_ids,
-                                          label=label_id))
+            features.append(
+                InputFeatures(input_ids=input_ids,
+                              attention_mask=attention_mask,
+                              token_type_ids=token_type_ids,
+                              label=label_id))
         return features
 
     @property

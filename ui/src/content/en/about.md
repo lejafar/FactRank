@@ -14,12 +14,12 @@ FactRank is not an automated fact-checker. The tool ranks statements only by the
 
 FactRank is also not perfect. The system keeps on learning – and you can help. If you see a claim that you think deserves a higher or lower position in the ranking than the one given by the tool, you can click            <icon class="feedback" name="search" scale="1" /> icon if you think it is worth a fact-check of the <icon class="feedback" name="trash" scale="1" /> icon if you think it is not worth a fact-check.
 
-### How can I use FactRank? 
+### How can I use FactRank?
 
-Fact-checkers, journalists, researchers, and others – whoever feels like it – can use FactRank in several ways:  
+Fact-checkers, journalists, researchers, and others – whoever feels like it – can use FactRank in several ways:
 - As a tool to [search](/rank) a large number of sources for useful claims to fact-check. Enter a search term, select the country (🇧🇪/🇳🇱), time period, etc.
 - As a database of claims that have already been fact-checked by [Knack](https://www.knack.be/nieuws/factchecker/), [Factcheck Vlaanderen](https://factcheck.vlaanderen/) and [Nieuwscheckers](https://nieuwscheckers.nl/).
-- As a tool to search for check-worthy claims in Dutch-language texts that [you enter yourself](/tool) (for example interviews or speeches). 
+- As a tool to search for check-worthy claims in Dutch-language texts that [you enter yourself](/tool) (for example interviews or speeches).
 - Last but not least, FactRank also offers the unique possibility to [do keyword searches](/rank?type=VRT_TERZAKE,VRT_DE_AFSPRAAK) in the subtitles of the Flemish public television broadcaster VRT’s news-analysis programmes Terzake and De Afspraak and in the tweets of all Dutch and Flemish members of parliament.
 
 This is not an exhaustive list of all possible applications of FactRank. If you use the tool in a different way, we’d love to hear from you. Please [contact](/contact) us.
@@ -41,4 +41,3 @@ This yielded a working prototype, which was improved during the course of 2019. 
 This new phase of the project, which was finalised in March 2020, is the result of Flemish-Dutch teamwork. Led by freelance journalist Dr. Jan Jagers (fact-checker of [Knack Magazine](https://www.knack.be) and [lecturer in journalism](https://www.vub.ac.be/people/jan-jagers) at Vrije Universiteit Brussel) the team also comprised [Dr. Peter Burger](https://www.universiteitleiden.nl/en/staffmembers/peter-burger#tab-1) and [Dr. Alexander Pleijter](https://www.universiteitleiden.nl/medewerkers/alexander-pleijter#tab-1) (Nieuwscheckers.nl, University of Leiden), [Prof. Dr. Peter Van Aelst](https://www.uantwerpen.be/nl/personeel/peter-vanaelst/) (University of Antwerp), [Prof. Dr. Bettina Berendt](https://people.cs.kuleuven.be/~bettina.berendt/) (KU Leuven and TU Berlin, Germany), and machine learning engineer [Rafael Hautekiet](https://github.com/lejafar).
 
 ![logo_vjf](/assets/logo_VJF.jpg)
-

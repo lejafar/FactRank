@@ -14,9 +14,8 @@ from .modules import CNNText
 from .processing import FieldProcessor, StatementProcessor, BertDataProcessor, BertStatementProcessor
 from .tokenize import Tokenize
 
-from transformers import BertForSequenceClassification, BertTokenizer, BertConfig, AdamW, get_linear_schedule_with_warmup
-
 l = logging.getLogger(__name__)
+
 
 class FactNet:
 
@@ -42,7 +41,7 @@ class FactNet:
             # we have a pre-trained model in run_path so we'll load this
             l.info("loading pre-trained model from %s", self.model_path)
             cnn.load_state_dict(torch.load(self.model_path, map_location=torch.device(self.options.gpu_id)))
-            cnn.eval() # switch model to 'eval' mode, turning off dropout and batch_norm
+            cnn.eval()  # switch model to 'eval' mode, turning off dropout and batch_norm
             return cnn
 
         if self.pre_trained_word_embeddings is not None:
@@ -111,7 +110,7 @@ class FactNet:
 
     @cachedproperty
     def dataloaders(self):
-        train_set, test_set  = self.datasets
+        train_set, test_set = self.datasets
         train, test = data.Iterator.splits((train_set, test_set),
                                            batch_sizes=(self.options.batch_size, len(test_set)),
                                            device=self.options.gpu_id,
@@ -147,7 +146,7 @@ class FactNet:
             # we'll create a tensor consisting of the pre-trained
             # embeddings in the order they occur in the vocabulary
             l.info("loading pre-trained word embeddings from %s", embeddings_path)
-            import gensim.models # don't want to make this a dependency
+            import gensim.models  # don't want to make this a dependency
             embeddings = gensim.models.KeyedVectors.load_word2vec_format(embeddings_path, binary=False)
 
             in_voc = 0
@@ -164,9 +163,10 @@ class FactNet:
                     pre_trained_word_embeddings.append(np.zeros(embeddings.vector_size).astype(np.float32))
 
             pre_trained_word_embeddings = np.stack(pre_trained_word_embeddings)
-            l.info(f"{in_voc / len(pre_trained_word_embeddings) * 100:.4f} % in vocabulary of length {len(pre_trained_word_embeddings)}")
+            l.info(
+                f"{in_voc / len(pre_trained_word_embeddings) * 100:.4f} % in vocabulary of length {len(pre_trained_word_embeddings)}"
+            )
             return torch.from_numpy(pre_trained_word_embeddings.astype(np.float32))
-
 
     def fit(self):
         """ train network """
@@ -196,7 +196,9 @@ class FactNet:
                     correct = (torch.max(logit, 1)[1].view(target.size()).data == target.data).sum()
                     accuracy = 100.0 * correct / train_batch.batch_size
                     learning_rate = [param_group['lr'] for param_group in self.model.optimizer.param_groups][0]
-                    l.info(f"Epoch[{epoch}] Batch[{step}] - loss: {loss.item():.6f} acc: {accuracy:.4f}% ({correct} / {train_batch.batch_size}) lr: {learning_rate:.4f}")
+                    l.info(
+                        f"Epoch[{epoch}] Batch[{step}] - loss: {loss.item():.6f} acc: {accuracy:.4f}% ({correct} / {train_batch.batch_size}) lr: {learning_rate:.4f}"
+                    )
 
             self.model.schedule.step()
 
@@ -249,11 +251,11 @@ class FactNet:
         feature = feature.transpose(0, 1)
 
         # compute logits
-        self.model.eval() # make sure it's set to evaluate
+        self.model.eval()  # make sure it's set to evaluate
         logits = []
         global_feature_vectors = []
         for i in range(max(1, len(feature) // batch_size)):
-            logits.append(self.model(feature[i * batch_size:(i+1) * batch_size]))
+            logits.append(self.model(feature[i * batch_size:(i + 1) * batch_size]))
             global_feature_vectors.append(self.model.global_feature_vector)
         logit = torch.stack(logits, dim=1).squeeze(0)
         global_feature_vectors = torch.stack(global_feature_vectors, dim=1).squeeze(0)
@@ -264,15 +266,18 @@ class FactNet:
         max_args = torch.argmax(probs, dim=-1)
         max_probs, _ = torch.max(probs, dim=-1)
 
-        for sentence, max_arg, max_prob, prob, gfv in zip(sentences, max_args, max_probs, probs, global_feature_vectors):
+        for sentence, max_arg, max_prob, prob, gfv in zip(sentences, max_args, max_probs, probs,
+                                                          global_feature_vectors):
             all_probs = {self.label_processor[dim]: p.item() for dim, p in enumerate(prob)}
             yield self.label_processor[max_arg], max_prob.item(), all_probs, sentence, gfv
 
     def checkworthyness(self, text_or_sentences, include_embedding=False):
         if include_embedding:
-            return sorted([(all_probs['FR'], sentence, embedding) for *_, all_probs, sentence, embedding in self.infer(text_or_sentences)], reverse=True)
-        return sorted([(all_probs['FR'], sentence) for *_, all_probs, sentence, _ in self.infer(text_or_sentences)], reverse=True)
-
+            return sorted([(all_probs['FR'], sentence, embedding)
+                           for *_, all_probs, sentence, embedding in self.infer(text_or_sentences)],
+                          reverse=True)
+        return sorted([(all_probs['FR'], sentence) for *_, all_probs, sentence, _ in self.infer(text_or_sentences)],
+                      reverse=True)
 
 
 class FactNetTransformer(FactNet):
@@ -288,13 +293,15 @@ class FactNetTransformer(FactNet):
     @cachedproperty
     def model(self):
         """ create new model or load pre-trained if available """
-        model = BertForSequenceClassification.from_pretrained(self.options.pretrained_model_shortcut, config=self.bert_config)
+        from transformers import BertForSequenceClassification
+        model = BertForSequenceClassification.from_pretrained(self.options.pretrained_model_shortcut,
+                                                              config=self.bert_config)
 
         if self.model_path.exists():
             # we have a pre-trained model in run_path so we'll load this
             l.info("loading pre-trained model from %s", self.model_path)
             model = BertForSequenceClassification.from_pretrained(self.model_path, config=self.bert_config)
-            model.eval() # switch model to 'eval' mode, turning off dropout and batch_norm
+            model.eval()  # switch model to 'eval' mode, turning off dropout and batch_norm
             model.to(self.options.gpu_id)
             return model
 
@@ -316,8 +323,10 @@ class FactNetTransformer(FactNet):
     @cachedproperty
     def bert_config(self):
         # TODO: set num_labels in options after reading in data
+        from transformers import BertConfig
         return BertConfig.from_pretrained(self.options.pretrained_model_shortcut,
-                                          num_labels=3, hidden_dropout_prob=self.options.dropout)
+                                          num_labels=3,
+                                          hidden_dropout_prob=self.options.dropout)
 
     def get_evaluate_dataset(self, path):
         return BertDataProcessor(self.options, self.statement_processor, path).dataset
@@ -341,15 +350,22 @@ class FactNetTransformer(FactNet):
     def optimizer(self):
         # prepare optimizer and schedule (linear warmup and decay)
         no_decay = ['bias', 'layernorm.weight']
-        optimizer_parameters = [
-            {'params': [p for n, p in self.model.named_parameters() if not any(nd in n for nd in no_decay)], 'weight_decay': self.options.weight_decay},
-            {'params': [p for n, p in self.model.named_parameters() if any(nd in n for nd in no_decay)], 'weight_decay': 0.0}
-            ]
+        optimizer_parameters = [{
+            'params': [p for n, p in self.model.named_parameters() if not any(nd in n for nd in no_decay)],
+            'weight_decay': self.options.weight_decay
+        }, {
+            'params': [p for n, p in self.model.named_parameters() if any(nd in n for nd in no_decay)],
+            'weight_decay': 0.0
+        }]
+        from transformers import AdamW
         return AdamW(optimizer_parameters, lr=self.options.lr, eps=self.options.adam_epsilon)
 
     @cachedproperty
     def scheduler(self):
-        return get_linear_schedule_with_warmup(self.optimizer, num_warmup_steps=self.options.warmup_steps, num_training_steps=self.options.max_epochs)
+        from transformers import get_linear_schedule_with_warmup
+        return get_linear_schedule_with_warmup(self.optimizer,
+                                               num_warmup_steps=self.options.warmup_steps,
+                                               num_training_steps=self.options.max_epochs)
 
     def fit(self):
         """ train network """
@@ -384,7 +400,9 @@ class FactNetTransformer(FactNet):
                     correct = (torch.max(logits, 1)[1].view(labels.size()).data == labels.data).sum()
                     accuracy = 100.0 * correct / len(labels)
                     learning_rate = [param_group['lr'] for param_group in self.optimizer.param_groups][0]
-                    l.info(f"Epoch[{epoch}] Batch[{step}] - loss: {loss.item():.6f} acc: {accuracy:.4f}% ({correct} / {len(labels)}) lr: {learning_rate:.4f}")
+                    l.info(
+                        f"Epoch[{epoch}] Batch[{step}] - loss: {loss.item():.6f} acc: {accuracy:.4f}% ({correct} / {len(labels)}) lr: {learning_rate:.4f}"
+                    )
 
             if epoch % self.options.log_metrics_step == 0:
                 test_accuracy = self.evaluate()
@@ -450,5 +468,5 @@ class FactNetTransformer(FactNet):
             yield self.statement_processor.label_list[max_arg], max_prob.item(), all_probs, sentence
 
     def checkworthyness(self, text_or_sentences):
-        return sorted([(all_probs['FR'], sentence) for *_, all_probs, sentence in self.infer(text_or_sentences)], reverse=True)
-
+        return sorted([(all_probs['FR'], sentence) for *_, all_probs, sentence in self.infer(text_or_sentences)],
+                      reverse=True)
