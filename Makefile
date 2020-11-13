@@ -14,7 +14,6 @@ poetry.lock:
 $(VENV_NAME): | poetry.lock
 	poetry install -vvv
 	poetry show --tree
-	poetry run python -m spacy download nl_core_news_sm
 
 .PHONY: test
 test: $(VENV_NAME)
