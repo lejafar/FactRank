@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "factrank"
+version = "0.1.0"
+description = "Automated Check-Worthiness Detection in Dutch"
+authors = ["Rafael Hautekiet <rafaelhautekiet@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+pyyaml = "*"
+spacy = "==2.1.8"
+torchtext = "*"
+torch = "*"
+dickens = "*"
+gensim = "*"
+
+[tool.poetry.dev-dependencies]
+sklearn = "*"
+pandas = "*"
+matplotlib = "*"
+pytest = "*"
+transformers = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,6 +1,6 @@
 from factrank.log import init_package_logger
 from factrank.options import Options
-from factrank.factnet import FactNet
+from factrank.factnet import FactNet, FactNetTransformer
 
 def main():
     options = Options().parse()

@@ -2,6 +2,10 @@ import logging
 from logging.handlers import RotatingFileHandler
 from logging import handlers
 import sys
+from functools import wraps
+import time
+
+logger = logging.getLogger(__name__)
 
 def init_package_logger(options):
     # we give our package logger the package name
@@ -25,3 +29,15 @@ def init_package_logger(options):
     package_logger.setLevel(logging._nameToLevel.get(options.log_level))
 
     return package_logger
+
+def log_runtime(name="", lvl=logging.INFO):
+    """ logs execution time of function """
+    def logging_decorator(foo, lvl=lvl, name=name):
+        @wraps(foo)
+        def timing_wrapper(*args, **kwargs):
+            start = time.time()
+            bar = foo(*args, **kwargs)
+            logger.log(lvl, f"⏱  {name or foo.__name__} took {time.time() - start:.4f} seconds")
+            return bar
+        return timing_wrapper
+    return logging_decorator

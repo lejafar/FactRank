@@ -2,16 +2,30 @@
 
 # CONFIGURATION
 VENV_NAME=.venv
-# make pipenv create local venv
-PIPENV_VENV_IN_PROJECT=true
+# make poetry create local venv
+POETRY_VIRTUALENVS_IN_PROJECT=true
 
-$(VENV_NAME):
-	pipenv install -d
-	pipenv run python -m spacy download nl_core_news_sm
+.DEFAULT: test
 
+poetry.lock:
+	poetry lock -vvv
+	rm -rf $(VENV_NAME)
+
+$(VENV_NAME): | poetry.lock
+	poetry install -vvv
+	poetry show --tree
+	poetry run python -m spacy download nl_core_news_sm
+
+.PHONY: test
 test: $(VENV_NAME)
-	pipenv run pytest tests/ -vv --ff
+	poetry run pytest tests/ -vv --ff
 
+.PHONY: update
+update: $(VENV_NAME)
+	poetry update
+
+.PHONY: clean
 clean:
-	pipenv --rm
+	rm -rf $(VENV_NAME)
+	rm poetry.lock
 
