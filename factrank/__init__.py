@@ -6,6 +6,7 @@ from .log import init_package_logger
 
 _model = None
 
+MODEL_VERSION = "v0.6.0"
 
 def get_model():
     global _model
