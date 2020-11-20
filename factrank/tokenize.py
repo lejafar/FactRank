@@ -6,12 +6,13 @@ import spacy
 
 logger = logging.getLogger(__name__)
 
+
 class Tokenize:
 
     def __init__(self):
         self.nlp = spacy.load('nl_core_news_sm')
         self.sentence_regex = re.compile(
-            r' ?((?:[A-Z@#\d]|[\"][^\n]+?[\"] ?)(?:[\"\(][^\n]{1,30}?[\"\)]|\.{3}|[^?!\.\n]|\.[^ \nA-Z\"])*(?:!|\?|\n|\.{1})) ?'
+            r' ?((?:[A-Z@#\d]|[\"][^\n]+?[\"] ?)(?:[\"\(][^\n]{1,30}?[\"\)]|\.{3}|[^?!\.\n]|\.[^ \nA-Z\"]){0,200}(?:!|\?|\n|\.{1})) ?'
         )
 
     @staticmethod
@@ -96,7 +97,6 @@ class Tokenize:
     def sentencize(self, text):
         text = self.clean_text(text)
         for sentence in self.sentence_regex.findall(text):
-            logger.debug("processing: %s", sentence)
             if len(sentence.split()) < 3 or len(sentence.split()) > 50:
                 continue  # too long / too short
             if sentence.count("\"") % 2:
