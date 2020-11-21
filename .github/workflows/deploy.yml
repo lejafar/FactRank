@@ -14,4 +14,4 @@ jobs:
         with:
           lfs: true
       - name: Deploy 🚀
-        run: npm run deploy
+        run: cd ui && npm run deploy
