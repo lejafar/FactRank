@@ -1,4 +1,5 @@
 # FactRank
+![factrank-test workflow](https://github.com/lejafar/factrank/workflows/test-factrank/badge.svg)
 
 Automatic identification of factual claims that are worthy of a fact-check
 
@@ -99,7 +100,7 @@ Experiments have been done using a (frozen) pre-trained [Bert model](https://arx
 
 Training can be started as follows:
 
-```
+```sh
 poetry run python -m factrank.train --run experiment1 --dropout 0.8
 ```
 
