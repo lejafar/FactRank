@@ -1,5 +1,6 @@
 # FactRank
-![factrank-test workflow](https://github.com/lejafar/factrank/workflows/test-factrank/badge.svg)
+[![factrank-test workflow](https://github.com/lejafar/factrank/workflows/test-factrank/badge.svg)](https://github.com/lejafar/FactRank/actions?query=workflow%3Atest-factrank)
+[![factrank-deploy workflow](https://github.com/lejafar/factrank/workflows/deploy-factrank.org/badge.svg)](https://github.com/lejafar/FactRank/actions?query=workflow%3Adeploy-factrank.org)
 
 Automatic identification of factual claims that are worthy of a fact-check
 
