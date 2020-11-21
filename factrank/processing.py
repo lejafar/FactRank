@@ -1,7 +1,6 @@
 import logging
 import pathlib
 
-import pandas as pd
 import torch
 from descriptors import cachedproperty
 
@@ -107,6 +106,7 @@ class BertDataProcessor:
     @cachedproperty
     @log_runtime("reading in DataFrame")
     def dataframe(self):
+        import pandas as pd
         full_path = pathlib.Path(__file__).parent / self.csv_path
         logger.info("loading %s", full_path)
         return pd.read_csv(full_path)

@@ -1,6 +1,10 @@
-import spacy
 import re
 import unicodedata
+import logging
+
+import spacy
+
+logger = logging.getLogger(__name__)
 
 
 class Tokenize:
@@ -8,7 +12,7 @@ class Tokenize:
     def __init__(self):
         self.nlp = spacy.load('nl_core_news_sm')
         self.sentence_regex = re.compile(
-            r' ?((?:[A-Z@#\d]|[\"][^\n]+?[\"] ?)(?:[\"\(][^\n]+?[\"\)]|\.{3}|[^?!\.\n]|\.[^ \nA-Z\"])*(?:!|\?|\n|\.{1})) ?'
+            r' ?((?:[A-Z@#\d]|[\"][^\n]+?[\"] ?)(?:[\"\(][^\n]{1,30}?[\"\)]|\.{3}|[^?!\.\n]|\.[^ \nA-Z\"]){0,200}(?:!|\?|\n|\.{1})) ?'
         )
 
     @staticmethod
@@ -24,7 +28,7 @@ class Tokenize:
         text = re.sub(r"„", "\"", text)
         text = re.sub(r"“", "\"", text)
         # replace linebreak by punctuation when followed by linebreak
-        text = re.sub(r"(\"|\')\n", "\g<1>.", text)
+        text = re.sub(r"(\"|\')\n", r"\g<1>.", text)
         # normalize dash
         text = re.sub(r"—", "-", text)
         text = re.sub(r"–", "-", text)
@@ -45,13 +49,15 @@ class Tokenize:
         text = re.sub(r"[\*\n\\…\=•\[\]\|]", "", text)
         # clean excessive whitespace
         text = re.sub(r" +", " ", text).strip()
+
         if text:
             # clean leading twitter dirt
             while text.strip().split()[0][0] in {'#', '@'}:
                 text = re.sub(r"^[@#][^ ]* *", "", text)
             # clean trailing twitter dirt
             while text.strip().split()[-1][0] in {'#', '@'}:
-                text = re.sub(r" *[@#][^ ]* *([.?!]) *$", "\g<1>", text)
+                text = re.sub(r" *[@#][^ ]* *([.?!]) *$", r"\g<1>", text)
+
         return text
 
     def clean_sentence_for_inference(self, sentence):
@@ -66,8 +72,8 @@ class Tokenize:
         # remove point at the end of sentence
         sentence = re.sub(r"\.$", "", sentence)
         # remove quotes when apparent at both ends
-        sentence = re.sub(r"^\'(.*)\'$", "\g<1>", sentence)  # single quotes
-        sentence = re.sub(r"^\"(.*)\"$", "\g<1>", sentence)  # double quotes
+        sentence = re.sub(r"^\'(.*)\'$", r"\g<1>", sentence)  # single quotes
+        sentence = re.sub(r"^\"(.*)\"$", r"\g<1>", sentence)  # double quotes
         # clean twitter dirt
         sentence = re.sub(r"@#", "", sentence)
         # tag digits with NUM
@@ -89,7 +95,8 @@ class Tokenize:
         ]
 
     def sentencize(self, text):
-        for sentence in self.sentence_regex.findall(self.clean_text(text)):
+        text = self.clean_text(text)
+        for sentence in self.sentence_regex.findall(text):
             if len(sentence.split()) < 3 or len(sentence.split()) > 50:
                 continue  # too long / too short
             if sentence.count("\"") % 2:
