@@ -7,7 +7,6 @@ import torch
 import torch.nn.functional as F
 from torch.utils.data import ConcatDataset
 from sklearn.metrics import confusion_matrix
-import pandas as pd
 import numpy as np
 
 from .modules import CNNText
@@ -90,6 +89,8 @@ class FactNet:
 
     @cachedproperty
     def datasets(self):
+        import pandas as pd
+
         data_fields = [('id', None), ('statement', self._statement_field), ('label', self._label_field)]
 
         statements_train_path = pathlib.Path(__file__).parent / self.options.statements_train_path
