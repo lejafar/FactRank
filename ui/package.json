@@ -32,6 +32,7 @@
     "eslint-plugin-vue": "^5.0.0",
     "vmark": "^1.2.0",
     "vmark-loader": "^1.0.0",
+    "vue-gh-pages": "^1.19.1",
     "vue-loader": "^15.9.1",
     "vue-svg-loader": "^0.16.0",
     "vue-template-compiler": "^2.5.21"
@@ -52,6 +53,7 @@
       "no-unused-vars": "off"
     }
   },
+  "homepage": "https://github.com/lejafar/FactRank",
   "name": "factrank",
   "postcss": {
     "plugins": {
@@ -61,6 +63,7 @@
   "private": true,
   "scripts": {
     "build": "vue-cli-service build",
+    "deploy": "node ./node_modules/vue-gh-pages/index.js -b gh-pages",
     "lint": "vue-cli-service lint",
     "serve": "vue-cli-service serve"
   },

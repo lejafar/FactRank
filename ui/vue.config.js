@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: '',
   chainWebpack: config => {
     config.module.rules.delete("svg");
     config.module.rules.delete("md");
@@ -22,6 +23,6 @@ module.exports = {
             ]
         }
       ]
-    }
+    },
   }
 };
