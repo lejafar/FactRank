@@ -17,7 +17,7 @@
         <b-collapse is-nav id="nav_collapse">
           <b-navbar-nav class="ml-auto">
             <b-navbar-nav>
-              <b-nav-item to="/rank" exact>{{ $t("menu-bar.rank") }}</b-nav-item>
+              <b-nav-item @click="resetQuery" to="/rank" exact>{{ $t("menu-bar.rank") }}</b-nav-item>
               <b-nav-item to="/tool">{{ $t("menu-bar.tool") }}</b-nav-item>
               <b-nav-item to="/about">{{ $t("menu-bar.about") }}</b-nav-item>
               <b-nav-item to="/press">{{ $t("menu-bar.press") }}</b-nav-item>
