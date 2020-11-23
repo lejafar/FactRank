@@ -10,7 +10,7 @@ FactRank ([factrank.org](https://factrank.org/)) is a novel claim detection tool
 
 > paper has submitted for publishing, link will hopefully be available soon.
 
-More information: https://factrank.org/about
+More information: https://factrank.org/#/about
 
 ## Install
 
