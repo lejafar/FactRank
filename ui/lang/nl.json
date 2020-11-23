@@ -49,7 +49,7 @@
     }
   },
   "footer": {
-    "feedback": "Hebt u feedback? <a href=\"/contact\">Mail \u2019m ons</a>, en help daarmee in de strijd tegen desinformatie.",
+    "feedback": "Hebt u feedback? <a href=\"#/contact\">Mail \u2019m ons</a>, en help daarmee in de strijd tegen desinformatie.",
     "made": {
       "comissioned": "onder beheer van Feitisj VZW, met de steun van het <a href='https://www.vlaamsjournalistiekfonds.be/'>Vlaams Journalistiek Fonds</a>",
       "rafael": "Met veel \u2764\ufe0f gemaakt in Borgerhout door <a href='https://github.com/lejafar'>Rafael Hautekiet</a>"
