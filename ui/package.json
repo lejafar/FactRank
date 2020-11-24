@@ -53,7 +53,7 @@
       "no-unused-vars": "off"
     }
   },
-  "homepage": "git@github.com:lejafar/FactRank.git",
+  "homepage": "git@github.com:lejafar/FactRank",
   "name": "factrank",
   "postcss": {
     "plugins": {
