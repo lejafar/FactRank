@@ -17,4 +17,7 @@ jobs:
       - name: Install
         run: cd ui && npm install
       - name: Deploy 🚀
-        run: cd ui && npm run deploy
+        run: |
+          git config --global user.email "rafaelhautekiet@gmail.com"
+          git config --global user.name "cicd"
+          cd ui && npm run deploy
