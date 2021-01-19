@@ -15,7 +15,7 @@ More information: https://factrank.org/#/about
 ## Install
 
 ```
-pip install "https://github.com/lejafar/FactRank.git#egg=factrank"
+pip install "git+https://github.com/lejafar/FactRank.git#egg=factrank"
 ```
 
 ### Develop
