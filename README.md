@@ -15,7 +15,7 @@ More information: https://factrank.org/#/about
 ## Install
 
 ```
-pip install "git+ssh://git@github.com/lejafar/FactRank.git#egg=factrank"
+pip install "https://github.com/lejafar/FactRank.git#egg=factrank"
 ```
 
 ### Develop
@@ -23,7 +23,7 @@ pip install "git+ssh://git@github.com/lejafar/FactRank.git#egg=factrank"
 requires [poetry](https://github.com/python-poetry/poetry) (>= 1.0.0)
 
 ```sh
-git clone git@github.com:lejafar/FactRank.git
+git clone https://github.com/lejafar/FactRank.git
 cd FactRank
 make # creates virtual-env and installs pre-commit hooks
 ```
