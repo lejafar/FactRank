@@ -8,7 +8,7 @@ Automatic identification of factual claims that are worthy of a fact-check
 
 FactRank ([factrank.org](https://factrank.org/)) is a novel claim detection tool for journalists specifically created for the Dutch language. To the best of our knowledge, this is the first and still the only such tool for Dutch. FactRank thus complements existing online claim detection tools for English and (a small number of) other languages. FactRank performs similarly to claim detection in [ClaimBuster](https://idir.uta.edu/claimbuster/), the state-of-the-art fact-checking tool for English. Our comparisons with a human baseline also indicate that given how much even expert human fact-checkers disagree, there may be a natural “upper bound” on the accuracy of check-worthiness detection by machine-learning methods.
 
-> paper has submitted for publishing, link will hopefully be available soon.
+PAPER: https://www.sciencedirect.com/science/article/abs/pii/S2468696420300549
 
 More information: https://factrank.org/#/about
 
